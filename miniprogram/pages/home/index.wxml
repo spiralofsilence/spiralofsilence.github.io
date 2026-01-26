@@ -1,0 +1,66 @@
+<view class="page">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">今日状态</text>
+      <text class="muted">{{todayKey}}</text>
+    </view>
+    <view class="row" style="margin-bottom: 16rpx;">
+      <view>
+        <text class="muted">完成任务</text>
+        <view class="card-title">{{summary.completedTasks}} / {{summary.taskCount}}</view>
+      </view>
+      <view>
+        <text class="muted">心情评分</text>
+        <view class="card-title">
+          {{summary.moodScore !== null ? summary.moodScore : "未记录"}}
+        </view>
+      </view>
+      <view>
+        <text class="muted">今日打卡</text>
+        <view class="card-title">{{summary.checkins}}</view>
+      </view>
+    </view>
+    <view class="row">
+      <text class="muted">连续打卡 {{summary.streak}} 天</text>
+      <text class="link" bindtap="openTriggers">查看求助信号</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{highlightTask}}">
+    <view class="section-header">
+      <text class="section-title">推荐任务</text>
+      <text class="tag">基础库</text>
+    </view>
+    <view class="card-title">{{highlightTask.title}}</view>
+    <text class="muted">{{highlightTask.description}}</text>
+    <view style="margin-top: 16rpx;">
+      <button class="button-primary" size="mini" bindtap="goTo" data-page="tasks">
+        去完成
+      </button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">微行动建议</text>
+    </view>
+    <text class="card-title">{{microAction}}</text>
+    <view style="margin-top: 16rpx;">
+      <button class="button-ghost" size="mini" bindtap="goTo" data-page="checkin">
+        一键打卡
+      </button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">快捷入口</text>
+    </view>
+    <view class="row" style="flex-wrap: wrap;">
+      <view class="pill" bindtap="goTo" data-page="mood">记录心情</view>
+      <view class="pill" bindtap="goTo" data-page="record">深度记录</view>
+      <view class="pill" bindtap="goTo" data-page="assessments">轻测评</view>
+      <view class="pill" bindtap="goTo" data-page="ai">AI问答</view>
+    </view>
+  </view>
+</view>

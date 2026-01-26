@@ -1,0 +1,35 @@
+.assessment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.assessment-item:last-child {
+  border-bottom: none;
+}
+
+.assessment-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+
+.assessment-main {
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+.report-item {
+  padding: 12rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.report-item:last-child {
+  border-bottom: none;
+}
+
+.report-title {
+  font-weight: 600;
+}

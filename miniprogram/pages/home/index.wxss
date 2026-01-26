@@ -1,0 +1,16 @@
+.card-title {
+  font-size: 32rpx;
+}
+
+.row > view {
+  flex: 1;
+  text-align: center;
+}
+
+.row > view:first-child {
+  text-align: left;
+}
+
+.row > view:last-child {
+  text-align: right;
+}

@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">角色设置</text>
+    </view>
+    <picker mode="selector" range="{{roles}}" value="{{roleIndex}}" bindchange="onRoleChange">
+      <view class="picker">{{roles[roleIndex]}}</view>
+    </picker>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">基础信息</text>
+    </view>
+    <input class="input" placeholder="昵称/称呼" value="{{nickname}}" bindinput="onNicknameInput" />
+    <input class="input" placeholder="机构/组织（可选）" value="{{organization}}" bindinput="onOrgInput" style="margin-top: 12rpx;" />
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">AI配置</text>
+      <text class="muted">仅本地保存</text>
+    </view>
+    <input class="input" placeholder="OpenAI API Key" value="{{aiApiKey}}" password bindinput="onKeyInput" />
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">其他</text>
+    </view>
+    <view class="link" bindtap="showPrivacy">查看隐私政策</view>
+    <view class="link" bindtap="clearData" style="margin-top: 12rpx;">清空本地数据</view>
+  </view>
+
+  <view style="margin-top: 12rpx;">
+    <button class="button-primary" bindtap="saveProfile">保存资料</button>
+  </view>
+</view>

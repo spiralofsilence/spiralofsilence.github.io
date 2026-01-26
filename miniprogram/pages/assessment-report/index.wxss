@@ -1,0 +1,17 @@
+.report-score {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 12rpx 0;
+}
+
+.score {
+  font-size: 56rpx;
+  font-weight: 600;
+}
+
+.status {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #1f2d3d;
+}

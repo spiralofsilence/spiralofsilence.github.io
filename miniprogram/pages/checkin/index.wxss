@@ -1,0 +1,32 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 12rpx;
+}
+
+.action-item {
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #e4e8f0;
+  margin: 0 12rpx 12rpx 0;
+  font-size: 24rpx;
+}
+
+.action-item.active {
+  background: #2f6bff;
+  color: #ffffff;
+  border-color: #2f6bff;
+}
+
+.log-item {
+  padding: 12rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-title {
+  font-weight: 600;
+}

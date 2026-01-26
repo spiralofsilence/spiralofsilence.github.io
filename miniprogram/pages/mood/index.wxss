@@ -1,0 +1,53 @@
+.mood-score {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.score {
+  font-size: 56rpx;
+  font-weight: 600;
+}
+
+.alert {
+  margin-top: 12rpx;
+  padding: 12rpx;
+  background: #fff5f5;
+  color: #e23c3c;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag-item {
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #e4e8f0;
+  margin: 0 12rpx 12rpx 0;
+  font-size: 24rpx;
+  color: #1f2d3d;
+}
+
+.tag-active {
+  background: #2f6bff;
+  color: #ffffff;
+  border-color: #2f6bff;
+}
+
+.log-item {
+  padding: 12rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-title {
+  font-weight: 600;
+}

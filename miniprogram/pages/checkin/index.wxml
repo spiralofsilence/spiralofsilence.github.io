@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">选择微行动</text>
+      <text class="muted">{{todayKey}}</text>
+    </view>
+    <view class="actions">
+      <view
+        wx:for="{{actions}}"
+        wx:key="action"
+        class="action-item {{selectedAction === item ? 'active' : ''}}"
+        data-action="{{item}}"
+        bindtap="selectAction"
+      >
+        {{item}}
+      </view>
+    </view>
+    <textarea
+      class="input"
+      placeholder="补充说明（可选）"
+      value="{{note}}"
+      bindinput="onNoteInput"
+      auto-height
+    />
+    <view style="margin-top: 16rpx;">
+      <button class="button-primary" bindtap="submitCheckin">一键打卡</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">今日打卡记录</text>
+    </view>
+    <view wx:if="{{todayLogs.length === 0}}" class="muted">今天还没有记录</view>
+    <view wx:for="{{todayLogs}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.action}}</text>
+        <text class="muted">{{item.timeLabel}}</text>
+      </view>
+      <text class="muted">{{item.note}}</text>
+    </view>
+  </view>
+</view>
