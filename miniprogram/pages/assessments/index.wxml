@@ -1,15 +1,20 @@
 <view class="page">
   <view class="card">
     <view class="section-header">
-      <text class="section-title">推荐测评</text>
+      <text class="section-title">{{requiredOnly ? '必做测评' : '推荐测评'}}</text>
       <text class="muted">免费 + 付费</text>
     </view>
     <view wx:for="{{assessments}}" wx:key="id" class="assessment-item">
       <view class="assessment-main">
         <text class="assessment-title">{{item.title}}</text>
         <text class="muted">{{item.description}}</text>
-        <text class="tag" wx:if="{{item.isPaid}}">¥{{item.price}}</text>
-        <text class="tag" wx:else>免费</text>
+        <view style="margin-top: 6rpx;">
+          <text class="tag" wx:if="{{item.isPaid}}">¥{{item.price}}</text>
+          <text class="tag" wx:else>免费</text>
+          <text class="tag" wx:if="{{requiredIds.includes(item.id)}}">必做</text>
+          <text class="tag" wx:if="{{item.category}}">{{item.category}}</text>
+        </view>
+        <text class="muted">状态：{{item.progressStatus}}</text>
       </view>
       <button class="button-primary" size="mini" bindtap="startAssessment" data-item="{{item}}">
         {{item.isPaid ? "付费测评" : "开始测评"}}

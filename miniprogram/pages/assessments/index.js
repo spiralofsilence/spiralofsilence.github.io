@@ -1,21 +1,45 @@
 const { formatDateTime } = require("../../utils/date");
 const { STORAGE_KEYS, getStorage } = require("../../utils/storage");
-const { assessments } = require("../../utils/mock");
+const {
+  getAssessments,
+  getAssessmentProgress,
+  getRequiredAssessmentIds
+} = require("../../utils/assessment");
 
 Page({
   data: {
     assessments: [],
-    reports: []
+    reports: [],
+    progressMap: {},
+    requiredIds: [],
+    requiredOnly: false
+  },
+  onLoad(options) {
+    this.setData({ requiredOnly: options.required === "1" });
   },
   onShow() {
-    const assessmentList = getStorage(STORAGE_KEYS.ASSESSMENTS, assessments);
+    const assessmentList = getAssessments();
     const reports = getStorage(STORAGE_KEYS.ASSESSMENT_REPORTS, []).map(
       (report) => ({
         ...report,
         timeLabel: formatDateTime(new Date(report.createdAt))
       })
     );
-    this.setData({ assessments: assessmentList, reports });
+    const progressMap = getAssessmentProgress();
+    const requiredIds = getRequiredAssessmentIds();
+    const list = this.data.requiredOnly
+      ? assessmentList.filter((item) => requiredIds.includes(item.id))
+      : assessmentList;
+    const withStatus = list.map((item) => ({
+      ...item,
+      progressStatus: progressMap[item.id] ? progressMap[item.id].status : "未开始"
+    }));
+    this.setData({
+      assessments: withStatus,
+      reports,
+      progressMap,
+      requiredIds
+    });
   },
   startAssessment(e) {
     const item = e.currentTarget.dataset.item;

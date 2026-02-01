@@ -68,7 +68,11 @@ Page({
       .map((msg) => ({ role: msg.role, content: msg.content }));
     const mockReply = getMockAiReply(content);
 
-    askAi([{ role: "system", content: systemPrompt }, ...conversation], mockReply)
+    askAi(
+      [{ role: "system", content: systemPrompt }, ...conversation],
+      mockReply,
+      { prompt: content }
+    )
       .then((reply) => {
         const answer =
           typeof reply === "string" ? { content: reply } : reply || {};

@@ -63,6 +63,9 @@
     <view style="margin-top: 16rpx;">
       <button class="button-primary" bindtap="submitHelpSignal">我需要支持</button>
     </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-ghost" size="mini" bindtap="runAutoTrigger">运行自动触发</button>
+    </view>
   </view>
 
   <view class="card" wx:if="{{summary.keywordHits.length}}">
@@ -72,6 +75,38 @@
     <view wx:for="{{summary.keywordHits}}" wx:key="keyword" class="log-item">
       <text class="log-title">{{item.keyword}}</text>
       <text class="muted">命中 {{item.count}} 次</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{triggerEvents.length}}">
+    <view class="section-header">
+      <text class="section-title">触发记录</text>
+    </view>
+    <view wx:for="{{triggerEvents}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.type}}</text>
+        <text class="muted">{{item.dateKey}}</text>
+      </view>
+      <text class="muted">{{item.message}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{notifications.length}}">
+    <view class="section-header">
+      <text class="section-title">订阅消息队列</text>
+      <text class="muted">需后端发送</text>
+    </view>
+    <view wx:for="{{notifications}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.type}}</text>
+        <text class="muted">{{item.status}}</text>
+      </view>
+      <text class="muted">{{item.message}}</text>
+      <view style="margin-top: 8rpx;">
+        <button class="button-ghost" size="mini" data-id="{{item.id}}" bindtap="markNotificationSent">
+          标记为已发送
+        </button>
+      </view>
     </view>
   </view>
 </view>

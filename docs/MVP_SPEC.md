@@ -12,6 +12,9 @@
 5. 求助信号可视化（规则+命中情况）
 6. AI育儿问答（含反馈）
 7. 轻测评 + 报告 + 行动召唤
+8. 合同签署与必做测评触发
+9. 服务进度追踪（时间轴）
+10. 作业打卡与点评
 
 ## 数据模型（本地演示版）
 - tasks
@@ -34,10 +37,23 @@
   - id, assessmentId, title, scene, totalScore, avgScore, level, riskFlag, summary, actionText, createdAt
 - triggerEvents
   - id, type, message, createdAt
+- contractRecord
+  - id, status, signedAt, effectiveAt, signatureType, signerName, signaturePath, pdfStatus, pdfPath
+- servicePlan
+  - id, status, stages[], createdAt, updatedAt
+- homeworkLogs
+  - id, dateKey, title, note, attachments[], status, teacherComment, createdAt
+- assessmentProgress
+  - assessmentId -> status, updatedAt, completedAt
+- paymentLogs
+  - id, amount, title, status, createdAt
+- notificationQueue
+  - id, type, message, status, createdAt
 - userProfile
   - role, nickname, organization
 - settings
-  - aiApiKey, consecutiveMissedDays, lowMoodScore, keywordList
+  - aiApiKey, aiUseProxy, taskReminderTemplateId, helpAlertTemplateId
+  - consecutiveMissedDays, lowMoodScore, keywordList
 
 ## AI 提示词框架（简版）
 system:
@@ -48,6 +64,11 @@ system:
 - 低心情评分 <= 阈值
 - 关键词命中（厌学/情绪崩溃/焦虑等）
 
+## 合同签署与服务流程
+- 合同签署完成 -> 弹出必做测评入口
+- 完成必做测评 -> 服务计划自动启动
+- 服务阶段可触发提醒通知（需后端发送订阅消息）
+
 ## 后端接口预留（下一阶段）
 - POST /api/ai/chat
 - POST /api/records
@@ -56,6 +77,9 @@ system:
 - POST /api/assessments/submit
 - GET /api/reports
 - POST /api/triggers
+- POST /api/payments/create
+- POST /api/contracts/pdf
+- POST /api/notifications/send
 
 ## 付费测评与支付
 当前仅模拟支付流程。正式上线需接入微信支付 + 商户号。

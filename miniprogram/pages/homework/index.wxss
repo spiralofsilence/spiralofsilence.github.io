@@ -1,0 +1,62 @@
+.stats-row > view {
+  flex: 1;
+  text-align: center;
+}
+
+.stats-row > view:first-child {
+  text-align: left;
+}
+
+.stats-row > view:last-child {
+  text-align: right;
+}
+
+.attachment-list {
+  margin-top: 12rpx;
+}
+
+.attachment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.attachment-item:last-child {
+  border-bottom: none;
+}
+
+.remove {
+  color: #e23c3c;
+  font-size: 24rpx;
+}
+
+.log-item {
+  padding: 16rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-title {
+  font-weight: 600;
+}
+
+.status-row {
+  margin-top: 6rpx;
+}
+
+.status.submitted {
+  color: #ff8f2f;
+}
+
+.status.reviewed {
+  color: #2fbf6b;
+}
+
+.comment-box {
+  margin-top: 8rpx;
+}

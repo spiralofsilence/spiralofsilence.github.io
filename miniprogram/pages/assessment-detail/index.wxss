@@ -40,3 +40,13 @@
   border-color: #2f6bff;
   color: #ffffff;
 }
+
+.scale-box {
+  margin-top: 6rpx;
+}
+
+.scale-value {
+  margin: 8rpx 0;
+  font-size: 24rpx;
+  color: #1f2d3d;
+}

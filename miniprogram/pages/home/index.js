@@ -5,6 +5,7 @@ const {
   loadOrInit
 } = require("../../utils/storage");
 const { starterTasks, microActions } = require("../../utils/mock");
+const { applyTriggers } = require("../../utils/trigger");
 
 Page({
   data: {
@@ -26,6 +27,7 @@ Page({
     const taskLogs = getStorage(STORAGE_KEYS.TASK_LOGS, []);
     const moodLogs = getStorage(STORAGE_KEYS.MOOD_LOGS, []);
     const checkins = getStorage(STORAGE_KEYS.MICRO_CHECKINS, []);
+    applyTriggers();
     const triggerEvents = getStorage(STORAGE_KEYS.TRIGGER_EVENTS, []);
     const moodToday = moodLogs.find((log) => log.dateKey === todayKey);
     const completedTasks = taskLogs.filter(

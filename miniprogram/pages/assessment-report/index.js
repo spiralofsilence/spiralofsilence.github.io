@@ -28,5 +28,8 @@ Page({
       content: "已提交免费15分钟解读申请（模拟）",
       showCancel: false
     });
+  },
+  openService() {
+    wx.navigateTo({ url: "/pages/service/index" });
   }
 });

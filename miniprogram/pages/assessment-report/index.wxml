@@ -23,5 +23,8 @@
     <view style="margin-top: 12rpx;" wx:if="{{report.riskFlag}}">
       <button class="button-ghost" bindtap="requestConsultation">预约免费解读</button>
     </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-ghost" bindtap="openService">查看服务进度</button>
+    </view>
   </view>
 </view>

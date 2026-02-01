@@ -1,0 +1,48 @@
+.progress-bar {
+  height: 12rpx;
+  background: #e4e8f0;
+  border-radius: 999rpx;
+  overflow: hidden;
+  margin: 12rpx 0;
+}
+
+.progress-inner {
+  height: 100%;
+  background: #2f6bff;
+}
+
+.stage-item {
+  padding: 16rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.stage-item:last-child {
+  border-bottom: none;
+}
+
+.stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stage-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.status.todo {
+  color: #8892a0;
+}
+
+.status.doing {
+  color: #2f6bff;
+}
+
+.status.done {
+  color: #2fbf6b;
+}
+
+.todo-list {
+  margin-top: 8rpx;
+}

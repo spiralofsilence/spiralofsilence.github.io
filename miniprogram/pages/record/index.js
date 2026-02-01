@@ -3,6 +3,7 @@ const {
   STORAGE_KEYS,
   appendToList
 } = require("../../utils/storage");
+const { applyTriggers } = require("../../utils/trigger");
 
 Page({
   data: {
@@ -48,6 +49,7 @@ Page({
     };
     appendToList(STORAGE_KEYS.DEEP_RECORDS, entry);
     wx.showToast({ title: "已保存", icon: "success" });
+    applyTriggers();
     this.setData({
       interactionScore: 3,
       moodChange: "",

@@ -1,0 +1,39 @@
+<view class="page" wx:if="{{plan}}">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">服务状态</text>
+      <text class="tag">{{plan.statusLabel}}</text>
+    </view>
+    <view class="progress-bar">
+      <view class="progress-inner" style="width: {{progressPercent}}%;"></view>
+    </view>
+    <text class="muted">完成进度 {{progressPercent}}%</text>
+    <view class="muted" wx:if="{{!requiredCompleted}}">
+      必做测评未完成，服务将保持待启动状态。
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">阶段进度</text>
+      <text class="muted">时间轴</text>
+    </view>
+    <view wx:for="{{plan.stages}}" wx:key="id" class="stage-item">
+      <view class="stage-header">
+        <text class="stage-title">{{item.title}}</text>
+        <text class="status {{item.status}}">{{item.statusLabel}}</text>
+      </view>
+      <view wx:if="{{item.completedAtLabel}}" class="muted">
+        完成时间：{{item.completedAtLabel}}
+      </view>
+      <view class="todo-list">
+        <view wx:for="{{item.todos}}" wx:key="todo" class="muted">• {{item}}</view>
+      </view>
+      <view class="row" style="margin-top: 8rpx;">
+        <button class="button-ghost" size="mini" data-id="{{item.id}}" data-status="doing" bindtap="setStageStatus">开始</button>
+        <button class="button-primary" size="mini" data-id="{{item.id}}" data-status="done" bindtap="setStageStatus">完成</button>
+        <button class="button-ghost" size="mini" data-id="{{item.id}}" data-status="todo" bindtap="setStageStatus">重置</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -14,18 +14,36 @@
     </view>
   </view>
 
-  <view wx:for="{{assessment.questions}}" wx:key="id" class="card question-card">
-    <text class="question-title">{{index + 1}}. {{item.title}}</text>
-    <view class="option-list">
+  <view wx:for="{{assessment.questions}}" wx:key="id" wx:for-item="question" class="card question-card">
+    <text class="question-title">{{index + 1}}. {{question.title}}</text>
+    <view wx:if="{{question.type === 'scale'}}" class="scale-box">
+      <view class="row">
+        <text class="muted">{{question.scale.leftLabel}}</text>
+        <text class="muted">{{question.scale.rightLabel}}</text>
+      </view>
+      <view class="scale-value">当前分值：{{scaleValues[question.id]}}</view>
+      <slider
+        min="{{question.scale.min}}"
+        max="{{question.scale.max}}"
+        step="1"
+        value="{{scaleValues[question.id]}}"
+        data-qid="{{question.id}}"
+        bindchange="onScaleChange"
+        activeColor="#2f6bff"
+      />
+    </view>
+    <view wx:else class="option-list">
       <view
-        wx:for="{{item.options}}"
+        wx:for="{{question.options}}"
         wx:key="label"
-        class="option-item {{answers[item.id] === index ? 'active' : ''}}"
+        wx:for-item="option"
+        wx:for-index="optIndex"
+        class="option-item {{answers[question.id] === option.score ? 'active' : ''}}"
         bindtap="selectOption"
-        data-qid="{{item.id}}"
-        data-index="{{index}}"
+        data-qid="{{question.id}}"
+        data-index="{{optIndex}}"
       >
-        {{item.label}}
+        {{option.label}}
       </view>
     </view>
   </view>

@@ -4,6 +4,7 @@ const {
   getStorage,
   setStorage
 } = require("../../utils/storage");
+const { applyTriggers } = require("../../utils/trigger");
 
 const TAGS = ["平静", "愉快", "疲惫", "紧张", "生气", "无助", "满足", "焦虑"];
 
@@ -67,6 +68,7 @@ Page({
     }
     setStorage(STORAGE_KEYS.MOOD_LOGS, logs);
     wx.showToast({ title: "已保存", icon: "success" });
+    applyTriggers({ notify: true });
     this.onShow();
   }
 });

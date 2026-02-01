@@ -10,6 +10,10 @@
     "pages/assessments/index",
     "pages/assessment-detail/index",
     "pages/assessment-report/index",
+    "pages/contract/index",
+    "pages/contract/signature",
+    "pages/service/index",
+    "pages/homework/index",
     "pages/profile/index"
   ],
   "window": {

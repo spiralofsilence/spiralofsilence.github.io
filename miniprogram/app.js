@@ -7,7 +7,10 @@ App({
   },
   onLaunch() {
     loadOrInit(STORAGE_KEYS.TASKS, starterTasks);
-    loadOrInit(STORAGE_KEYS.ASSESSMENTS, assessments);
+    const storedAssessments = loadOrInit(STORAGE_KEYS.ASSESSMENTS, assessments);
+    if (storedAssessments.length < assessments.length) {
+      wx.setStorageSync(STORAGE_KEYS.ASSESSMENTS, assessments);
+    }
     loadOrInit("microActions", microActions);
   }
 });

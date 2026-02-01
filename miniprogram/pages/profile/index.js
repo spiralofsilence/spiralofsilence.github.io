@@ -1,4 +1,5 @@
 const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
+const { requestSubscription } = require("../../utils/subscribe");
 
 Page({
   data: {
@@ -6,7 +7,11 @@ Page({
     roleIndex: 0,
     nickname: "",
     organization: "",
-    aiApiKey: ""
+    aiApiKey: "",
+    aiUseProxy: false,
+    taskReminderTemplateId: "",
+    helpAlertTemplateId: "",
+    subscriptionResult: null
   },
   onShow() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
@@ -16,7 +21,11 @@ Page({
       roleIndex: roleIndex === -1 ? 0 : roleIndex,
       nickname: profile.nickname || "",
       organization: profile.organization || "",
-      aiApiKey: settings.aiApiKey || ""
+      aiApiKey: settings.aiApiKey || "",
+      aiUseProxy: settings.aiUseProxy === true,
+      taskReminderTemplateId: settings.taskReminderTemplateId || "",
+      helpAlertTemplateId: settings.helpAlertTemplateId || "",
+      subscriptionResult: settings.subscriptionResult || null
     });
   },
   onRoleChange(e) {
@@ -31,6 +40,15 @@ Page({
   onKeyInput(e) {
     this.setData({ aiApiKey: e.detail.value });
   },
+  onProxyToggle(e) {
+    this.setData({ aiUseProxy: e.detail.value });
+  },
+  onTaskTemplateInput(e) {
+    this.setData({ taskReminderTemplateId: e.detail.value });
+  },
+  onHelpTemplateInput(e) {
+    this.setData({ helpAlertTemplateId: e.detail.value });
+  },
   saveProfile() {
     const role = this.data.roles[this.data.roleIndex];
     setStorage(STORAGE_KEYS.PROFILE, {
@@ -41,9 +59,31 @@ Page({
     const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
     setStorage(STORAGE_KEYS.SETTINGS, {
       ...settings,
-      aiApiKey: this.data.aiApiKey
+      aiApiKey: this.data.aiApiKey,
+      aiUseProxy: this.data.aiUseProxy,
+      taskReminderTemplateId: this.data.taskReminderTemplateId,
+      helpAlertTemplateId: this.data.helpAlertTemplateId
     });
     wx.showToast({ title: "已保存", icon: "success" });
+  },
+  requestSubscribe() {
+    requestSubscription()
+      .then((res) => {
+        this.setData({ subscriptionResult: res });
+        wx.showToast({ title: "已订阅", icon: "success" });
+      })
+      .catch((err) => {
+        wx.showToast({ title: err.message || "订阅失败", icon: "none" });
+      });
+  },
+  openContract() {
+    wx.navigateTo({ url: "/pages/contract/index" });
+  },
+  openService() {
+    wx.navigateTo({ url: "/pages/service/index" });
+  },
+  openHomework() {
+    wx.navigateTo({ url: "/pages/homework/index" });
   },
   showPrivacy() {
     wx.showModal({

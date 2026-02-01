@@ -9,9 +9,16 @@ const STORAGE_KEYS = {
   DEEP_RECORDS: "deepRecords",
   AI_CHATS: "aiChats",
   AI_FEEDBACK: "aiFeedback",
+  AI_LOGS: "aiLogs",
   ASSESSMENTS: "assessments",
   ASSESSMENT_REPORTS: "assessmentReports",
+  ASSESSMENT_PROGRESS: "assessmentProgress",
   PROFILE: "userProfile",
+  CONTRACT: "contractRecord",
+  SERVICE_PLAN: "servicePlan",
+  HOMEWORK_LOGS: "homeworkLogs",
+  PAYMENT_LOGS: "paymentLogs",
+  NOTIFICATIONS: "notificationQueue",
   TRIGGER_EVENTS: "triggerEvents",
   SETTINGS: "settings"
 };

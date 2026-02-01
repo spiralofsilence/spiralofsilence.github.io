@@ -61,6 +61,9 @@
       <view class="pill" bindtap="goTo" data-page="record">深度记录</view>
       <view class="pill" bindtap="goTo" data-page="assessments">轻测评</view>
       <view class="pill" bindtap="goTo" data-page="ai">AI问答</view>
+      <view class="pill" bindtap="goTo" data-page="contract">签署合同</view>
+      <view class="pill" bindtap="goTo" data-page="service">服务进度</view>
+      <view class="pill" bindtap="goTo" data-page="homework">作业打卡</view>
     </view>
   </view>
 </view>

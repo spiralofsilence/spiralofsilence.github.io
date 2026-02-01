@@ -22,6 +22,34 @@
       <text class="muted">仅本地保存</text>
     </view>
     <input class="input" placeholder="OpenAI API Key" value="{{aiApiKey}}" password bindinput="onKeyInput" />
+    <view class="row" style="margin-top: 12rpx;">
+      <text class="muted">使用后端代理（推荐）</text>
+      <switch checked="{{aiUseProxy}}" bindchange="onProxyToggle" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">合同与服务</text>
+    </view>
+    <view class="link" bindtap="openContract">签署合同</view>
+    <view class="link" bindtap="openService" style="margin-top: 12rpx;">服务进度</view>
+    <view class="link" bindtap="openHomework" style="margin-top: 12rpx;">作业打卡</view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">订阅消息</text>
+      <text class="muted">需要模板ID</text>
+    </view>
+    <input class="input" placeholder="任务提醒模板ID" value="{{taskReminderTemplateId}}" bindinput="onTaskTemplateInput" />
+    <input class="input" placeholder="求助提醒模板ID" value="{{helpAlertTemplateId}}" bindinput="onHelpTemplateInput" style="margin-top: 12rpx;" />
+    <view style="margin-top: 12rpx;">
+      <button class="button-ghost" size="mini" bindtap="requestSubscribe">订阅提醒</button>
+    </view>
+    <view class="muted" wx:if="{{subscriptionResult}}" style="margin-top: 8rpx;">
+      已记录订阅授权
+    </view>
   </view>
 
   <view class="card">

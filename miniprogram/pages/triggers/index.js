@@ -6,6 +6,7 @@ const {
   setStorage,
   appendToList
 } = require("../../utils/storage");
+const { getMergedSettings, collectKeywordHits, applyTriggers } = require("../../utils/trigger");
 
 Page({
   data: {
@@ -19,15 +20,18 @@ Page({
       lastCheckin: "",
       lowMoodHits: 0,
       keywordHits: []
-    }
+    },
+    triggerEvents: [],
+    notifications: [],
+    newKeyword: ""
   },
   onShow() {
-    const settings = {
-      ...this.data.settings,
-      ...getStorage(STORAGE_KEYS.SETTINGS, {})
-    };
+    const settings = getMergedSettings();
     this.setData({ settings });
     this.refreshSummary(settings);
+    const triggerEvents = getStorage(STORAGE_KEYS.TRIGGER_EVENTS, []);
+    const notifications = getStorage(STORAGE_KEYS.NOTIFICATIONS, []);
+    this.setData({ triggerEvents, notifications });
   },
   refreshSummary(settings) {
     const todayKey = formatDate();
@@ -41,11 +45,7 @@ Page({
     const lowMoodHits = moodLogs.filter(
       (log) => log.score <= settings.lowMoodScore
     ).length;
-    const keywordHits = this.collectKeywordHits(
-      settings.keywordList,
-      moodLogs,
-      deepRecords
-    );
+    const keywordHits = collectKeywordHits(settings.keywordList, moodLogs, deepRecords);
     this.setData({
       summary: {
         missedDays,
@@ -54,28 +54,6 @@ Page({
         keywordHits
       }
     });
-  },
-  collectKeywordHits(keywordList, moodLogs, deepRecords) {
-    if (!keywordList || keywordList.length === 0) {
-      return [];
-    }
-    const pool = [];
-    moodLogs.forEach((log) => {
-      if (log.note) pool.push(log.note);
-    });
-    deepRecords.forEach((record) => {
-      if (record.reflection) pool.push(record.reflection);
-      if (record.moodChange) pool.push(record.moodChange);
-      if (record.keywords) pool.push(record.keywords.join(" "));
-    });
-    const hits = [];
-    keywordList.forEach((keyword) => {
-      const count = pool.filter((text) => text.includes(keyword)).length;
-      if (count > 0) {
-        hits.push({ keyword, count });
-      }
-    });
-    return hits;
   },
   onMissedDaysInput(e) {
     const value = Number(e.detail.value);
@@ -126,5 +104,24 @@ Page({
       content: entry.message,
       showCancel: false
     });
+  },
+  runAutoTrigger() {
+    const events = applyTriggers({ notify: true });
+    if (events.length) {
+      this.onShow();
+    } else {
+      wx.showToast({ title: "暂无新触发", icon: "none" });
+    }
+  },
+  markNotificationSent(e) {
+    const id = e.currentTarget.dataset.id;
+    const list = getStorage(STORAGE_KEYS.NOTIFICATIONS, []);
+    const index = list.findIndex((item) => item.id === id);
+    if (index >= 0) {
+      list[index].status = "sent";
+      list[index].sentAt = Date.now();
+      setStorage(STORAGE_KEYS.NOTIFICATIONS, list);
+      this.setData({ notifications: list });
+    }
   }
 });

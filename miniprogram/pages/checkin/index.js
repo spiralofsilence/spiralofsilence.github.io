@@ -6,6 +6,7 @@ const {
   appendToList
 } = require("../../utils/storage");
 const { microActions } = require("../../utils/mock");
+const { applyTriggers } = require("../../utils/trigger");
 
 Page({
   data: {
@@ -53,6 +54,7 @@ Page({
     appendToList(STORAGE_KEYS.MICRO_CHECKINS, entry);
     wx.showToast({ title: "已打卡", icon: "success" });
     this.setData({ note: "" });
+    applyTriggers();
     this.onShow();
   }
 });

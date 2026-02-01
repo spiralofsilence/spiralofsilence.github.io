@@ -8,6 +8,18 @@ const config = {
     model: "gpt-4o-mini",
     temperature: 0.6
   },
+  subscriptionTemplates: {
+    taskReminder: "",
+    helpAlert: ""
+  },
+  payment: {
+    enabled: true,
+    description: "测评付费"
+  },
+  contract: {
+    title: "家庭教育服务协议",
+    templateVersion: "v1.0"
+  },
   triggerDefaults: {
     consecutiveMissedDays: 3,
     lowMoodScore: 2,

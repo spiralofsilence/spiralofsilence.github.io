@@ -1,0 +1,72 @@
+<view class="page" wx:if="{{contract}}">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">{{contract.title}}</text>
+      <text class="tag">{{contract.templateVersion}}</text>
+    </view>
+    <view class="status-row">
+      <text class="muted">合同状态</text>
+      <text class="status {{contract.status}}">{{contract.status === 'unsigned' ? '未签署' : contract.status === 'signed' ? '已签署' : '已生效'}}</text>
+    </view>
+    <view class="muted" wx:if="{{signedAtLabel}}">
+      签署时间：{{signedAtLabel}}
+    </view>
+    <view class="muted" wx:if="{{effectiveAtLabel}}">
+      生效时间：{{effectiveAtLabel}}
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">合同内容</text>
+    </view>
+    <view wx:for="{{template}}" wx:key="title" class="section">
+      <text class="section-title">{{item.title}}</text>
+      <text class="muted">{{item.content}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">签署信息</text>
+    </view>
+    <view wx:if="{{contract.status === 'unsigned'}}" class="muted">
+      当前合同尚未签署。
+    </view>
+    <view wx:else>
+      <text class="muted">签署方式：{{contract.signatureType === 'hand' ? '手写' : '文字'}}</text>
+      <view class="muted">签署人：{{contract.signerName || '未填写'}}</view>
+      <image wx:if="{{contract.signaturePath}}" class="signature-preview" mode="aspectFit" src="{{contract.signaturePath}}" />
+    </view>
+    <view style="margin-top: 16rpx;">
+      <button wx:if="{{contract.status === 'unsigned'}}" class="button-primary" bindtap="startSign">签署合同</button>
+      <button wx:else class="button-ghost" bindtap="startSign">重新签署</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">合同存档</text>
+    </view>
+    <view class="muted">
+      PDF状态：{{contract.pdfStatus === 'generated' ? '已生成' : '未生成'}}
+    </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-ghost" size="mini" bindtap="generatePdf">生成PDF（模拟）</button>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{contract.status !== 'unsigned'}}">
+    <view class="section-header">
+      <text class="section-title">必做测评</text>
+      <text class="muted">{{requiredCompleted ? '已完成' : '未完成'}}</text>
+    </view>
+    <view wx:for="{{requiredItems}}" wx:key="id" class="log-item">
+      <text class="log-title">{{item.title}}</text>
+      <text class="muted">{{item.status}}</text>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-primary" bindtap="openAssessments">进入必做测评</button>
+    </view>
+  </view>
+</view>
