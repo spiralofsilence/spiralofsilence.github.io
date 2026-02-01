@@ -2,10 +2,18 @@
   "miniprogramRoot": "miniprogram/",
   "projectname": "parenting-mini",
   "appid": "wxe793f265a1655834",
+  "packNpmManually": true,
+  "packNpmRelationList": [
+    {
+      "packageJsonPath": "./package.json",
+      "miniprogramNpmDistDir": "./miniprogram/"
+    }
+  ],
   "setting": {
     "urlCheck": true,
     "es6": true,
     "postcss": true,
-    "minified": true
+    "minified": true,
+    "useNpm": true
   }
 }
