@@ -6,6 +6,8 @@ Page({
     roleIndex: 0,
     nickname: "",
     organization: "",
+    role: "父母",
+    roleSaved: false,
     isStaff: false
   },
   onShow() {
@@ -16,11 +18,20 @@ Page({
       roleIndex: roleIndex === -1 ? 0 : roleIndex,
       nickname: profile.nickname || "",
       organization: profile.organization || "",
+      role,
+      roleSaved: Boolean(profile.role),
       isStaff: role !== "父母"
     });
   },
   onRoleChange(e) {
-    this.setData({ roleIndex: Number(e.detail.value) });
+    const roleIndex = Number(e.detail.value);
+    const role = this.data.roles[roleIndex];
+    this.setData({
+      roleIndex,
+      role,
+      roleSaved: false,
+      isStaff: false
+    });
   },
   onNicknameInput(e) {
     this.setData({ nickname: e.detail.value });
@@ -34,6 +45,11 @@ Page({
       role,
       nickname: this.data.nickname,
       organization: this.data.organization
+    });
+    this.setData({
+      role,
+      roleSaved: true,
+      isStaff: role !== "父母"
     });
     wx.showToast({ title: "已保存", icon: "success" });
   },

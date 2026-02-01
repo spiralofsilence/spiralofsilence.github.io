@@ -8,7 +8,7 @@
     </picker>
   </view>
 
-  <view class="card">
+  <view class="card" wx:if="{{roleSaved && role === '父母'}}">
     <view class="section-header">
       <text class="section-title">基础信息</text>
     </view>
@@ -16,7 +16,7 @@
     <input class="input" placeholder="机构/组织（可选）" value="{{organization}}" bindinput="onOrgInput" style="margin-top: 12rpx;" />
   </view>
 
-  <view class="card">
+  <view class="card" wx:if="{{roleSaved && role === '父母'}}">
     <view class="section-header">
       <text class="section-title">合同与服务</text>
     </view>
@@ -25,7 +25,7 @@
     <view class="link" bindtap="openHomework" style="margin-top: 12rpx;">作业打卡</view>
   </view>
 
-  <view class="card" wx:if="{{isStaff}}">
+  <view class="card" wx:if="{{roleSaved && isStaff}}">
     <view class="section-header">
       <text class="section-title">管理员工具</text>
       <text class="muted">顾问/管理员</text>
@@ -33,7 +33,7 @@
     <view class="link" bindtap="openContract">上传/管理合同</view>
   </view>
 
-  <view class="card">
+  <view class="card" wx:if="{{roleSaved}}">
     <view class="section-header">
       <text class="section-title">其他</text>
     </view>

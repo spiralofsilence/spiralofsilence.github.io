@@ -1,5 +1,4 @@
 const config = require("../../config");
-const { contractTemplate } = require("../../utils/mock");
 const { formatDateTime } = require("../../utils/date");
 const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
 const {
@@ -28,7 +27,6 @@ function buildDefaultContract() {
 
 Page({
   data: {
-    template: contractTemplate,
     contract: null,
     signedAtLabel: "",
     effectiveAtLabel: "",
@@ -37,7 +35,9 @@ Page({
     progressMap: {},
     role: "父母",
     isStaff: false,
-    templateFile: null
+    templateFile: null,
+    contractTitle: "",
+    displayNameInput: ""
   },
   onShow() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
@@ -60,6 +60,10 @@ Page({
         status: progressMap[id] ? progressMap[id].status : "未开始"
       };
     });
+    const templateFile = settings.contractTemplateFile || null;
+    const contractTitle = templateFile
+      ? templateFile.displayName || templateFile.name
+      : record.title;
     this.setData({
       contract: record,
       signedAtLabel: record.signedAt ? formatDateTime(new Date(record.signedAt)) : "",
@@ -71,7 +75,9 @@ Page({
       progressMap,
       role,
       isStaff: role !== "父母",
-      templateFile: settings.contractTemplateFile || null
+      templateFile,
+      contractTitle,
+      displayNameInput: contractTitle
     });
     if (record.status !== "unsigned" && !requiredCompleted && !record.kickoffPrompted) {
       wx.showModal({
@@ -101,13 +107,23 @@ Page({
             const templateFile = {
               name: file.name,
               path: saveRes.savedFilePath,
-              updatedAt: Date.now()
+              updatedAt: Date.now(),
+              displayName: file.name
             };
             setStorage(STORAGE_KEYS.SETTINGS, {
               ...settings,
               contractTemplateFile: templateFile
             });
-            this.setData({ templateFile });
+            const contract = getStorage(STORAGE_KEYS.CONTRACT, {});
+            if (contract && templateFile.displayName) {
+              contract.title = templateFile.displayName;
+              setStorage(STORAGE_KEYS.CONTRACT, contract);
+            }
+            this.setData({
+              templateFile,
+              contractTitle: templateFile.displayName,
+              displayNameInput: templateFile.displayName
+            });
             wx.showToast({ title: "已上传", icon: "success" });
           },
           fail: () => {
@@ -116,6 +132,32 @@ Page({
         });
       }
     });
+  },
+  onDisplayNameInput(e) {
+    this.setData({ displayNameInput: e.detail.value });
+  },
+  saveDisplayName() {
+    const displayName = (this.data.displayNameInput || "").trim();
+    if (!displayName) {
+      wx.showToast({ title: "请输入合同名称", icon: "none" });
+      return;
+    }
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const templateFile = {
+      ...(this.data.templateFile || {}),
+      displayName
+    };
+    setStorage(STORAGE_KEYS.SETTINGS, {
+      ...settings,
+      contractTemplateFile: templateFile
+    });
+    const contract = getStorage(STORAGE_KEYS.CONTRACT, {});
+    if (contract) {
+      contract.title = displayName;
+      setStorage(STORAGE_KEYS.CONTRACT, contract);
+    }
+    this.setData({ templateFile, contractTitle: displayName });
+    wx.showToast({ title: "已更新", icon: "success" });
   },
   openTemplateFile() {
     const templateFile = this.data.templateFile;
@@ -137,7 +179,12 @@ Page({
       ...settings,
       contractTemplateFile: null
     });
-    this.setData({ templateFile: null });
+    const fallbackTitle = this.data.contract ? this.data.contract.title : "";
+    this.setData({
+      templateFile: null,
+      contractTitle: fallbackTitle,
+      displayNameInput: fallbackTitle
+    });
     wx.showToast({ title: "已移除", icon: "success" });
   },
   startSign() {
