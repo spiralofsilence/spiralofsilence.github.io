@@ -1,28 +1,39 @@
 <view class="page">
-  <view class="card">
+  <view class="card shadow-soft">
     <view class="section-header">
       <text class="section-title">角色设置</text>
     </view>
     <picker mode="selector" range="{{roles}}" value="{{roleIndex}}" bindchange="onRoleChange">
-      <view class="picker">{{roles[roleIndex]}}</view>
+      <van-cell title="当前角色" value="{{roles[roleIndex]}}" is-link />
     </picker>
+    <text class="muted" style="margin-top: 12rpx; display: block;">
+      选择角色后保存，继续下一步。
+    </text>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="saveProfile">确认角色</van-button>
+    </view>
   </view>
 
   <view class="card" wx:if="{{roleSaved && role === '父母'}}">
     <view class="section-header">
       <text class="section-title">基础信息</text>
     </view>
-    <input class="input" placeholder="昵称/称呼" value="{{nickname}}" bindinput="onNicknameInput" />
-    <input class="input" placeholder="机构/组织（可选）" value="{{organization}}" bindinput="onOrgInput" style="margin-top: 12rpx;" />
+    <van-cell-group inset="{{false}}">
+      <van-field label="昵称" placeholder="昵称/称呼" value="{{nickname}}" bind:input="onNicknameInput" />
+      <van-field label="机构" placeholder="机构/组织（可选）" value="{{organization}}" bind:input="onOrgInput" />
+    </van-cell-group>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="saveProfile">保存基础信息</van-button>
+    </view>
   </view>
 
   <view class="card" wx:if="{{roleSaved && role === '父母'}}">
     <view class="section-header">
       <text class="section-title">合同与服务</text>
     </view>
-    <view class="link" bindtap="openContract">签署合同</view>
-    <view class="link" bindtap="openService" style="margin-top: 12rpx;">服务进度</view>
-    <view class="link" bindtap="openHomework" style="margin-top: 12rpx;">作业打卡</view>
+    <van-cell title="签署合同" is-link bind:click="openContract" />
+    <van-cell title="服务进度" is-link bind:click="openService" />
+    <van-cell title="作业打卡" is-link bind:click="openHomework" />
   </view>
 
   <view class="card" wx:if="{{roleSaved && isStaff}}">
@@ -30,18 +41,14 @@
       <text class="section-title">管理员工具</text>
       <text class="muted">顾问/管理员</text>
     </view>
-    <view class="link" bindtap="openContract">上传/管理合同</view>
+    <van-cell title="上传/管理合同" is-link bind:click="openContract" />
   </view>
 
   <view class="card" wx:if="{{roleSaved}}">
     <view class="section-header">
       <text class="section-title">其他</text>
     </view>
-    <view class="link" bindtap="showPrivacy">查看隐私政策</view>
-    <view class="link" bindtap="clearData" style="margin-top: 12rpx;">清空本地数据</view>
-  </view>
-
-  <view style="margin-top: 12rpx;">
-    <button class="button-primary" bindtap="saveProfile">保存资料</button>
+    <van-cell title="查看隐私政策" is-link bind:click="showPrivacy" />
+    <van-cell title="清空本地数据" is-link bind:click="clearData" />
   </view>
 </view>

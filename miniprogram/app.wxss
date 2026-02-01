@@ -1,6 +1,6 @@
 page {
-  background: #f7f8fa;
-  color: #1f2d3d;
+  background: #f6f2e9;
+  color: #1f2d22;
   font-size: 28rpx;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
     Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -15,8 +15,8 @@ page {
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
-  border: 2rpx solid #eef1f6;
-  box-shadow: 0 6rpx 20rpx rgba(15, 32, 67, 0.04);
+  border: 2rpx solid #eadfc8;
+  box-shadow: 0 10rpx 24rpx rgba(45, 36, 20, 0.06);
 }
 
 .card-title {
@@ -26,30 +26,33 @@ page {
 }
 
 .muted {
-  color: #8892a0;
+  color: #7c6b4c;
   font-size: 24rpx;
 }
 
 .tag {
   display: inline-block;
   padding: 6rpx 16rpx;
-  background: #eef3ff;
-  color: #2f6bff;
+  background: #f6edda;
+  color: #a07a1a;
   border-radius: 999rpx;
   font-size: 22rpx;
   margin-right: 12rpx;
+  border: 2rpx solid #e6d3a3;
 }
 
 .button-primary {
-  background: #2f6bff;
+  background: linear-gradient(135deg, #1f7a4d, #2ea86a);
   color: #ffffff;
   border-radius: 12rpx;
   font-size: 26rpx;
+  box-shadow: 0 10rpx 20rpx rgba(31, 122, 77, 0.2);
 }
 
 .button-ghost {
-  background: #f0f2f6;
-  color: #1f2d3d;
+  background: #f3efe6;
+  color: #1f4c37;
+  border: 2rpx solid #e2d3b0;
   border-radius: 12rpx;
   font-size: 26rpx;
 }
@@ -61,7 +64,7 @@ page {
 }
 
 .input {
-  border: 2rpx solid #e4e8f0;
+  border: 2rpx solid #e2d3b0;
   border-radius: 12rpx;
   padding: 16rpx;
   font-size: 26rpx;
@@ -74,12 +77,12 @@ page {
   justify-content: center;
   padding: 8rpx 20rpx;
   border-radius: 999rpx;
-  background: #f0f4ff;
-  color: #2f6bff;
+  background: #f7f2e7;
+  color: #1f7a4d;
   font-size: 22rpx;
   margin-right: 8rpx;
   margin-bottom: 8rpx;
-  border: 2rpx solid #dfe7ff;
+  border: 2rpx solid #e7d8b8;
 }
 
 .section-header {
@@ -92,9 +95,82 @@ page {
 .section-title {
   font-size: 30rpx;
   font-weight: 600;
+  color: #1f5a3a;
 }
 
 .link {
-  color: #2f6bff;
+  color: #1f7a4d;
   font-size: 24rpx;
+}
+
+.lux-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1f5a3a;
+}
+
+.lux-subtitle {
+  font-size: 24rpx;
+  color: #8a7b5c;
+}
+
+.gold-text {
+  color: #a07a1a;
+}
+
+.divider {
+  height: 2rpx;
+  background: #eadfc8;
+  margin: 16rpx 0;
+}
+
+.shadow-soft {
+  box-shadow: 0 12rpx 26rpx rgba(45, 36, 20, 0.08);
+}
+
+/* Vant theme overrides */
+.van-button--primary {
+  background: linear-gradient(135deg, #1f7a4d, #2ea86a) !important;
+  border: none !important;
+  box-shadow: 0 10rpx 20rpx rgba(31, 122, 77, 0.2);
+}
+
+.van-button--default {
+  color: #1f5a3a !important;
+  border-color: #e2d3b0 !important;
+  background: #f7f2e7 !important;
+}
+
+.van-cell {
+  background: #ffffff !important;
+}
+
+.van-cell__title {
+  color: #1f2d22 !important;
+}
+
+.van-cell__label {
+  color: #7c6b4c !important;
+}
+
+.van-tag--primary {
+  color: #a07a1a !important;
+  background: #f6edda !important;
+  border-color: #e6d3a3 !important;
+}
+
+.van-grid-item__content {
+  background: #ffffff !important;
+  border: 2rpx solid #eadfc8;
+  border-radius: 12rpx;
+  padding: 20rpx 0 !important;
+}
+
+.van-grid-item__text {
+  color: #1f5a3a !important;
+  font-weight: 500;
+}
+
+.van-icon {
+  color: #1f7a4d;
 }

@@ -1,0 +1,26 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "> What you say out of your mouth can’t determine your life; it’s what you whisper to yourself that has the most power.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spiralofsilence/spiralofsilence.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spiralofsilence/spiralofsilence.github.io/issues"
+  },
+  "homepage": "https://github.com/spiralofsilence/spiralofsilence.github.io#readme",
+  "dependencies": {
+    "@vant/weapp": "^1.11.7"
+  }
+}

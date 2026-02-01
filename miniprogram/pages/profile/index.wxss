@@ -1,11 +1,7 @@
-.picker {
-  background: #f0f2f6;
-  padding: 12rpx 16rpx;
-  border-radius: 12rpx;
-  font-size: 24rpx;
+.van-cell {
+  background: transparent;
 }
 
-.link {
-  color: #2f6bff;
-  font-size: 26rpx;
+.van-cell::after {
+  left: 0;
 }

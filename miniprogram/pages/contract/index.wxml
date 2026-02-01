@@ -2,14 +2,15 @@
   <view class="card">
     <view class="section-header">
       <text class="section-title">{{contractTitle || '待签署合同'}}</text>
-      <text class="status {{contract.status}}">{{contract.status === 'unsigned' ? '未签署' : contract.status === 'signed' ? '已签署' : '已生效'}}</text>
+      <van-tag type="primary" plain>
+        {{contract.status === 'unsigned' ? '未签署' : contract.status === 'signed' ? '已签署' : '已生效'}}
+      </van-tag>
     </view>
     <view wx:if="{{!templateFile}}" class="muted">
       暂无合同文件，请联系顾问上传。
     </view>
-    <view wx:if="{{templateFile}}" class="file-row">
-      <text class="muted">合同文件：{{contractTitle}}</text>
-      <text class="link" bindtap="openTemplateFile">打开</text>
+    <view wx:if="{{templateFile}}">
+      <van-cell title="待签署合同" value="{{contractTitle}}" is-link bind:click="openTemplateFile" />
     </view>
     <view class="muted" wx:if="{{signedAtLabel}}">
       签署时间：{{signedAtLabel}}
@@ -32,8 +33,12 @@
       <image wx:if="{{contract.signaturePath}}" class="signature-preview" mode="aspectFit" src="{{contract.signaturePath}}" />
     </view>
     <view style="margin-top: 16rpx;">
-      <button wx:if="{{contract.status === 'unsigned'}}" class="button-primary" bindtap="startSign" disabled="{{!templateFile}}">签署合同</button>
-      <button wx:else class="button-ghost" bindtap="startSign" disabled="{{!templateFile}}">重新签署</button>
+      <van-button wx:if="{{contract.status === 'unsigned'}}" type="primary" size="small" bind:click="startSign" disabled="{{!templateFile}}">
+        签署合同
+      </van-button>
+      <van-button wx:else plain type="default" size="small" bind:click="startSign" disabled="{{!templateFile}}">
+        重新签署
+      </van-button>
       <text wx:if="{{!templateFile}}" class="muted" style="margin-top: 8rpx; display: block;">
         上传合同后才能签署。
       </text>
@@ -47,13 +52,13 @@
     </view>
     <text class="muted">上传合同文件后，父母角色可查看并签署。</text>
     <view style="margin-top: 12rpx;">
-      <input class="input" placeholder="合同显示名称" value="{{displayNameInput}}" bindinput="onDisplayNameInput" />
-      <button class="button-ghost" size="mini" bindtap="saveDisplayName" style="margin-top: 8rpx;">保存名称</button>
+      <van-field label="合同名称" placeholder="合同显示名称" value="{{displayNameInput}}" bind:input="onDisplayNameInput" />
+      <van-button plain type="default" size="small" bind:click="saveDisplayName" style="margin-top: 8rpx;">保存名称</van-button>
     </view>
     <view style="margin-top: 12rpx;">
-      <button class="button-primary" size="mini" bindtap="uploadTemplateFile">上传合同文件</button>
-      <button class="button-ghost" size="mini" bindtap="openTemplateFile">预览合同</button>
-      <button class="button-ghost" size="mini" bindtap="removeTemplateFile">移除合同</button>
+      <van-button type="primary" size="small" bind:click="uploadTemplateFile">上传合同文件</van-button>
+      <van-button plain type="default" size="small" bind:click="openTemplateFile">预览合同</van-button>
+      <van-button plain type="default" size="small" bind:click="removeTemplateFile">移除合同</van-button>
     </view>
     <view wx:if="{{templateFile}}" class="muted" style="margin-top: 8rpx;">
       已上传：{{templateFile.name}}

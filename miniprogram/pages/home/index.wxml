@@ -1,42 +1,46 @@
 <view class="page">
-  <view class="card">
-    <view class="section-header">
-      <text class="section-title">今日状态</text>
-      <text class="muted">{{todayKey}}</text>
-    </view>
-    <view class="row" style="margin-bottom: 16rpx;">
+  <view class="card shadow-soft hero-card">
+    <view class="row">
       <view>
-        <text class="muted">完成任务</text>
-        <view class="card-title">{{summary.completedTasks}} / {{summary.taskCount}}</view>
+        <text class="lux-title">今日陪伴</text>
+        <text class="lux-subtitle">温柔记录每一步成长</text>
       </view>
-      <view>
+      <van-tag type="primary" plain>{{todayKey}}</van-tag>
+    </view>
+    <view class="divider"></view>
+    <view class="summary-grid">
+      <view class="summary-item">
+        <text class="muted">完成任务</text>
+        <view class="summary-value">{{summary.completedTasks}} / {{summary.taskCount}}</view>
+      </view>
+      <view class="summary-item">
         <text class="muted">心情评分</text>
-        <view class="card-title">
+        <view class="summary-value">
           {{summary.moodScore !== null ? summary.moodScore : "未记录"}}
         </view>
       </view>
-      <view>
+      <view class="summary-item">
         <text class="muted">今日打卡</text>
-        <view class="card-title">{{summary.checkins}}</view>
+        <view class="summary-value">{{summary.checkins}}</view>
       </view>
     </view>
-    <view class="row">
+    <view class="row" style="margin-top: 12rpx;">
       <text class="muted">连续打卡 {{summary.streak}} 天</text>
-      <text class="link" bindtap="openTriggers">查看求助信号</text>
+      <text class="link" bindtap="openTriggers">求助信号</text>
     </view>
   </view>
 
   <view class="card" wx:if="{{highlightTask}}">
     <view class="section-header">
-      <text class="section-title">推荐任务</text>
-      <text class="tag">基础库</text>
+      <text class="section-title">今日推荐</text>
+      <van-tag type="primary" plain>基础库</van-tag>
     </view>
     <view class="card-title">{{highlightTask.title}}</view>
     <text class="muted">{{highlightTask.description}}</text>
     <view style="margin-top: 16rpx;">
-      <button class="button-primary" size="mini" bindtap="goTo" data-page="tasks">
+      <van-button type="primary" size="small" bind:click="goTo" data-page="tasks">
         去完成
-      </button>
+      </van-button>
     </view>
   </view>
 
@@ -46,9 +50,9 @@
     </view>
     <text class="card-title">{{microAction}}</text>
     <view style="margin-top: 16rpx;">
-      <button class="button-ghost" size="mini" bindtap="goTo" data-page="checkin">
+      <van-button plain type="default" size="small" bind:click="goTo" data-page="checkin">
         一键打卡
-      </button>
+      </van-button>
     </view>
   </view>
 
@@ -56,14 +60,14 @@
     <view class="section-header">
       <text class="section-title">快捷入口</text>
     </view>
-    <view class="row" style="flex-wrap: wrap;">
-      <view class="pill" bindtap="goTo" data-page="mood">记录心情</view>
-      <view class="pill" bindtap="goTo" data-page="record">深度记录</view>
-      <view class="pill" bindtap="goTo" data-page="assessments">轻测评</view>
-      <view class="pill" bindtap="goTo" data-page="ai">AI问答</view>
-      <view class="pill" bindtap="goTo" data-page="contract">签署合同</view>
-      <view class="pill" bindtap="goTo" data-page="service">服务进度</view>
-      <view class="pill" bindtap="goTo" data-page="homework">作业打卡</view>
-    </view>
+    <van-grid column-num="3" border="{{false}}">
+      <van-grid-item icon="notes-o" text="记录心情" data-page="mood" bind:click="goTo" />
+      <van-grid-item icon="records-o" text="深度记录" data-page="record" bind:click="goTo" />
+      <van-grid-item icon="todo-list-o" text="轻测评" data-page="assessments" bind:click="goTo" />
+      <van-grid-item icon="comment-o" text="AI问答" data-page="ai" bind:click="goTo" />
+      <van-grid-item icon="description-o" text="签署合同" data-page="contract" bind:click="goTo" />
+      <van-grid-item icon="chart-trending-o" text="服务进度" data-page="service" bind:click="goTo" />
+      <van-grid-item icon="edit" text="作业打卡" data-page="homework" bind:click="goTo" />
+    </van-grid>
   </view>
 </view>
