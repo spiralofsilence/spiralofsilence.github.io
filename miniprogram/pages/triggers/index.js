@@ -22,7 +22,6 @@ Page({
       keywordHits: []
     },
     triggerEvents: [],
-    notifications: [],
     newKeyword: ""
   },
   onShow() {
@@ -30,8 +29,7 @@ Page({
     this.setData({ settings });
     this.refreshSummary(settings);
     const triggerEvents = getStorage(STORAGE_KEYS.TRIGGER_EVENTS, []);
-    const notifications = getStorage(STORAGE_KEYS.NOTIFICATIONS, []);
-    this.setData({ triggerEvents, notifications });
+    this.setData({ triggerEvents });
   },
   refreshSummary(settings) {
     const todayKey = formatDate();
@@ -111,17 +109,6 @@ Page({
       this.onShow();
     } else {
       wx.showToast({ title: "暂无新触发", icon: "none" });
-    }
-  },
-  markNotificationSent(e) {
-    const id = e.currentTarget.dataset.id;
-    const list = getStorage(STORAGE_KEYS.NOTIFICATIONS, []);
-    const index = list.findIndex((item) => item.id === id);
-    if (index >= 0) {
-      list[index].status = "sent";
-      list[index].sentAt = Date.now();
-      setStorage(STORAGE_KEYS.NOTIFICATIONS, list);
-      this.setData({ notifications: list });
     }
   }
 });

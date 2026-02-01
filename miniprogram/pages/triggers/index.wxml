@@ -91,22 +91,4 @@
     </view>
   </view>
 
-  <view class="card" wx:if="{{notifications.length}}">
-    <view class="section-header">
-      <text class="section-title">订阅消息队列</text>
-      <text class="muted">需后端发送</text>
-    </view>
-    <view wx:for="{{notifications}}" wx:key="id" class="log-item">
-      <view class="row">
-        <text class="log-title">{{item.type}}</text>
-        <text class="muted">{{item.status}}</text>
-      </view>
-      <text class="muted">{{item.message}}</text>
-      <view style="margin-top: 8rpx;">
-        <button class="button-ghost" size="mini" data-id="{{item.id}}" bindtap="markNotificationSent">
-          标记为已发送
-        </button>
-      </view>
-    </view>
-  </view>
 </view>

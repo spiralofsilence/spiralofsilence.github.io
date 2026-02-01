@@ -15,7 +15,8 @@ page {
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 6rpx 20rpx rgba(15, 32, 67, 0.05);
+  border: 2rpx solid #eef1f6;
+  box-shadow: 0 6rpx 20rpx rgba(15, 32, 67, 0.04);
 }
 
 .card-title {
@@ -43,12 +44,14 @@ page {
   background: #2f6bff;
   color: #ffffff;
   border-radius: 12rpx;
+  font-size: 26rpx;
 }
 
 .button-ghost {
   background: #f0f2f6;
   color: #1f2d3d;
   border-radius: 12rpx;
+  font-size: 26rpx;
 }
 
 .row {
@@ -76,6 +79,7 @@ page {
   font-size: 22rpx;
   margin-right: 8rpx;
   margin-bottom: 8rpx;
+  border: 2rpx solid #dfe7ff;
 }
 
 .section-header {

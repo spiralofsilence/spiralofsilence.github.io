@@ -71,7 +71,9 @@ Page({
     }
     return streak;
   },
-  goTo(page) {
+  goTo(e) {
+    const page = e.currentTarget.dataset.page;
+    if (!page) return;
     const tabPages = ["home", "tasks", "checkin", "ai", "profile"];
     if (tabPages.includes(page)) {
       wx.switchTab({ url: `/pages/${page}/index` });

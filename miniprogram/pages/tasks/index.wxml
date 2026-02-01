@@ -4,11 +4,6 @@
       <text class="section-title">今日任务库</text>
       <text class="muted">{{todayKey}}</text>
     </view>
-    <view style="margin-bottom: 12rpx;">
-      <button class="button-ghost" size="mini" bindtap="subscribeTaskReminder">
-        订阅任务提醒
-      </button>
-    </view>
     <view wx:for="{{tasks}}" wx:key="id" class="task-item">
       <view class="task-main">
         <text class="task-title">{{item.title}}</text>

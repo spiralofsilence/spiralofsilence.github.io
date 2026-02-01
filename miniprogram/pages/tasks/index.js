@@ -5,7 +5,6 @@ const {
   appendToList
 } = require("../../utils/storage");
 const { starterTasks } = require("../../utils/mock");
-const { requestSubscription } = require("../../utils/subscribe");
 
 Page({
   data: {
@@ -46,21 +45,5 @@ Page({
         task.title
       )}`
     });
-  },
-  subscribeTaskReminder() {
-    requestSubscription()
-      .then(() => {
-        appendToList(STORAGE_KEYS.NOTIFICATIONS, {
-          id: `notify_${Date.now()}`,
-          type: "task_reminder",
-          message: "今日任务提醒",
-          status: "pending",
-          createdAt: Date.now()
-        });
-        wx.showToast({ title: "已订阅提醒", icon: "success" });
-      })
-      .catch((err) => {
-        wx.showToast({ title: err.message || "订阅失败", icon: "none" });
-      });
   }
 });
