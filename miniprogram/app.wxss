@@ -1,7 +1,7 @@
 page {
   background: #f6f2e9;
   color: #1f2d22;
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
     Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   animation: pageEnter 0.45s ease;
@@ -21,23 +21,23 @@ page {
 }
 
 .card-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  margin-bottom: 14rpx;
 }
 
 .muted {
-  color: #7c6b4c;
-  font-size: 24rpx;
+  color: #8f7f62;
+  font-size: 22rpx;
 }
 
 .tag {
   display: inline-block;
-  padding: 6rpx 16rpx;
+  padding: 4rpx 14rpx;
   background: #f6edda;
   color: #a07a1a;
   border-radius: 999rpx;
-  font-size: 22rpx;
+  font-size: 20rpx;
   margin-right: 12rpx;
   border: 2rpx solid #e6d3a3;
 }
@@ -94,25 +94,25 @@ page {
 }
 
 .section-title {
-  font-size: 30rpx;
+  font-size: 28rpx;
   font-weight: 600;
   color: #1f5a3a;
 }
 
 .link {
   color: #1f7a4d;
-  font-size: 24rpx;
+  font-size: 22rpx;
 }
 
 .lux-title {
-  font-size: 34rpx;
+  font-size: 32rpx;
   font-weight: 600;
   color: #1f5a3a;
 }
 
 .lux-subtitle {
-  font-size: 24rpx;
-  color: #8a7b5c;
+  font-size: 22rpx;
+  color: #9a8c6d;
 }
 
 .gold-text {
