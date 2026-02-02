@@ -7,6 +7,7 @@ const {
 } = require("../../utils/storage");
 const { starterTasks, microActions } = require("../../utils/mock");
 const { applyTriggers } = require("../../utils/trigger");
+const { ensureOnboarding } = require("../../utils/onboarding");
 
 Page({
   data: {
@@ -31,6 +32,7 @@ Page({
     showAllTasks: false
   },
   onShow() {
+    if (!ensureOnboarding()) return;
     const todayKey = formatDate();
     const tasks = loadOrInit(STORAGE_KEYS.TASKS, starterTasks);
     const taskLogs = getStorage(STORAGE_KEYS.TASK_LOGS, []);

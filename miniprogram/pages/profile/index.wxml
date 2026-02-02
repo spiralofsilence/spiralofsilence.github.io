@@ -19,8 +19,9 @@
       <text class="section-title">基础信息</text>
     </view>
     <van-cell-group inset="{{false}}">
-      <van-field label="昵称" placeholder="昵称/称呼" value="{{nickname}}" bind:input="onNicknameInput" />
-      <van-field label="机构" placeholder="机构/组织（可选）" value="{{organization}}" bind:input="onOrgInput" />
+      <van-field label="姓名" placeholder="真实姓名" value="{{fullName}}" bind:input="onNicknameInput" />
+      <van-field label="城市" placeholder="所在城市" value="{{city}}" bind:input="onOrgInput" />
+      <van-field label="联系方式" placeholder="手机号/微信号" value="{{contact}}" bind:input="onContactInput" />
     </van-cell-group>
     <view style="margin-top: 12rpx;">
       <van-button type="primary" size="small" bind:click="saveProfile">保存基础信息</van-button>

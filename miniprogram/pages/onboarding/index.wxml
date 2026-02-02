@@ -1,0 +1,68 @@
+<view class="onboarding">
+  <view class="step-indicator">
+    <text class="gold-text">步骤 {{step + 1}} / 4</text>
+  </view>
+
+  <view wx:if="{{step === 0}}" class="step-card">
+    <view class="welcome">
+      <text class="welcome-title">改变，从现在开始</text>
+      <text class="welcome-sub">在温柔而专业的陪伴中，建立家庭成长路径</text>
+    </view>
+    <view class="welcome-cta">
+      <van-button type="primary" size="small" bind:click="nextStep">开始</van-button>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 1}}" class="step-card">
+    <view class="section-header">
+      <text class="section-title">选择角色</text>
+    </view>
+    <van-radio-group value="{{selectedRole}}" bind:change="selectRole">
+      <van-cell-group>
+        <van-cell title="父母" clickable data-role="父母" bind:click="onRoleCellTap">
+          <van-radio name="父母" />
+        </van-cell>
+        <van-cell title="顾问" clickable data-role="顾问" bind:click="onRoleCellTap">
+          <van-radio name="顾问" />
+        </van-cell>
+        <van-cell title="管理员" clickable data-role="管理员" bind:click="onRoleCellTap">
+          <van-radio name="管理员" />
+        </van-cell>
+      </van-cell-group>
+    </van-radio-group>
+    <view class="step-actions">
+      <van-button plain type="default" size="small" bind:click="prevStep">上一步</van-button>
+      <van-button type="primary" size="small" bind:click="nextStep">下一步</van-button>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 2}}" class="step-card">
+    <view class="section-header">
+      <text class="section-title">绑定微信</text>
+      <van-tag type="primary" plain wx:if="{{wechatBound}}">已绑定</van-tag>
+    </view>
+    <view class="wechat-card">
+      <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" class="avatar" />
+      <text class="muted">{{wechatNick || '未绑定微信'}}</text>
+    </view>
+    <text class="muted">授权后可展示头像昵称，并便于顾问联系。</text>
+    <view class="step-actions">
+      <van-button plain type="default" size="small" bind:click="prevStep">上一步</van-button>
+      <van-button type="primary" size="small" bind:click="bindWeChat">绑定微信</van-button>
+      <van-button plain type="default" size="small" bind:click="skipBind">跳过</van-button>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 3}}" class="step-card">
+    <view class="section-header">
+      <text class="section-title">完善信息</text>
+    </view>
+    <van-field label="姓名" placeholder="真实姓名" value="{{fullName}}" bind:input="onNameInput" />
+    <van-field label="城市" placeholder="所在城市" value="{{city}}" bind:input="onCityInput" />
+    <van-field label="联系方式" placeholder="手机号/微信号" value="{{contact}}" bind:input="onContactInput" />
+    <view class="step-actions">
+      <van-button plain type="default" size="small" bind:click="prevStep">上一步</van-button>
+      <van-button type="primary" size="small" bind:click="nextStep">完成进入</van-button>
+    </view>
+  </view>
+</view>

@@ -1,23 +1,27 @@
 const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
+const { ensureOnboarding } = require("../../utils/onboarding");
 
 Page({
   data: {
     roles: ["父母", "顾问", "管理员"],
     roleIndex: 0,
-    nickname: "",
-    organization: "",
+    fullName: "",
+    city: "",
+    contact: "",
     role: "父母",
     roleSaved: false,
     isStaff: false
   },
   onShow() {
+    if (!ensureOnboarding()) return;
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
     const roleIndex = this.data.roles.indexOf(profile.role || "父母");
     const role = roleIndex === -1 ? "父母" : this.data.roles[roleIndex];
     this.setData({
       roleIndex: roleIndex === -1 ? 0 : roleIndex,
-      nickname: profile.nickname || "",
-      organization: profile.organization || "",
+      fullName: profile.fullName || "",
+      city: profile.city || "",
+      contact: profile.contact || "",
       role,
       roleSaved: Boolean(profile.role),
       isStaff: role !== "父母"
@@ -34,17 +38,23 @@ Page({
     });
   },
   onNicknameInput(e) {
-    this.setData({ nickname: e.detail.value });
+    this.setData({ fullName: e.detail.value });
   },
   onOrgInput(e) {
-    this.setData({ organization: e.detail.value });
+    this.setData({ city: e.detail.value });
+  },
+  onContactInput(e) {
+    this.setData({ contact: e.detail.value });
   },
   saveProfile() {
     const role = this.data.roles[this.data.roleIndex];
+    const existing = getStorage(STORAGE_KEYS.PROFILE, {});
     setStorage(STORAGE_KEYS.PROFILE, {
+      ...existing,
       role,
-      nickname: this.data.nickname,
-      organization: this.data.organization
+      fullName: this.data.fullName,
+      city: this.data.city,
+      contact: this.data.contact
     });
     this.setData({
       role,

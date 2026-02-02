@@ -7,6 +7,7 @@ const {
 } = require("../../utils/storage");
 const { aiQuickPrompts, getMockAiReply } = require("../../utils/mock");
 const { askAi } = require("../../utils/ai");
+const { ensureOnboarding } = require("../../utils/onboarding");
 
 const systemPrompt =
   "你是一位家庭教育顾问，遵循共情、尊重与可执行建议的原则。回答要避免诊断式表述，使用建议与引导式表达，鼓励记录可量化的行动与反馈。";
@@ -21,6 +22,7 @@ Page({
     mockEnabled: config.mockEnabled
   },
   onShow() {
+    if (!ensureOnboarding()) return;
     const messages = getStorage(STORAGE_KEYS.AI_CHATS, []).map((msg) => ({
       ...msg,
       timeLabel: formatDateTime(new Date(msg.createdAt))

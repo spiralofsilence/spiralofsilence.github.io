@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/onboarding/index",
     "pages/home/index",
     "pages/mood/index",
     "pages/record/index",
