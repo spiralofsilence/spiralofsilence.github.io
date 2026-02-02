@@ -15,7 +15,12 @@ Page({
   },
   onLoad() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
-    this.setData({ signerName: profile.fullName || "" });
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const users = getStorage(STORAGE_KEYS.USERS, []);
+    const activeUserId = settings.activeUserId || profile.userId;
+    const activeUser = users.find((item) => item.userId === activeUserId);
+    const signerName = activeUser ? activeUser.fullName : profile.fullName;
+    this.setData({ signerName: signerName || "" });
   },
   onReady() {
     this.ctx = wx.createCanvasContext("signCanvas", this);
@@ -59,10 +64,13 @@ Page({
   },
   archiveContract(updated) {
     const templates = getStorage(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const activeUserId = settings.activeUserId || profile.userId;
     const template = templates.find((item) => item.id === updated.templateId);
     const record = {
       id: `user_contract_${Date.now()}`,
-      userId: "local_user",
+      userId: activeUserId || "local_user",
       templateId: updated.templateId || "",
       templateName:
         (template && template.templateName) || updated.title || "合同",

@@ -1,4 +1,5 @@
-const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
+const { STORAGE_KEYS, getStorage, setStorage, appendToList } = require("../../utils/storage");
+const { createId } = require("../../utils/id");
 
 Page({
   data: {
@@ -134,8 +135,10 @@ Page({
   },
   completeOnboarding() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const userId = profile.userId || createId("user");
     setStorage(STORAGE_KEYS.PROFILE, {
       ...profile,
+      userId,
       role: this.data.selectedRole,
       fullName: this.data.fullName,
       city: this.data.city,
@@ -145,10 +148,23 @@ Page({
       avatarUrl: this.data.avatarUrl,
       roleSetAt: Date.now()
     });
+    const users = getStorage(STORAGE_KEYS.USERS, []);
+    const existing = users.find((item) => item.userId === userId);
+    if (!existing) {
+      appendToList(STORAGE_KEYS.USERS, {
+        userId,
+        role: this.data.selectedRole,
+        fullName: this.data.fullName,
+        city: this.data.city,
+        contact: this.data.contact,
+        createdAt: Date.now()
+      });
+    }
     const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
     setStorage(STORAGE_KEYS.SETTINGS, {
       ...settings,
-      onboardingComplete: true
+      onboardingComplete: true,
+      activeUserId: userId
     });
     wx.reLaunch({ url: "/pages/home/index" });
   }

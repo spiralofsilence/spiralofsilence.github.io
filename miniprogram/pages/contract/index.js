@@ -54,12 +54,23 @@ Page({
   },
   onShow() {
     if (!ensureAssessment()) return;
-    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
-    const role = profile.role || "父母";
     const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const users = getStorage(STORAGE_KEYS.USERS, []);
+    const activeUserId = settings.activeUserId || profile.userId;
+    const activeUser = users.find((item) => item.userId === activeUserId);
+    const displayProfile = activeUser ? { ...profile, ...activeUser } : profile;
+    const role = profile.role || "父母";
     const templates = loadOrInit(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
+    const assignments = getStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, []);
+    const assigned = assignments.find(
+      (item) => item.userId === activeUserId && item.status === "pending"
+    );
     const activeTemplate =
-      templates.find((item) => item.status === "active") || templates[0] || null;
+      (assigned && templates.find((item) => item.id === assigned.templateId)) ||
+      templates.find((item) => item.status === "active") ||
+      templates[0] ||
+      null;
     const contract = getStorage(STORAGE_KEYS.CONTRACT);
     const record = contract || buildDefaultContract();
     if (!contract) {
@@ -83,8 +94,10 @@ Page({
       : activeTemplate
       ? activeTemplate.templateName
       : record.title;
-    const filledData = this.buildFilledData(profile);
-    const contractRecords = getStorage(STORAGE_KEYS.CONTRACT_RECORDS, []).map(
+    const filledData = this.buildFilledData(displayProfile);
+    const contractRecords = getStorage(STORAGE_KEYS.CONTRACT_RECORDS, [])
+      .filter((item) => !activeUserId || item.userId === activeUserId)
+      .map(
       (item) => ({
         ...item,
         statusLabel:
@@ -117,15 +130,16 @@ Page({
       activeTemplate,
       templatePlaceholders: activeTemplate ? activeTemplate.placeholders || [] : [],
       filledData,
-      idNumber: profile.idNumber || "",
-      servicePeriod: profile.servicePeriod || "",
-      serviceAmount: profile.serviceAmount || "",
+      idNumber: displayProfile.idNumber || "",
+      servicePeriod: displayProfile.servicePeriod || "",
+      serviceAmount: displayProfile.serviceAmount || "",
       contractRecords
     });
     const mergedRecord = {
       ...record,
       templateId: activeTemplate ? activeTemplate.id : record.templateId,
-      filledData
+      filledData,
+      userId: activeUserId || record.userId
     };
     setStorage(STORAGE_KEYS.CONTRACT, mergedRecord);
     if (record.status !== "unsigned" && !requiredCompleted && !record.kickoffPrompted) {
@@ -233,6 +247,9 @@ Page({
   },
   saveProfileExtras() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const users = getStorage(STORAGE_KEYS.USERS, []);
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const activeUserId = settings.activeUserId || profile.userId;
     const updated = {
       ...profile,
       idNumber: this.data.idNumber,
@@ -240,6 +257,19 @@ Page({
       serviceAmount: this.data.serviceAmount
     };
     setStorage(STORAGE_KEYS.PROFILE, updated);
+    if (activeUserId) {
+      const nextUsers = users.map((item) =>
+        item.userId === activeUserId
+          ? {
+              ...item,
+              idNumber: this.data.idNumber,
+              servicePeriod: this.data.servicePeriod,
+              serviceAmount: this.data.serviceAmount
+            }
+          : item
+      );
+      setStorage(STORAGE_KEYS.USERS, nextUsers);
+    }
     const filledData = this.buildFilledData(updated);
     this.setData({ filledData });
     const contract = getStorage(STORAGE_KEYS.CONTRACT, {});

@@ -17,6 +17,8 @@ const STORAGE_KEYS = {
   CONTRACT: "contractRecord",
   CONTRACT_TEMPLATES: "contractTemplates",
   CONTRACT_RECORDS: "contractRecords",
+  CONTRACT_ASSIGNMENTS: "contractAssignments",
+  USERS: "users",
   SERVICE_PLAN: "servicePlan",
   HOMEWORK_LOGS: "homeworkLogs",
   HOMEWORK_TASKS: "homeworkTasks",

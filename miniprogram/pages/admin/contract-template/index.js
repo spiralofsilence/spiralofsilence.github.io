@@ -14,17 +14,22 @@ Page({
     templateFile: null,
     editingId: "",
     assessments: [],
-    selectedAssessmentId: ""
+    selectedAssessmentId: "",
+    users: [],
+    selectedUserId: ""
   },
   onShow() {
     const templates = loadOrInit(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
     const assessments = loadOrInit(STORAGE_KEYS.ASSESSMENTS, []);
     const entrance =
       assessments.find((item) => item.isEntrance) || assessments[0] || null;
+    const users = loadOrInit(STORAGE_KEYS.USERS, []);
     this.setData({
       templates,
       assessments,
-      selectedAssessmentId: entrance ? entrance.id : ""
+      selectedAssessmentId: entrance ? entrance.id : "",
+      users,
+      selectedUserId: users[0] ? users[0].userId : ""
     });
   },
   onNameInput(e) {
@@ -39,6 +44,11 @@ Page({
     const index = Number(e.detail.value);
     const target = this.data.assessments[index];
     this.setData({ selectedAssessmentId: target ? target.id : "" });
+  },
+  onUserChange(e) {
+    const index = Number(e.detail.value);
+    const target = this.data.users[index];
+    this.setData({ selectedUserId: target ? target.userId : "" });
   },
   uploadTemplateFile() {
     wx.chooseMessageFile({
@@ -181,5 +191,33 @@ Page({
       content: "已向用户推送入学测评（模拟）。",
       showCancel: false
     });
+  },
+  pushContractToUser(e) {
+    const template = e.currentTarget.dataset.template;
+    const userId = this.data.selectedUserId;
+    if (!userId) {
+      wx.showToast({ title: "请选择用户", icon: "none" });
+      return;
+    }
+    if (!template) {
+      wx.showToast({ title: "请选择模板", icon: "none" });
+      return;
+    }
+    const assignments = getStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, []);
+    const next = [
+      {
+        id: createId("contract_assign"),
+        userId,
+        templateId: template.id,
+        templateName: template.templateName,
+        status: "pending",
+        assignedAt: Date.now()
+      },
+      ...assignments.filter(
+        (item) => !(item.userId === userId && item.status === "pending")
+      )
+    ];
+    setStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, next);
+    wx.showToast({ title: "已推送合同", icon: "success" });
   }
 });
