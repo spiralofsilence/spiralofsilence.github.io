@@ -174,3 +174,11 @@ page {
 .van-icon {
   color: #1f7a4d;
 }
+
+.van-radio__icon {
+  color: transparent !important;
+}
+
+.van-radio__icon--checked {
+  color: #ffffff !important;
+}

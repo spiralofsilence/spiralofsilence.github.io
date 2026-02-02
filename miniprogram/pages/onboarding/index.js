@@ -5,6 +5,45 @@ Page({
     step: 0,
     roles: ["父母", "顾问", "管理员"],
     selectedRole: "",
+    cityOptions: [
+      "北京",
+      "天津",
+      "上海",
+      "重庆",
+      "河北",
+      "山西",
+      "辽宁",
+      "吉林",
+      "黑龙江",
+      "江苏",
+      "浙江",
+      "安徽",
+      "福建",
+      "江西",
+      "山东",
+      "河南",
+      "湖北",
+      "湖南",
+      "广东",
+      "海南",
+      "四川",
+      "贵州",
+      "云南",
+      "陕西",
+      "甘肃",
+      "青海",
+      "内蒙古",
+      "广西",
+      "西藏",
+      "宁夏",
+      "新疆",
+      "香港",
+      "澳门",
+      "台湾",
+      "海外",
+      "其他"
+    ],
+    cityIndex: 0,
     wechatBound: false,
     wechatNick: "",
     avatarUrl: "",
@@ -14,6 +53,10 @@ Page({
   },
   onLoad() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const cityOptions = this.data.cityOptions;
+    const cityIndex = profile.city
+      ? Math.max(cityOptions.indexOf(profile.city), 0)
+      : 0;
     this.setData({
       selectedRole: profile.role || "",
       wechatBound: profile.wechatBound || false,
@@ -21,7 +64,8 @@ Page({
       avatarUrl: profile.avatarUrl || "",
       fullName: profile.fullName || "",
       city: profile.city || "",
-      contact: profile.contact || ""
+      contact: profile.contact || "",
+      cityIndex
     });
   },
   nextStep() {
@@ -66,6 +110,7 @@ Page({
           wechatNick: nickName || "",
           avatarUrl: avatarUrl || ""
         });
+        this.nextStep();
       },
       fail: () => {
         wx.showToast({ title: "未完成授权", icon: "none" });
@@ -80,6 +125,11 @@ Page({
   },
   onCityInput(e) {
     this.setData({ city: e.detail.value });
+  },
+  onCityChange(e) {
+    const index = Number(e.detail.value);
+    const city = this.data.cityOptions[index] || "";
+    this.setData({ cityIndex: index, city });
   },
   onContactInput(e) {
     this.setData({ contact: e.detail.value });
