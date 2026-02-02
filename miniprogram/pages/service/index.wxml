@@ -1,4 +1,4 @@
-<view class="page" wx:if="{{plan}}">
+<view class="page page-enter" wx:if="{{plan}}">
   <view class="card">
     <view class="section-header">
       <text class="section-title">服务状态</text>

@@ -1,4 +1,4 @@
-<view class="page" wx:if="{{contract}}">
+<view class="page page-enter" wx:if="{{contract}}">
   <view class="card">
     <view class="section-header">
       <text class="section-title">{{contractTitle || '待签署合同'}}</text>

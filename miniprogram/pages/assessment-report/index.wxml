@@ -1,4 +1,4 @@
-<view class="page" wx:if="{{report}}">
+<view class="page page-enter" wx:if="{{report}}">
   <view class="card">
     <view class="section-header">
       <text class="section-title">{{report.title}}</text>

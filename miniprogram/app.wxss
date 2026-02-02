@@ -4,7 +4,6 @@ page {
   font-size: 26rpx;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
     Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  animation: pageEnter 0.45s ease;
 }
 
 .page {
@@ -188,10 +187,14 @@ page {
   border-color: #1f7a4d !important;
 }
 
+.page-enter {
+  animation: pageEnter 0.35s ease;
+}
+
 @keyframes pageEnter {
   0% {
     opacity: 0;
-    transform: translateY(10rpx);
+    transform: translateY(8rpx);
   }
   100% {
     opacity: 1;
