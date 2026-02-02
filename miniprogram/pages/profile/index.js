@@ -38,13 +38,16 @@ Page({
     });
   },
   onNicknameInput(e) {
-    this.setData({ fullName: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ fullName: value });
   },
   onOrgInput(e) {
-    this.setData({ city: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ city: value });
   },
   onContactInput(e) {
-    this.setData({ contact: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ contact: value });
   },
   saveProfile() {
     const role = this.data.roles[this.data.roleIndex];

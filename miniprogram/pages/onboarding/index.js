@@ -120,7 +120,8 @@ Page({
     this.nextStep();
   },
   onNameInput(e) {
-    this.setData({ fullName: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ fullName: value });
   },
   onCityChange(e) {
     const index = Number(e.detail.value);
@@ -128,7 +129,8 @@ Page({
     this.setData({ cityIndex: index, city });
   },
   onContactInput(e) {
-    this.setData({ contact: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ contact: value });
   },
   completeOnboarding() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});

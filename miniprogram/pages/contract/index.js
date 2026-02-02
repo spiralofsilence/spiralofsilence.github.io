@@ -134,7 +134,8 @@ Page({
     });
   },
   onDisplayNameInput(e) {
-    this.setData({ displayNameInput: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ displayNameInput: value });
   },
   saveDisplayName() {
     const displayName = (this.data.displayNameInput || "").trim();
