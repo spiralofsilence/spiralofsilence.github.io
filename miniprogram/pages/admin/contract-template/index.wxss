@@ -1,5 +1,5 @@
 .log-item {
-  padding: 12rpx 0;
+  padding: 10rpx 0;
   border-bottom: 2rpx solid #f1e6d0;
 }
 

@@ -1,5 +1,5 @@
 .log-item {
-  padding: 12rpx 0;
+  padding: 10rpx 0;
   border-bottom: 2rpx solid #f1e6d0;
 }
 
@@ -8,7 +8,7 @@
 }
 
 .checkbox-row {
-  margin-top: 12rpx;
+  margin-top: 8rpx;
 }
 
 .checkbox-label {
@@ -22,10 +22,10 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12rpx;
-  margin-top: 12rpx;
+  gap: 8rpx;
+  margin-top: 8rpx;
 }
 
 .scale-config {
-  margin-top: 12rpx;
+  margin-top: 8rpx;
 }

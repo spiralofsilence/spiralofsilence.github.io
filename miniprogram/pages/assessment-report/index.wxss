@@ -2,7 +2,7 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin: 12rpx 0;
+  margin: 8rpx 0;
 }
 
 .score {
@@ -11,7 +11,7 @@
 }
 
 .status {
-  margin-top: 12rpx;
-  font-size: 26rpx;
+  margin-top: 8rpx;
+  font-size: 24rpx;
   color: #1f2d3d;
 }

@@ -8,14 +8,14 @@ page {
 }
 
 .page {
-  padding: 24rpx;
+  padding: 20rpx;
 }
 
 .card {
   background: #ffffff;
   border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
   border: 2rpx solid #eadfc8;
   box-shadow: 0 10rpx 24rpx rgba(45, 36, 20, 0.06);
 }
@@ -23,7 +23,7 @@ page {
 .card-title {
   font-size: 28rpx;
   font-weight: 500;
-  margin-bottom: 14rpx;
+  margin-bottom: 10rpx;
 }
 
 .muted {
@@ -67,7 +67,7 @@ page {
 .input {
   border: 2rpx solid #e2d3b0;
   border-radius: 12rpx;
-  padding: 16rpx;
+  padding: 12rpx;
   font-size: 26rpx;
   background: #ffffff;
 }
@@ -76,13 +76,13 @@ page {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8rpx 20rpx;
+  padding: 6rpx 18rpx;
   border-radius: 999rpx;
   background: #f7f2e7;
   color: #1f7a4d;
   font-size: 22rpx;
-  margin-right: 8rpx;
-  margin-bottom: 8rpx;
+  margin-right: 6rpx;
+  margin-bottom: 6rpx;
   border: 2rpx solid #e7d8b8;
 }
 
@@ -90,7 +90,7 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12rpx;
+  margin-bottom: 8rpx;
 }
 
 .section-title {
@@ -122,7 +122,7 @@ page {
 .divider {
   height: 2rpx;
   background: #eadfc8;
-  margin: 16rpx 0;
+  margin: 12rpx 0;
 }
 
 .shadow-soft {
@@ -164,7 +164,7 @@ page {
   background: #ffffff !important;
   border: 2rpx solid #eadfc8;
   border-radius: 12rpx;
-  padding: 20rpx 0 !important;
+  padding: 16rpx 0 !important;
 }
 
 .van-grid-item__text {

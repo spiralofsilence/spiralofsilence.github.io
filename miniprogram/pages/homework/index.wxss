@@ -12,7 +12,7 @@
 }
 
 .task-item {
-  padding: 12rpx 0;
+  padding: 10rpx 0;
   border-bottom: 2rpx solid #f0f2f6;
   display: flex;
   justify-content: space-between;
@@ -26,24 +26,24 @@
 .task-item.active {
   background: #fbf7ef;
   border-radius: 12rpx;
-  padding: 12rpx;
+  padding: 10rpx;
 }
 
 .task-title {
   font-weight: 600;
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #1f5a3a;
 }
 
 .attachment-list {
-  margin-top: 12rpx;
+  margin-top: 8rpx;
 }
 
 .attachment-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8rpx 0;
+  padding: 6rpx 0;
   border-bottom: 2rpx solid #f0f2f6;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .log-item {
-  padding: 16rpx 0;
+  padding: 12rpx 0;
   border-bottom: 2rpx solid #f0f2f6;
 }
 
@@ -82,11 +82,11 @@
 }
 
 .comment-box {
-  margin-top: 8rpx;
+  margin-top: 6rpx;
 }
 
 .checkbox-row {
-  margin-top: 8rpx;
+  margin-top: 6rpx;
 }
 
 .checkbox-label {
