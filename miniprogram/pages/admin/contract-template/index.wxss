@@ -1,0 +1,8 @@
+.log-item {
+  padding: 12rpx 0;
+  border-bottom: 2rpx solid #f1e6d0;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}

@@ -42,7 +42,9 @@
       <text class="section-title">管理员工具</text>
       <text class="muted">顾问/管理员</text>
     </view>
-    <van-cell title="上传/管理合同" is-link bind:click="openContract" />
+    <van-cell title="合同模板管理" is-link bind:click="openContractAdmin" />
+    <van-cell title="测评模板管理" is-link bind:click="openAssessmentAdmin" />
+    <van-cell title="进入合同签署" is-link bind:click="openContract" />
   </view>
 
   <view class="card" wx:if="{{roleSaved}}">

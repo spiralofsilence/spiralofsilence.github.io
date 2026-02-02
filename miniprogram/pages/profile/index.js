@@ -75,6 +75,12 @@ Page({
   openHomework() {
     wx.navigateTo({ url: "/pages/homework/index" });
   },
+  openContractAdmin() {
+    wx.navigateTo({ url: "/pages/admin/contract-template/index" });
+  },
+  openAssessmentAdmin() {
+    wx.navigateTo({ url: "/pages/admin/assessment-template/index" });
+  },
   showPrivacy() {
     wx.showModal({
       title: "隐私政策摘要",

@@ -11,6 +11,8 @@
     "pages/assessment-report/index",
     "pages/contract/index",
     "pages/contract/signature",
+    "pages/admin/contract-template/index",
+    "pages/admin/assessment-template/index",
     "pages/service/index",
     "pages/homework/index",
     "pages/profile/index"
