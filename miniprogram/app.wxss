@@ -178,10 +178,14 @@ page {
 
 .van-radio__icon {
   color: transparent !important;
+  border-color: #d8c7a0 !important;
+  background: transparent !important;
 }
 
 .van-radio__icon--checked {
   color: #ffffff !important;
+  background-color: #1f7a4d !important;
+  border-color: #1f7a4d !important;
 }
 
 @keyframes pageEnter {
