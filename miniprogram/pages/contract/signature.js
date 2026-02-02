@@ -81,6 +81,15 @@ Page({
       signedAt: updated.signedAt
     };
     appendToList(STORAGE_KEYS.CONTRACT_RECORDS, record);
+    if (activeUserId) {
+      const assignments = getStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, []);
+      const next = assignments.map((item) =>
+        item.userId === activeUserId && item.status === "pending"
+          ? { ...item, status: "signed", signedAt: Date.now() }
+          : item
+      );
+      setStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, next);
+    }
   },
   saveSignature() {
     const contract = getStorage(STORAGE_KEYS.CONTRACT, {});

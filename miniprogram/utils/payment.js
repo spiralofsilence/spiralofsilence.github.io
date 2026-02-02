@@ -1,5 +1,11 @@
 const config = require("../config");
-const { STORAGE_KEYS, appendToList } = require("./storage");
+const { STORAGE_KEYS, appendToList, getStorage } = require("./storage");
+
+function getActiveUserId() {
+  const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+  const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+  return settings.activeUserId || profile.userId || "";
+}
 
 function logPayment(payload) {
   appendToList(STORAGE_KEYS.PAYMENT_LOGS, payload);
@@ -12,8 +18,10 @@ function mockPayment({ amount, title, referenceId }) {
       content: `已模拟支付 ¥${amount}（${title}）`,
       showCancel: false,
       success: () => {
+        const userId = getActiveUserId();
         const record = {
           id: `payment_${Date.now()}`,
+          userId,
           amount,
           title,
           referenceId,
@@ -32,10 +40,11 @@ function requestPayment({ amount, title, referenceId }) {
     return mockPayment({ amount, title, referenceId });
   }
   return new Promise((resolve, reject) => {
+    const userId = getActiveUserId();
     wx.request({
       url: `${config.apiBaseUrl}/payments/create`,
       method: "POST",
-      data: { amount, title, referenceId },
+      data: { amount, title, referenceId, userId },
       success(res) {
         const params = res.data;
         if (!params) {
@@ -47,6 +56,7 @@ function requestPayment({ amount, title, referenceId }) {
           success() {
             const record = {
               id: `payment_${Date.now()}`,
+              userId,
               amount,
               title,
               referenceId,
@@ -59,6 +69,7 @@ function requestPayment({ amount, title, referenceId }) {
           fail(err) {
             logPayment({
               id: `payment_${Date.now()}`,
+              userId,
               amount,
               title,
               referenceId,

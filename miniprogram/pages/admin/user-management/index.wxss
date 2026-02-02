@@ -1,0 +1,12 @@
+.log-item {
+  padding: 10rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-title {
+  font-weight: 600;
+}

@@ -28,6 +28,16 @@
     </view>
   </view>
 
+  <view class="card" wx:if="{{roleSaved && role === '父母' && pendingContract}}">
+    <view class="section-header">
+      <text class="section-title">待签署合同</text>
+    </view>
+    <text class="muted">{{pendingContract.templateName || '合同'}} · 待签署</text>
+    <view style="margin-top: 10rpx;">
+      <van-button type="primary" size="small" bind:click="openContract">查看并签署</van-button>
+    </view>
+  </view>
+
   <view class="card" wx:if="{{roleSaved && role === '父母'}}">
     <view class="section-header">
       <text class="section-title">合同与服务</text>
@@ -42,6 +52,7 @@
       <text class="section-title">管理员工具</text>
       <text class="muted">顾问/管理员</text>
     </view>
+    <van-cell title="用户管理" is-link bind:click="openUserAdmin" />
     <van-cell title="合同模板管理" is-link bind:click="openContractAdmin" />
     <van-cell title="测评模板管理" is-link bind:click="openAssessmentAdmin" />
     <van-cell title="进入合同签署" is-link bind:click="openContract" />

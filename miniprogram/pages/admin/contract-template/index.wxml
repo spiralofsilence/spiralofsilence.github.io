@@ -54,6 +54,9 @@
     <view wx:if="{{templates.length}}" class="muted" style="margin-top: 8rpx;">
       请在模板列表中点击“推送给用户”
     </view>
+    <view class="muted" style="margin-top: 4rpx;">
+      付费状态：{{selectedUserPaid ? '已付费' : '未付费'}}
+    </view>
   </view>
 
   <view class="card">

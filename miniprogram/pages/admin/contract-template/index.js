@@ -16,7 +16,9 @@ Page({
     assessments: [],
     selectedAssessmentId: "",
     users: [],
-    selectedUserId: ""
+    selectedUserId: "",
+    paidUserIds: [],
+    selectedUserPaid: false
   },
   onShow() {
     const templates = loadOrInit(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
@@ -24,12 +26,20 @@ Page({
     const entrance =
       assessments.find((item) => item.isEntrance) || assessments[0] || null;
     const users = loadOrInit(STORAGE_KEYS.USERS, []);
+    const payments = getStorage(STORAGE_KEYS.PAYMENT_LOGS, []);
+    const paidUserIds = payments
+      .filter(
+        (item) => item.status === "success" || item.status === "mock_success"
+      )
+      .map((item) => item.userId);
     this.setData({
       templates,
       assessments,
       selectedAssessmentId: entrance ? entrance.id : "",
       users,
-      selectedUserId: users[0] ? users[0].userId : ""
+      selectedUserId: users[0] ? users[0].userId : "",
+      paidUserIds,
+      selectedUserPaid: users[0] ? paidUserIds.includes(users[0].userId) : false
     });
   },
   onNameInput(e) {
@@ -48,7 +58,13 @@ Page({
   onUserChange(e) {
     const index = Number(e.detail.value);
     const target = this.data.users[index];
-    this.setData({ selectedUserId: target ? target.userId : "" });
+    const selectedUserId = target ? target.userId : "";
+    this.setData({
+      selectedUserId,
+      selectedUserPaid: selectedUserId
+        ? this.data.paidUserIds.includes(selectedUserId)
+        : false
+    });
   },
   uploadTemplateFile() {
     wx.chooseMessageFile({
@@ -197,6 +213,10 @@ Page({
     const userId = this.data.selectedUserId;
     if (!userId) {
       wx.showToast({ title: "请选择用户", icon: "none" });
+      return;
+    }
+    if (!this.data.paidUserIds.includes(userId)) {
+      wx.showToast({ title: "该用户未付费", icon: "none" });
       return;
     }
     if (!template) {

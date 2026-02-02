@@ -10,11 +10,18 @@ Page({
     contact: "",
     role: "父母",
     roleSaved: false,
-    isStaff: false
+    isStaff: false,
+    pendingContract: null
   },
   onShow() {
     if (!ensureOnboarding()) return;
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const assignments = getStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, []);
+    const activeUserId = settings.activeUserId || profile.userId;
+    const pendingContract = assignments.find(
+      (item) => item.userId === activeUserId && item.status === "pending"
+    );
     const roleIndex = this.data.roles.indexOf(profile.role || "父母");
     const role = roleIndex === -1 ? "父母" : this.data.roles[roleIndex];
     this.setData({
@@ -24,8 +31,31 @@ Page({
       contact: profile.contact || "",
       role,
       roleSaved: Boolean(profile.role),
-      isStaff: role !== "父母"
+      isStaff: role !== "父母",
+      pendingContract: pendingContract || null
     });
+    if (role === "父母" && pendingContract) {
+      const promptedMap = settings.contractPromptedMap || {};
+      if (!promptedMap[pendingContract.id]) {
+        wx.showModal({
+          title: "合同待签署",
+          content: "您有一份合同待签署，是否立即查看？",
+          confirmText: "去签署",
+          success: (res) => {
+            if (res.confirm) {
+              this.openContract();
+            }
+          }
+        });
+        setStorage(STORAGE_KEYS.SETTINGS, {
+          ...settings,
+          contractPromptedMap: {
+            ...promptedMap,
+            [pendingContract.id]: true
+          }
+        });
+      }
+    }
   },
   onRoleChange(e) {
     const roleIndex = Number(e.detail.value);
@@ -80,6 +110,9 @@ Page({
   },
   openAssessmentAdmin() {
     wx.navigateTo({ url: "/pages/admin/assessment-template/index" });
+  },
+  openUserAdmin() {
+    wx.navigateTo({ url: "/pages/admin/user-management/index" });
   },
   showPrivacy() {
     wx.showModal({

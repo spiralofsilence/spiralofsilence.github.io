@@ -1,4 +1,9 @@
-const { STORAGE_KEYS, getStorage, setStorage, appendToList } = require("../../utils/storage");
+const {
+  STORAGE_KEYS,
+  getStorage,
+  setStorage,
+  appendToList
+} = require("../../utils/storage");
 const { requestPayment } = require("../../utils/payment");
 const {
   setAssessmentStatus,
@@ -55,6 +60,11 @@ Page({
     if (!progress[assessment.id] || progress[assessment.id].status !== "completed") {
       setAssessmentStatus(assessment.id, "in_progress");
     }
+  },
+  getActiveUserId() {
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    return settings.activeUserId || profile.userId || "";
   },
   onSceneChange(e) {
     this.setData({ sceneIndex: e.detail.value });
@@ -180,6 +190,18 @@ Page({
       appendToList(STORAGE_KEYS.ASSESSMENT_REPORTS, report);
       setAssessmentStatus(assessment.id, "completed");
       saveAssessmentProgress(assessment.id, answers);
+      const userId = this.getActiveUserId();
+      if (userId) {
+        appendToList(STORAGE_KEYS.USER_ASSESSMENTS, {
+          id: `user_assessment_${Date.now()}`,
+          userId,
+          assessmentId: assessment.id,
+          templateId: assessment.templateId || "",
+          status: "completed",
+          completedAt: Date.now(),
+          dimensionScores
+        });
+      }
       if (areRequiredCompleted()) {
         startServicePlan();
         const contract = getStorage(STORAGE_KEYS.CONTRACT);
