@@ -1,9 +1,26 @@
 <view class="onboarding">
-  <view class="step-card" wx:if="{{step === 0}}">
+  <view class="particle-field">
+    <view class="particle p1"></view>
+    <view class="particle p2"></view>
+    <view class="particle p3"></view>
+    <view class="particle p4"></view>
+    <view class="particle p5"></view>
+    <view class="particle p6"></view>
+    <view class="particle p7"></view>
+    <view class="particle p8"></view>
+  </view>
+  <view class="step-card hero-step" wx:if="{{step === 0}}">
     <view class="step-indicator">
-      <text class="gold-text">欢迎</text>
+      <text class="gold-text">步骤 1 / 4</text>
     </view>
     <view class="welcome">
+      <view class="brand">
+        <view class="logo-ring">
+          <text class="logo-text">育</text>
+        </view>
+        <text class="brand-name">育儿陪伴</text>
+        <text class="brand-sub">家庭教育成长空间</text>
+      </view>
       <text class="welcome-title">改变，从现在开始</text>
       <text class="welcome-sub">在温柔而专业的陪伴中</text>
       <text class="welcome-sub">建立家庭成长路径</text>
@@ -11,11 +28,12 @@
     <view class="welcome-cta">
       <van-button type="primary" size="small" bind:click="nextStep">开始</van-button>
     </view>
+    <view class="light-sweep"></view>
   </view>
 
   <view class="step-card" wx:if="{{step === 1}}">
     <view class="step-indicator">
-      <text class="gold-text">步骤 1 / 4</text>
+      <text class="gold-text">步骤 2 / 4</text>
     </view>
     <view class="section-header">
       <text class="section-title">选择角色</text>
@@ -41,7 +59,7 @@
 
   <view class="step-card" wx:if="{{step === 2}}">
     <view class="step-indicator">
-      <text class="gold-text">步骤 2 / 4</text>
+      <text class="gold-text">步骤 3 / 4</text>
     </view>
     <view class="section-header">
       <text class="section-title">绑定微信</text>
@@ -55,6 +73,7 @@
     <view class="step-actions">
       <van-button plain type="default" size="small" bind:click="prevStep">上一步</van-button>
       <van-button type="primary" size="small" bind:click="bindWeChat">绑定微信</van-button>
+      <van-button plain type="default" size="small" bind:click="nextStep">下一步</van-button>
       <van-button plain type="default" size="small" bind:click="skipBind">跳过</van-button>
     </view>
   </view>

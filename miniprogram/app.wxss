@@ -4,6 +4,7 @@ page {
   font-size: 28rpx;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
     Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  animation: pageEnter 0.45s ease;
 }
 
 .page {
@@ -181,4 +182,15 @@ page {
 
 .van-radio__icon--checked {
   color: #ffffff !important;
+}
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

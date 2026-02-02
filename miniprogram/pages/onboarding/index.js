@@ -110,7 +110,6 @@ Page({
           wechatNick: nickName || "",
           avatarUrl: avatarUrl || ""
         });
-        this.nextStep();
       },
       fail: () => {
         wx.showToast({ title: "未完成授权", icon: "none" });
@@ -122,9 +121,6 @@ Page({
   },
   onNameInput(e) {
     this.setData({ fullName: e.detail.value });
-  },
-  onCityInput(e) {
-    this.setData({ city: e.detail.value });
   },
   onCityChange(e) {
     const index = Number(e.detail.value);
