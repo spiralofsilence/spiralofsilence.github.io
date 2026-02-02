@@ -20,7 +20,7 @@ Page({
     });
   },
   goToTasks() {
-    wx.switchTab({ url: "/pages/tasks/index" });
+    wx.switchTab({ url: "/pages/home/index" });
   },
   requestConsultation() {
     wx.showModal({

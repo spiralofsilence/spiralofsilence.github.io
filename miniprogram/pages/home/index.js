@@ -1,8 +1,9 @@
-const { formatDate } = require("../../utils/date");
+const { formatDate, formatDateTime } = require("../../utils/date");
 const {
   STORAGE_KEYS,
   getStorage,
-  loadOrInit
+  loadOrInit,
+  appendToList
 } = require("../../utils/storage");
 const { starterTasks, microActions } = require("../../utils/mock");
 const { applyTriggers } = require("../../utils/trigger");
@@ -19,7 +20,15 @@ Page({
     },
     highlightTask: null,
     microAction: "",
-    triggerEvents: []
+    triggerEvents: [],
+    tasks: [],
+    visibleTasks: [],
+    todayTaskLogs: [],
+    actions: [],
+    selectedAction: "",
+    checkinNote: "",
+    todayCheckins: [],
+    showAllTasks: false
   },
   onShow() {
     const todayKey = formatDate();
@@ -36,6 +45,22 @@ Page({
     const todayCheckins = checkins.filter((log) => log.dateKey === todayKey);
     const streak = this.calculateStreak(checkins);
     const microActionList = loadOrInit("microActions", microActions);
+    const selectedAction =
+      this.data.selectedAction && microActionList.includes(this.data.selectedAction)
+        ? this.data.selectedAction
+        : microActionList[0] || "";
+    const todayTaskLogs = taskLogs
+      .filter((log) => log.dateKey === todayKey)
+      .map((log) => ({
+        ...log,
+        timeLabel: formatDateTime(new Date(log.createdAt))
+      }));
+    const todayCheckinsWithTime = todayCheckins.map((log) => ({
+      ...log,
+      timeLabel: formatDateTime(new Date(log.createdAt))
+    }));
+    const showAllTasks = this.data.showAllTasks;
+    const visibleTasks = showAllTasks ? tasks : tasks.slice(0, 3);
 
     this.setData({
       todayKey,
@@ -50,7 +75,13 @@ Page({
       microAction:
         microActionList[Math.floor(Math.random() * microActionList.length)] ||
         "",
-      triggerEvents
+      triggerEvents,
+      tasks,
+      visibleTasks,
+      todayTaskLogs,
+      actions: microActionList,
+      selectedAction,
+      todayCheckins: todayCheckinsWithTime
     });
   },
   calculateStreak(checkins) {
@@ -74,12 +105,87 @@ Page({
   goTo(e) {
     const page = e.currentTarget.dataset.page;
     if (!page) return;
-    const tabPages = ["home", "tasks", "checkin", "ai", "profile"];
+    const tabPages = ["home", "ai", "profile"];
     if (tabPages.includes(page)) {
       wx.switchTab({ url: `/pages/${page}/index` });
     } else {
       wx.navigateTo({ url: `/pages/${page}/index` });
     }
+  },
+  toggleTaskList() {
+    const showAllTasks = !this.data.showAllTasks;
+    const visibleTasks = showAllTasks
+      ? this.data.tasks
+      : this.data.tasks.slice(0, 3);
+    this.setData({ showAllTasks, visibleTasks });
+  },
+  markComplete(e) {
+    const task = e.currentTarget.dataset.task;
+    if (!task) return;
+    const entry = {
+      id: `tasklog_${Date.now()}`,
+      taskId: task.id,
+      taskTitle: task.title,
+      dateKey: formatDate(),
+      createdAt: Date.now()
+    };
+    appendToList(STORAGE_KEYS.TASK_LOGS, entry);
+    wx.showToast({ title: "已记录", icon: "success" });
+    this.onShow();
+  },
+  openRecord(e) {
+    const task = e.currentTarget.dataset.task;
+    if (!task) return;
+    wx.navigateTo({
+      url: `/pages/record/index?taskId=${task.id}&taskTitle=${encodeURIComponent(
+        task.title
+      )}`
+    });
+  },
+  selectAction(e) {
+    const action = e.currentTarget.dataset.action;
+    if (!action) return;
+    this.setData({ selectedAction: action });
+  },
+  onCheckinNoteInput(e) {
+    this.setData({ checkinNote: e.detail.value });
+  },
+  submitCheckin() {
+    const action = this.data.selectedAction;
+    if (!action) {
+      wx.showToast({ title: "请选择微行动", icon: "none" });
+      return;
+    }
+    const entry = {
+      id: `checkin_${Date.now()}`,
+      dateKey: formatDate(),
+      action,
+      note: this.data.checkinNote,
+      createdAt: Date.now()
+    };
+    appendToList(STORAGE_KEYS.MICRO_CHECKINS, entry);
+    wx.showToast({ title: "已打卡", icon: "success" });
+    this.setData({ checkinNote: "" });
+    applyTriggers();
+    this.onShow();
+  },
+  quickCheckin() {
+    const action = this.data.microAction;
+    if (!action) {
+      wx.showToast({ title: "暂无可用微行动", icon: "none" });
+      return;
+    }
+    const entry = {
+      id: `checkin_${Date.now()}`,
+      dateKey: formatDate(),
+      action,
+      note: "",
+      createdAt: Date.now()
+    };
+    appendToList(STORAGE_KEYS.MICRO_CHECKINS, entry);
+    wx.showToast({ title: "已打卡", icon: "success" });
+    applyTriggers();
+    this.onShow();
   },
   openTriggers() {
     wx.navigateTo({

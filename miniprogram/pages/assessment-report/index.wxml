@@ -18,7 +18,7 @@
     </view>
     <text class="muted">{{report.actionText}}</text>
     <view style="margin-top: 16rpx;">
-      <button class="button-primary" bindtap="goToTasks">查看推荐任务</button>
+      <button class="button-primary" bindtap="goToTasks">返回首页查看任务</button>
     </view>
     <view style="margin-top: 12rpx;" wx:if="{{report.riskFlag}}">
       <button class="button-ghost" bindtap="requestConsultation">预约免费解读</button>

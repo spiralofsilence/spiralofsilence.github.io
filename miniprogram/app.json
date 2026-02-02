@@ -1,9 +1,7 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/tasks/index",
     "pages/mood/index",
-    "pages/checkin/index",
     "pages/record/index",
     "pages/triggers/index",
     "pages/ai/index",
@@ -32,14 +30,6 @@
       {
         "pagePath": "pages/home/index",
         "text": "首页"
-      },
-      {
-        "pagePath": "pages/tasks/index",
-        "text": "任务"
-      },
-      {
-        "pagePath": "pages/checkin/index",
-        "text": "打卡"
       },
       {
         "pagePath": "pages/ai/index",
