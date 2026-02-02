@@ -7,6 +7,7 @@ const {
   appendToList
 } = require("../../utils/storage");
 const { getMergedSettings, collectKeywordHits, applyTriggers } = require("../../utils/trigger");
+const { ensureAssessment } = require("../../utils/gate");
 
 Page({
   data: {
@@ -25,6 +26,7 @@ Page({
     newKeyword: ""
   },
   onShow() {
+    if (!ensureAssessment()) return;
     const settings = getMergedSettings();
     this.setData({ settings });
     this.refreshSummary(settings);

@@ -9,13 +9,32 @@ function getAssessmentProgress() {
   return getStorage(STORAGE_KEYS.ASSESSMENT_PROGRESS, {});
 }
 
+function getAssessmentProgressById(assessmentId) {
+  const progress = getAssessmentProgress();
+  return progress[assessmentId] || {};
+}
+
+function saveAssessmentProgress(assessmentId, answers) {
+  const progress = getAssessmentProgress();
+  const existing = progress[assessmentId] || {};
+  progress[assessmentId] = {
+    ...existing,
+    status: existing.status || "in_progress",
+    answers,
+    updatedAt: Date.now()
+  };
+  setStorage(STORAGE_KEYS.ASSESSMENT_PROGRESS, progress);
+  return progress[assessmentId];
+}
+
 function setAssessmentStatus(assessmentId, status) {
   const progress = getAssessmentProgress();
   const existing = progress[assessmentId] || {};
   progress[assessmentId] = {
     status,
     updatedAt: Date.now(),
-    completedAt: status === "completed" ? Date.now() : existing.completedAt || null
+    completedAt: status === "completed" ? Date.now() : existing.completedAt || null,
+    answers: existing.answers || {}
   };
   setStorage(STORAGE_KEYS.ASSESSMENT_PROGRESS, progress);
   return progress;
@@ -36,10 +55,19 @@ function areRequiredCompleted() {
   );
 }
 
+function isAssessmentCompleted(assessmentId) {
+  if (!assessmentId) return false;
+  const progress = getAssessmentProgress();
+  return Boolean(progress[assessmentId] && progress[assessmentId].status === "completed");
+}
+
 module.exports = {
   getAssessments,
   getAssessmentProgress,
+  getAssessmentProgressById,
+  saveAssessmentProgress,
   setAssessmentStatus,
   getRequiredAssessmentIds,
-  areRequiredCompleted
+  areRequiredCompleted,
+  isAssessmentCompleted
 };

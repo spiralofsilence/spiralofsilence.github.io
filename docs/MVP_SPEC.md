@@ -15,6 +15,7 @@
 8. 合同签署与必做测评触发
 9. 服务进度追踪（时间轴）
 10. 作业打卡与点评
+11. 入学测评强制完成（可配置推送）
 
 ## 数据模型（本地演示版）
 - tasks
@@ -39,12 +40,18 @@
   - id, type, message, createdAt
 - contractRecord
   - id, status, signedAt, effectiveAt, signatureType, signerName, signaturePath, pdfStatus, pdfPath
+- contractTemplates
+  - id, templateName, templateFileUrl, placeholders[], status
+- contractRecords
+  - id, templateId, templateName, filledData, signatureImageUrl, finalPdfUrl, status, signedAt
 - servicePlan
   - id, status, stages[], createdAt, updatedAt
-- homeworkLogs
-  - id, dateKey, title, note, attachments[], status, teacherComment, createdAt
+- homeworkTasks
+  - id, title, description, type, deadline, teacherName
+- homeworkSubmissions
+  - id, taskId, title, content, note, attachments[], status, review, createdAt
 - assessmentProgress
-  - assessmentId -> status, updatedAt, completedAt
+  - assessmentId -> status, answers, updatedAt, completedAt
 - paymentLogs
   - id, amount, title, status, createdAt
 - notificationQueue
@@ -68,6 +75,10 @@ system:
 - 合同签署完成 -> 弹出必做测评入口
 - 完成必做测评 -> 服务计划自动启动
 - 服务阶段可触发提醒通知（需后端发送订阅消息）
+
+## 入学测评强制机制（本地演示）
+- 管理员推送入学测评 -> 设置为强制
+- 未完成测评前，首页/问答/合同/服务/作业入口自动跳转至测评页
 
 ## 后端接口预留（下一阶段）
 - POST /api/ai/chat

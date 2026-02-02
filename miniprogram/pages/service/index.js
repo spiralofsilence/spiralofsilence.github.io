@@ -2,6 +2,7 @@ const { formatDateTime } = require("../../utils/date");
 const { ensureServicePlan, startServicePlan, updateStageStatus, maybeCompleteService } = require("../../utils/service");
 const { areRequiredCompleted } = require("../../utils/assessment");
 const { STORAGE_KEYS, appendToList } = require("../../utils/storage");
+const { ensureAssessment } = require("../../utils/gate");
 
 Page({
   data: {
@@ -10,6 +11,7 @@ Page({
     requiredCompleted: false
   },
   onShow() {
+    if (!ensureAssessment()) return;
     const requiredCompleted = areRequiredCompleted();
     let plan = ensureServicePlan();
     if (requiredCompleted && plan.status === "pending") {

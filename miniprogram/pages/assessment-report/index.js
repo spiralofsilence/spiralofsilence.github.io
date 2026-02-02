@@ -3,7 +3,8 @@ const { formatDateTime } = require("../../utils/date");
 
 Page({
   data: {
-    report: null
+    report: null,
+    dimensionList: []
   },
   onLoad(options) {
     const reports = getStorage(STORAGE_KEYS.ASSESSMENT_REPORTS, []);
@@ -12,11 +13,18 @@ Page({
       wx.showToast({ title: "未找到报告", icon: "none" });
       return;
     }
+    const dimensionList = report.dimensionScores
+      ? Object.keys(report.dimensionScores).map((key) => ({
+          name: key,
+          score: report.dimensionScores[key]
+        }))
+      : [];
     this.setData({
       report: {
         ...report,
         timeLabel: formatDateTime(new Date(report.createdAt))
-      }
+      },
+      dimensionList
     });
   },
   goToTasks() {

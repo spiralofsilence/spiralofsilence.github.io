@@ -12,10 +12,16 @@ Page({
     reports: [],
     progressMap: {},
     requiredIds: [],
-    requiredOnly: false
+    requiredOnly: false,
+    forceMode: false,
+    activeAssessmentId: ""
   },
   onLoad(options) {
-    this.setData({ requiredOnly: options.required === "1" });
+    this.setData({
+      requiredOnly: options.required === "1",
+      forceMode: options.force === "1",
+      activeAssessmentId: options.id || ""
+    });
   },
   onShow() {
     const assessmentList = getAssessments();
@@ -27,9 +33,12 @@ Page({
     );
     const progressMap = getAssessmentProgress();
     const requiredIds = getRequiredAssessmentIds();
-    const list = this.data.requiredOnly
+    let list = this.data.requiredOnly
       ? assessmentList.filter((item) => requiredIds.includes(item.id))
       : assessmentList;
+    if (this.data.forceMode && this.data.activeAssessmentId) {
+      list = list.filter((item) => item.id === this.data.activeAssessmentId);
+    }
     const withStatus = list.map((item) => ({
       ...item,
       progressStatus: progressMap[item.id] ? progressMap[item.id].status : "未开始"

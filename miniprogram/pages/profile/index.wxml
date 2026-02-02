@@ -50,6 +50,7 @@
       <text class="section-title">其他</text>
     </view>
     <van-cell title="查看隐私政策" is-link bind:click="showPrivacy" />
+    <button class="button-ghost contact-btn" open-type="contact">联系客服</button>
     <van-cell title="清空本地数据" is-link bind:click="clearData" />
   </view>
 </view>

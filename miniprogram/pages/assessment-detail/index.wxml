@@ -12,6 +12,10 @@
         <view class="picker">{{sceneOptions[sceneIndex]}}</view>
       </picker>
     </view>
+    <view style="margin-top: 16rpx;">
+      <van-progress percentage="{{progressPercent}}" stroke-width="6" />
+      <text class="muted">进度 {{answeredCount}} / {{totalQuestions}}</text>
+    </view>
   </view>
 
   <view wx:for="{{assessment.questions}}" wx:key="id" wx:for-item="question" class="card question-card">
@@ -29,7 +33,31 @@
         value="{{scaleValues[question.id]}}"
         data-qid="{{question.id}}"
         bindchange="onScaleChange"
-        activeColor="#2f6bff"
+        activeColor="#1f7a4d"
+      />
+    </view>
+    <view wx:elif="{{question.type === 'multiple'}}" class="option-list">
+      <view
+        wx:for="{{question.options}}"
+        wx:key="label"
+        wx:for-item="option"
+        wx:for-index="optIndex"
+        class="option-item {{(answers[question.id] || []).includes(optIndex) ? 'active' : ''}}"
+        bindtap="toggleMultiple"
+        data-qid="{{question.id}}"
+        data-index="{{optIndex}}"
+      >
+        {{option.label}}
+      </view>
+    </view>
+    <view wx:elif="{{question.type === 'text'}}" class="option-list">
+      <van-field
+        type="textarea"
+        placeholder="请输入"
+        value="{{answers[question.id]}}"
+        autosize
+        data-qid="{{question.id}}"
+        bind:input="onTextInput"
       />
     </view>
     <view wx:else class="option-list">
@@ -38,7 +66,7 @@
         wx:key="label"
         wx:for-item="option"
         wx:for-index="optIndex"
-        class="option-item {{answers[question.id] === option.score ? 'active' : ''}}"
+        class="option-item {{answers[question.id] === optIndex ? 'active' : ''}}"
         bindtap="selectOption"
         data-qid="{{question.id}}"
         data-index="{{optIndex}}"

@@ -1,11 +1,21 @@
-const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
+const {
+  STORAGE_KEYS,
+  getStorage,
+  setStorage,
+  appendToList
+} = require("../../utils/storage");
 const { formatDateTime } = require("../../utils/date");
 
 Page({
   data: {
     tabIndex: 0,
-    typedName: "",
+    signerName: "",
+    digitalAgreed: false,
     canvasReady: false
+  },
+  onLoad() {
+    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    this.setData({ signerName: profile.fullName || "" });
   },
   onReady() {
     this.ctx = wx.createCanvasContext("signCanvas", this);
@@ -19,7 +29,14 @@ Page({
     this.setData({ tabIndex: Number(e.currentTarget.dataset.index) });
   },
   onNameInput(e) {
-    this.setData({ typedName: e.detail.value });
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ signerName: value });
+  },
+  toggleDigitalAgreement(e) {
+    const agreed = Array.isArray(e.detail.value)
+      ? e.detail.value.includes("agree")
+      : Boolean(e.detail.value);
+    this.setData({ digitalAgreed: agreed });
   },
   startDraw(e) {
     if (this.data.tabIndex !== 0) return;
@@ -40,12 +57,33 @@ Page({
     this.ctx.clearRect(0, 0, 600, 300);
     this.ctx.draw();
   },
+  archiveContract(updated) {
+    const templates = getStorage(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
+    const template = templates.find((item) => item.id === updated.templateId);
+    const record = {
+      id: `user_contract_${Date.now()}`,
+      userId: "local_user",
+      templateId: updated.templateId || "",
+      templateName:
+        (template && template.templateName) || updated.title || "合同",
+      filledData: updated.filledData || {},
+      signatureImageUrl: updated.signaturePath || "",
+      finalPdfUrl: updated.pdfPath || "mock://contract.pdf",
+      status: "signed",
+      signedAt: updated.signedAt
+    };
+    appendToList(STORAGE_KEYS.CONTRACT_RECORDS, record);
+  },
   saveSignature() {
     const contract = getStorage(STORAGE_KEYS.CONTRACT, {});
     if (this.data.tabIndex === 1) {
-      const typedName = (this.data.typedName || "").trim();
-      if (!typedName) {
-        wx.showToast({ title: "请输入签名姓名", icon: "none" });
+      const signerName = (this.data.signerName || "").trim();
+      if (!signerName) {
+        wx.showToast({ title: "请输入签署姓名", icon: "none" });
+        return;
+      }
+      if (!this.data.digitalAgreed) {
+        wx.showToast({ title: "请勾选同意数字签名", icon: "none" });
         return;
       }
       const updated = {
@@ -53,12 +91,15 @@ Page({
         status: "signed",
         signedAt: Date.now(),
         effectiveAt: null,
-        signatureType: "typed",
-        signerName: typedName,
+        signatureType: "digital",
+        signerName,
         signaturePath: "",
+        pdfStatus: "generated",
+        pdfPath: "mock://contract.pdf",
         kickoffPrompted: false
       };
       setStorage(STORAGE_KEYS.CONTRACT, updated);
+      this.archiveContract(updated);
       wx.showToast({ title: "签署完成", icon: "success" });
       wx.navigateBack();
       return;
@@ -74,9 +115,12 @@ Page({
           signatureType: "hand",
           signerName: `签署于 ${formatDateTime(new Date())}`,
           signaturePath: res.tempFilePath,
+          pdfStatus: "generated",
+          pdfPath: "mock://contract.pdf",
           kickoffPrompted: false
         };
         setStorage(STORAGE_KEYS.CONTRACT, updated);
+        this.archiveContract(updated);
         wx.showToast({ title: "签署完成", icon: "success" });
         wx.navigateBack();
       },

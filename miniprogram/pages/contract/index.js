@@ -1,6 +1,12 @@
 const config = require("../../config");
 const { formatDateTime } = require("../../utils/date");
-const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
+const {
+  STORAGE_KEYS,
+  getStorage,
+  setStorage,
+  loadOrInit
+} = require("../../utils/storage");
+const { ensureAssessment } = require("../../utils/gate");
 const {
   getAssessmentProgress,
   getRequiredAssessmentIds,
@@ -37,12 +43,23 @@ Page({
     isStaff: false,
     templateFile: null,
     contractTitle: "",
-    displayNameInput: ""
+    displayNameInput: "",
+    activeTemplate: null,
+    templatePlaceholders: [],
+    filledData: {},
+    idNumber: "",
+    servicePeriod: "",
+    serviceAmount: "",
+    contractRecords: []
   },
   onShow() {
+    if (!ensureAssessment()) return;
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
     const role = profile.role || "父母";
     const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const templates = loadOrInit(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
+    const activeTemplate =
+      templates.find((item) => item.status === "active") || templates[0] || null;
     const contract = getStorage(STORAGE_KEYS.CONTRACT);
     const record = contract || buildDefaultContract();
     if (!contract) {
@@ -63,7 +80,26 @@ Page({
     const templateFile = settings.contractTemplateFile || null;
     const contractTitle = templateFile
       ? templateFile.displayName || templateFile.name
+      : activeTemplate
+      ? activeTemplate.templateName
       : record.title;
+    const filledData = this.buildFilledData(profile);
+    const contractRecords = getStorage(STORAGE_KEYS.CONTRACT_RECORDS, []).map(
+      (item) => ({
+        ...item,
+        statusLabel:
+          item.status === "pending"
+            ? "待签署"
+            : item.status === "signed"
+            ? "已签署"
+            : item.status === "archived"
+            ? "已归档"
+            : item.status || "",
+        signedAtLabel: item.signedAt
+          ? formatDateTime(new Date(item.signedAt))
+          : ""
+      })
+    );
     this.setData({
       contract: record,
       signedAtLabel: record.signedAt ? formatDateTime(new Date(record.signedAt)) : "",
@@ -77,8 +113,21 @@ Page({
       isStaff: role !== "父母",
       templateFile,
       contractTitle,
-      displayNameInput: contractTitle
+      displayNameInput: contractTitle,
+      activeTemplate,
+      templatePlaceholders: activeTemplate ? activeTemplate.placeholders || [] : [],
+      filledData,
+      idNumber: profile.idNumber || "",
+      servicePeriod: profile.servicePeriod || "",
+      serviceAmount: profile.serviceAmount || "",
+      contractRecords
     });
+    const mergedRecord = {
+      ...record,
+      templateId: activeTemplate ? activeTemplate.id : record.templateId,
+      filledData
+    };
+    setStorage(STORAGE_KEYS.CONTRACT, mergedRecord);
     if (record.status !== "unsigned" && !requiredCompleted && !record.kickoffPrompted) {
       wx.showModal({
         title: "必做测评",
@@ -93,6 +142,16 @@ Page({
       record.kickoffPrompted = true;
       setStorage(STORAGE_KEYS.CONTRACT, record);
     }
+  },
+  buildFilledData(profile) {
+    const data = {
+      userName: profile.fullName || "待补充",
+      phone: profile.contact || "待补充",
+      idNumber: profile.idNumber || "待补充",
+      servicePeriod: profile.servicePeriod || "待补充",
+      amount: profile.serviceAmount || "待补充"
+    };
+    return data;
   },
   uploadTemplateFile() {
     wx.chooseMessageFile({
@@ -160,6 +219,33 @@ Page({
     this.setData({ templateFile, contractTitle: displayName });
     wx.showToast({ title: "已更新", icon: "success" });
   },
+  onIdNumberInput(e) {
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ idNumber: value });
+  },
+  onServicePeriodInput(e) {
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ servicePeriod: value });
+  },
+  onAmountInput(e) {
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ serviceAmount: value });
+  },
+  saveProfileExtras() {
+    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const updated = {
+      ...profile,
+      idNumber: this.data.idNumber,
+      servicePeriod: this.data.servicePeriod,
+      serviceAmount: this.data.serviceAmount
+    };
+    setStorage(STORAGE_KEYS.PROFILE, updated);
+    const filledData = this.buildFilledData(updated);
+    this.setData({ filledData });
+    const contract = getStorage(STORAGE_KEYS.CONTRACT, {});
+    setStorage(STORAGE_KEYS.CONTRACT, { ...contract, filledData });
+    wx.showToast({ title: "已更新信息", icon: "success" });
+  },
   openTemplateFile() {
     const templateFile = this.data.templateFile;
     if (!templateFile) {
@@ -187,6 +273,21 @@ Page({
       displayNameInput: fallbackTitle
     });
     wx.showToast({ title: "已移除", icon: "success" });
+  },
+  pushEntranceAssessment() {
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const assessments = getStorage(STORAGE_KEYS.ASSESSMENTS, []);
+    const entrance = assessments.find((item) => item.isEntrance) || assessments[0];
+    setStorage(STORAGE_KEYS.SETTINGS, {
+      ...settings,
+      assessmentRequired: true,
+      activeAssessmentId: entrance ? entrance.id : ""
+    });
+    wx.showModal({
+      title: "测评已推送",
+      content: "已向用户推送入学测评（模拟）。",
+      showCancel: false
+    });
   },
   startSign() {
     wx.navigateTo({ url: "/pages/contract/signature" });

@@ -4,6 +4,9 @@
       <text class="section-title">{{requiredOnly ? '必做测评' : '推荐测评'}}</text>
       <text class="muted">免费 + 付费</text>
     </view>
+    <view wx:if="{{forceMode}}" class="muted" style="margin-bottom: 12rpx;">
+      入学测评完成前，仅开放测评与个人中心。
+    </view>
     <view wx:for="{{assessments}}" wx:key="id" class="assessment-item">
       <view class="assessment-main">
         <text class="assessment-title">{{item.title}}</text>

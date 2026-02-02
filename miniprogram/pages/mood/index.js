@@ -5,6 +5,7 @@ const {
   setStorage
 } = require("../../utils/storage");
 const { applyTriggers } = require("../../utils/trigger");
+const { ensureAssessment } = require("../../utils/gate");
 
 const TAGS = ["平静", "愉快", "疲惫", "紧张", "生气", "无助", "满足", "焦虑"];
 
@@ -18,6 +19,7 @@ Page({
     recentLogs: []
   },
   onShow() {
+    if (!ensureAssessment()) return;
     const todayKey = formatDate();
     const logs = getStorage(STORAGE_KEYS.MOOD_LOGS, []);
     const todayLog = logs.find((log) => log.dateKey === todayKey);

@@ -4,6 +4,7 @@ const {
   appendToList
 } = require("../../utils/storage");
 const { applyTriggers } = require("../../utils/trigger");
+const { ensureAssessment } = require("../../utils/gate");
 
 Page({
   data: {
@@ -15,6 +16,7 @@ Page({
     keywords: ""
   },
   onLoad(options) {
+    if (!ensureAssessment()) return;
     this.setData({
       taskId: options.taskId || "",
       taskTitle: options.taskTitle ? decodeURIComponent(options.taskTitle) : ""

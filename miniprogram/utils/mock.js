@@ -34,17 +34,75 @@ const microActions = [
 
 const assessments = [
   {
+    id: "assessment_entry",
+    templateId: "template_entry_psy",
+    title: "入学基础测评-心理篇",
+    description: "入学必做测评，完成后生成学习支持建议。",
+    isPaid: false,
+    required: false,
+    isEntrance: true,
+    category: "入学测评",
+    dimensions: ["情绪管理", "学习动力", "家庭支持"],
+    questions: [
+      {
+        id: createId("q"),
+        title: "最近一周孩子的情绪稳定程度",
+        type: "scale",
+        dimension: "情绪管理",
+        required: true,
+        scale: { min: 1, max: 5, leftLabel: "波动大", rightLabel: "稳定" }
+      },
+      {
+        id: createId("q"),
+        title: "孩子对学习的主动性",
+        type: "choice",
+        dimension: "学习动力",
+        required: true,
+        options: [
+          { label: "非常主动", score: 5 },
+          { label: "较主动", score: 4 },
+          { label: "需要提醒", score: 3 },
+          { label: "较抗拒", score: 2 },
+          { label: "强烈抗拒", score: 1 }
+        ]
+      },
+      {
+        id: createId("q"),
+        title: "家庭成员对学习的支持方式",
+        type: "multiple",
+        dimension: "家庭支持",
+        required: true,
+        options: [
+          { label: "固定学习时间", score: 2 },
+          { label: "提供安静环境", score: 2 },
+          { label: "陪伴复盘总结", score: 1 },
+          { label: "及时鼓励反馈", score: 1 }
+        ]
+      },
+      {
+        id: createId("q"),
+        title: "描述目前最困扰的教育问题",
+        type: "text",
+        dimension: "情绪管理",
+        required: false
+      }
+    ]
+  },
+  {
     id: "assessment_mood",
+    templateId: "template_family_mood",
     title: "家庭情绪温度计",
     description: "了解近一周家庭的情绪氛围。",
     isPaid: false,
     required: true,
     category: "必做测评",
+    dimensions: ["情绪管理", "沟通质量"],
     questions: [
       {
         id: createId("q"),
         title: "最近一周，家庭整体情绪偏向",
         type: "choice",
+        dimension: "情绪管理",
         options: [
           { label: "轻松稳定", score: 4 },
           { label: "偶有波动", score: 3 },
@@ -56,6 +114,7 @@ const assessments = [
         id: createId("q"),
         title: "亲子沟通时，彼此感受到的理解程度",
         type: "choice",
+        dimension: "沟通质量",
         options: [
           { label: "大多能理解", score: 4 },
           { label: "有时理解", score: 3 },
@@ -67,16 +126,19 @@ const assessments = [
   },
   {
     id: "assessment_style",
+    templateId: "template_comm_style",
     title: "亲子沟通风格评估",
     description: "了解沟通方式和互动质量。",
     isPaid: false,
     required: true,
     category: "必做测评",
+    dimensions: ["沟通质量"],
     questions: [
       {
         id: createId("q"),
         title: "当孩子犯错时，我更常",
         type: "choice",
+        dimension: "沟通质量",
         options: [
           { label: "先了解原因再引导", score: 4 },
           { label: "提醒并提出建议", score: 3 },
@@ -88,6 +150,7 @@ const assessments = [
         id: createId("q"),
         title: "冲突后修复关系的频率",
         type: "choice",
+        dimension: "沟通质量",
         options: [
           { label: "几乎都会修复", score: 4 },
           { label: "大多数会修复", score: 3 },
@@ -99,43 +162,51 @@ const assessments = [
   },
   {
     id: "assessment_pressure",
+    templateId: "template_pressure",
     title: "家庭情绪压力指数",
     description: "识别家庭情绪压力的主要来源。",
     isPaid: false,
     category: "免费测评",
+    dimensions: ["情绪压力"],
     questions: [
       {
         id: createId("q"),
         title: "最近一周，家人间冲突强度",
         type: "scale",
+        dimension: "情绪压力",
         scale: { min: 1, max: 5, leftLabel: "很低", rightLabel: "很高" }
       },
       {
         id: createId("q"),
         title: "家庭成员对情绪支持的满意度",
         type: "scale",
+        dimension: "情绪压力",
         scale: { min: 1, max: 5, leftLabel: "不满意", rightLabel: "很满意" }
       },
       {
         id: createId("q"),
         title: "孩子近期的情绪稳定程度",
         type: "scale",
+        dimension: "情绪压力",
         scale: { min: 1, max: 5, leftLabel: "波动大", rightLabel: "稳定" }
       }
     ]
   },
   {
     id: "assessment_paid",
+    templateId: "template_learning_drive",
     title: "学习动力深度评估",
     description: "付费测评，深入了解学习动力与家庭生态。",
     isPaid: true,
     price: 99,
     category: "进阶测评",
+    dimensions: ["学习动力", "家庭支持"],
     questions: [
       {
         id: createId("q"),
         title: "孩子对学习的主动性",
         type: "choice",
+        dimension: "学习动力",
         options: [
           { label: "非常主动", score: 4 },
           { label: "较主动", score: 3 },
@@ -147,6 +218,7 @@ const assessments = [
         id: createId("q"),
         title: "家庭支持学习的方式",
         type: "choice",
+        dimension: "家庭支持",
         options: [
           { label: "稳定且有节奏", score: 4 },
           { label: "偶尔有节奏", score: 3 },
@@ -158,34 +230,40 @@ const assessments = [
         id: createId("q"),
         title: "学习目标的清晰程度",
         type: "scale",
+        dimension: "学习动力",
         scale: { min: 1, max: 5, leftLabel: "不清晰", rightLabel: "很清晰" }
       }
     ]
   },
   {
     id: "assessment_ecosystem",
+    templateId: "template_ecosystem",
     title: "家庭生态系统分析",
     description: "付费测评，识别家庭支持系统与关键变量。",
     isPaid: true,
     price: 99,
     category: "进阶测评",
+    dimensions: ["家庭生态"],
     questions: [
       {
         id: createId("q"),
         title: "家庭规则的清晰度",
         type: "scale",
+        dimension: "家庭生态",
         scale: { min: 1, max: 5, leftLabel: "混乱", rightLabel: "清晰" }
       },
       {
         id: createId("q"),
         title: "家庭成员分工的稳定性",
         type: "scale",
+        dimension: "家庭生态",
         scale: { min: 1, max: 5, leftLabel: "不稳定", rightLabel: "稳定" }
       },
       {
         id: createId("q"),
         title: "可调用的外部支持资源",
         type: "choice",
+        dimension: "家庭生态",
         options: [
           { label: "资源充足", score: 4 },
           { label: "资源较多", score: 3 },
@@ -204,26 +282,35 @@ const aiQuickPrompts = [
   "孩子厌学时如何沟通？"
 ];
 
-const contractTemplate = [
+const contractTemplates = [
   {
-    title: "服务范围",
-    content:
-      "本服务聚焦于家庭教育与亲子沟通支持，不构成医疗或临床诊断建议。"
+    id: "contract_2024",
+    templateName: "2024年度三阶服务合同",
+    templateFileUrl: "",
+    placeholders: ["userName", "phone", "idNumber", "servicePeriod", "amount"],
+    status: "active",
+    createdAt: Date.now()
+  }
+];
+
+const homeworkTasks = [
+  {
+    id: "homework_daily",
+    title: "情绪观察日记",
+    description: "记录孩子今天一个情绪高峰点，附带你的回应方式。",
+    type: "daily",
+    deadline: "每日 21:00",
+    teacherName: "张老师",
+    createdAt: Date.now()
   },
   {
-    title: "服务形式",
-    content:
-      "服务包含测评、行动计划、阶段性回顾与线上沟通支持。具体服务内容以平台展示为准。"
-  },
-  {
-    title: "用户责任",
-    content:
-      "请如实填写测评与记录信息，以便生成更准确的服务建议。"
-  },
-  {
-    title: "隐私与数据",
-    content:
-      "我们将基于隐私政策处理您的数据，并采取合理安全措施进行保护。"
+    id: "homework_weekly",
+    title: "亲子沟通复盘",
+    description: "每周复盘一次沟通冲突场景，填写反思。",
+    type: "weekly",
+    deadline: "每周日 20:00",
+    teacherName: "张老师",
+    createdAt: Date.now()
   }
 ];
 
@@ -246,7 +333,8 @@ module.exports = {
   starterTasks,
   microActions,
   assessments,
-  contractTemplate,
+  contractTemplates,
+  homeworkTasks,
   aiQuickPrompts,
   getMockAiReply
 };

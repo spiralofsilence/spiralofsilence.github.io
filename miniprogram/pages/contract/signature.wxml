@@ -2,7 +2,7 @@
   <view class="card">
     <view class="tab-bar">
       <view class="tab {{tabIndex === 0 ? 'active' : ''}}" data-index="0" bindtap="switchTab">手写签名</view>
-      <view class="tab {{tabIndex === 1 ? 'active' : ''}}" data-index="1" bindtap="switchTab">文字签名</view>
+      <view class="tab {{tabIndex === 1 ? 'active' : ''}}" data-index="1" bindtap="switchTab">数字签名</view>
     </view>
     <view wx:if="{{tabIndex === 0}}" class="canvas-wrap">
       <canvas
@@ -16,10 +16,18 @@
         <button class="button-ghost" size="mini" bindtap="clearCanvas">清空</button>
       </view>
     </view>
-    <view wx:else>
-      <input class="input" placeholder="请输入签名姓名" value="{{typedName}}" bindinput="onNameInput" />
+    <view wx:else class="digital-box">
+      <input class="input" placeholder="请输入签署姓名" value="{{signerName}}" bindinput="onNameInput" />
+      <view class="checkbox-row">
+        <checkbox-group bindchange="toggleDigitalAgreement">
+          <label class="checkbox-label">
+            <checkbox value="agree" checked="{{digitalAgreed}}" />
+            同意使用数字证书签名
+          </label>
+        </checkbox-group>
+      </view>
       <text class="muted" style="margin-top: 8rpx; display: block;">
-        将以文字形式存档
+        使用数字证书签名将生成PDF存档
       </text>
     </view>
     <view style="margin-top: 16rpx;">

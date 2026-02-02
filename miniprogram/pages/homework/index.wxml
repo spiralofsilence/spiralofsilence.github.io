@@ -21,9 +21,25 @@
 
   <view class="card">
     <view class="section-header">
+      <text class="section-title">作业任务</text>
+      <text class="muted">请选择任务</text>
+    </view>
+    <view wx:if="{{tasks.length === 0}}" class="muted">暂无任务</view>
+    <view wx:for="{{tasks}}" wx:key="id" class="task-item {{selectedTaskId === item.id ? 'active' : ''}}" bindtap="selectTask" data-id="{{item.id}}">
+      <view>
+        <text class="task-title">{{item.title}}</text>
+        <text class="muted">{{item.description}}</text>
+        <text class="muted">截止：{{item.deadline}}</text>
+      </view>
+      <text class="muted">{{selectedTaskId === item.id ? '已选择' : ''}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
       <text class="section-title">提交作业</text>
     </view>
-    <input class="input" placeholder="作业标题" value="{{title}}" bindinput="onTitleInput" />
+    <input class="input" placeholder="作业说明（简述完成情况）" value="{{title}}" bindinput="onTitleInput" />
     <textarea class="input" placeholder="补充说明（可选）" value="{{note}}" bindinput="onNoteInput" auto-height style="margin-top: 12rpx;" />
     <view class="row" style="margin-top: 12rpx;">
       <button class="button-ghost" size="mini" bindtap="chooseImage">上传图片</button>
@@ -61,10 +77,25 @@
       </view>
       <view wx:if="{{role !== '父母'}}" class="comment-box">
         <input class="input" placeholder="老师点评" value="{{commentDrafts[item.id]}}" data-id="{{item.id}}" bindinput="onCommentInput" />
+        <input class="input" placeholder="评分（1-5）" value="{{ratingDrafts[item.id]}}" data-id="{{item.id}}" bindinput="onRatingInput" style="margin-top: 8rpx;" />
+        <view class="checkbox-row">
+          <checkbox-group bindchange="onExcellentToggle" data-id="{{item.id}}">
+            <label class="checkbox-label">
+              <checkbox value="excellent" checked="{{excellentDrafts[item.id]}}" />
+              标记优秀作业
+            </label>
+          </checkbox-group>
+        </view>
         <button class="button-primary" size="mini" data-id="{{item.id}}" bindtap="submitComment">提交点评</button>
       </view>
-      <view wx:elif="{{item.teacherComment}}" class="muted">
-        老师点评：{{item.teacherComment}}
+      <view wx:elif="{{item.review && item.review.content}}" class="muted">
+        老师点评：{{item.review.content}}
+      </view>
+      <view wx:if="{{item.review && item.review.rating}}" class="muted">
+        评分：{{item.review.rating}} 星
+      </view>
+      <view wx:if="{{item.review && item.review.isExcellent}}" class="muted gold-text">
+        优秀作业
       </view>
     </view>
   </view>
