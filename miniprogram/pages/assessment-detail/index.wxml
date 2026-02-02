@@ -42,7 +42,7 @@
         wx:key="label"
         wx:for-item="option"
         wx:for-index="optIndex"
-        class="option-item {{(answers[question.id] || []).includes(optIndex) ? 'active' : ''}}"
+        class="option-item {{multiSelectedMap[question.id][optIndex] ? 'active' : ''}}"
         bindtap="toggleMultiple"
         data-qid="{{question.id}}"
         data-index="{{optIndex}}"

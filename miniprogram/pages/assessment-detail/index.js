@@ -13,6 +13,7 @@ Page({
     assessment: null,
     answers: {},
     scaleValues: {},
+    multiSelectedMap: {},
     answeredCount: 0,
     totalQuestions: 0,
     progressPercent: 0,
@@ -41,10 +42,12 @@ Page({
         answers[question.id] = existingAnswers[question.id];
       }
     });
+    const multiSelectedMap = this.buildMultiSelectedMap(answers, assessment);
     this.setData({
       assessment,
       scaleValues,
       answers,
+      multiSelectedMap,
       totalQuestions: assessment.questions.length
     });
     this.updateProgress();
@@ -110,7 +113,28 @@ Page({
   saveProgress(answers) {
     if (!this.data.assessment) return;
     saveAssessmentProgress(this.data.assessment.id, answers);
+    const multiSelectedMap = this.buildMultiSelectedMap(
+      answers,
+      this.data.assessment
+    );
+    this.setData({ multiSelectedMap });
     this.updateProgress();
+  },
+  buildMultiSelectedMap(answers, assessment) {
+    const map = {};
+    if (!assessment) return map;
+    assessment.questions.forEach((question) => {
+      if (question.type !== "multiple") return;
+      const selections = Array.isArray(answers[question.id])
+        ? answers[question.id]
+        : [];
+      const indexMap = {};
+      selections.forEach((idx) => {
+        indexMap[idx] = true;
+      });
+      map[question.id] = indexMap;
+    });
+    return map;
   },
   submitAssessment() {
     const { assessment, answers } = this.data;
