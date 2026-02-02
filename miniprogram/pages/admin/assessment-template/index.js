@@ -23,11 +23,18 @@ Page({
     scaleMin: 1,
     scaleMax: 5,
     scaleLeft: "低",
-    scaleRight: "高"
+    scaleRight: "高",
+    forceRequired: false,
+    activeAssessmentId: ""
   },
   onShow() {
     const templates = loadOrInit(STORAGE_KEYS.ASSESSMENTS, []);
-    this.setData({ templates });
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    this.setData({
+      templates,
+      forceRequired: settings.assessmentRequired === true,
+      activeAssessmentId: settings.activeAssessmentId || ""
+    });
   },
   onTemplateNameInput(e) {
     const value = typeof e.detail === "string" ? e.detail : e.detail.value;
@@ -232,5 +239,16 @@ Page({
       content: "已向用户推送测评（模拟）。",
       showCancel: false
     });
+    this.onShow();
+  },
+  clearAssessmentGate() {
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    setStorage(STORAGE_KEYS.SETTINGS, {
+      ...settings,
+      assessmentRequired: false,
+      activeAssessmentId: ""
+    });
+    wx.showToast({ title: "已解除强制", icon: "success" });
+    this.onShow();
   }
 });

@@ -97,4 +97,19 @@
       </view>
     </view>
   </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">测评强制状态</text>
+      <text class="muted">{{forceRequired ? '已开启' : '未开启'}}</text>
+    </view>
+    <text class="muted" wx:if="{{forceRequired}}">
+      当前强制测评ID：{{activeAssessmentId || '未指定'}}
+    </text>
+    <view style="margin-top: 12rpx;">
+      <van-button plain type="default" size="small" bind:click="clearAssessmentGate">
+        解除强制
+      </van-button>
+    </view>
+  </view>
 </view>
