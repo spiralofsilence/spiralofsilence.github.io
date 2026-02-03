@@ -1,0 +1,74 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">新建/编辑合同模板</text>
+    </view>
+    <van-field label="模板名称" placeholder="如：2024年度三阶服务合同" value="{{templateName}}" bind:input="onNameInput" />
+    <van-field
+      label="占位符"
+      placeholder="userName,phone,servicePeriod,amount"
+      value="{{placeholdersInput}}"
+      bind:input="onPlaceholdersInput"
+    />
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="uploadTemplateFile">上传模板文件</van-button>
+      <van-button plain type="default" size="small" bind:click="saveTemplate">保存模板</van-button>
+      <van-button plain type="default" size="small" bind:click="resetForm">清空</van-button>
+    </view>
+    <text class="muted" style="margin-top: 8rpx; display: block;">
+      支持PDF/Word文件，占位符以英文逗号分隔。
+    </text>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">模板列表</text>
+    </view>
+    <view wx:if="{{templates.length === 0}}" class="muted">暂无模板</view>
+    <view wx:for="{{templates}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.templateName}}</text>
+        <van-tag type="primary" plain wx:if="{{item.status === 'active'}}">生效中</van-tag>
+      </view>
+      <text class="muted">占位符：{{item.placeholders.join(', ')}}</text>
+      <text class="muted">推送给：{{selectedUserId ? '已选用户' : '请先选用户'}}</text>
+      <view style="margin-top: 8rpx;">
+        <van-button type="primary" size="mini" bind:click="setActive" data-template="{{item}}">设为生效</van-button>
+        <van-button plain type="default" size="mini" bind:click="editTemplate" data-template="{{item}}">编辑</van-button>
+        <van-button plain type="default" size="mini" bind:click="openTemplateFile" data-template="{{item}}">查看文件</van-button>
+        <van-button plain type="default" size="mini" bind:click="deleteTemplate" data-template="{{item}}">删除</van-button>
+        <van-button plain type="default" size="mini" bind:click="pushContractToUser" data-template="{{item}}">
+          推送给用户
+        </van-button>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">选择用户</text>
+    </view>
+    <picker mode="selector" range="{{users}}" range-key="fullName" bindchange="onUserChange">
+      <van-cell title="目标用户" value="{{selectedUserId ? '已选择' : '请选择'}}" is-link />
+    </picker>
+    <view wx:if="{{templates.length}}" class="muted" style="margin-top: 8rpx;">
+      请在模板列表中点击“推送给用户”
+    </view>
+    <view class="muted" style="margin-top: 4rpx;">
+      付费状态：{{selectedUserPaid ? '已付费' : '未付费'}}
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">推送入学测评</text>
+      <text class="muted">模拟</text>
+    </view>
+    <picker mode="selector" range="{{assessments}}" range-key="title" bindchange="onAssessmentChange">
+      <van-cell title="选择测评模板" value="{{selectedAssessmentId ? '已选择' : '请选择'}}" is-link />
+    </picker>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="pushEntranceAssessment">一键推送</van-button>
+    </view>
+  </view>
+</view>

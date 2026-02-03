@@ -1,0 +1,130 @@
+<view class="page page-enter" wx:if="{{contract}}">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">{{contractTitle || '待签署合同'}}</text>
+      <van-tag type="primary" plain>
+        {{contract.status === 'unsigned' ? '未签署' : contract.status === 'signed' ? '已签署' : '已生效'}}
+      </van-tag>
+    </view>
+    <view wx:if="{{!templateFile}}" class="muted">
+      暂无合同文件，请联系顾问上传。
+    </view>
+    <view wx:if="{{templateFile}}">
+      <van-cell title="待签署合同" value="{{contractTitle}}" is-link bind:click="openTemplateFile" />
+    </view>
+    <view class="muted" wx:if="{{signedAtLabel}}">
+      签署时间：{{signedAtLabel}}
+    </view>
+    <view class="muted" wx:if="{{effectiveAtLabel}}">
+      生效时间：{{effectiveAtLabel}}
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">合同预填信息</text>
+      <text class="muted">自动读取用户档案</text>
+    </view>
+    <van-cell-group>
+      <van-cell title="姓名" value="{{filledData.userName}}" />
+      <van-cell title="手机号" value="{{filledData.phone}}" />
+      <van-cell title="身份证号" value="{{filledData.idNumber}}" />
+      <van-cell title="服务周期" value="{{filledData.servicePeriod}}" />
+      <van-cell title="金额" value="{{filledData.amount}}" />
+    </van-cell-group>
+  </view>
+
+  <view class="card" wx:if="{{role === '父母'}}">
+    <view class="section-header">
+      <text class="section-title">补充信息</text>
+      <text class="muted">用于合同自动填充</text>
+    </view>
+    <van-field label="身份证号" placeholder="身份证号" value="{{idNumber}}" bind:input="onIdNumberInput" />
+    <van-field label="服务周期" placeholder="如：2024.03-2024.06" value="{{servicePeriod}}" bind:input="onServicePeriodInput" />
+    <van-field label="金额" placeholder="如：¥9800" value="{{serviceAmount}}" bind:input="onAmountInput" />
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="saveProfileExtras">保存信息</van-button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">签署信息</text>
+    </view>
+    <view wx:if="{{contract.status === 'unsigned'}}" class="muted">
+      当前合同尚未签署。
+    </view>
+    <view wx:else>
+      <text class="muted">
+        签署方式：
+        {{contract.signatureType === 'hand' ? '手写' : contract.signatureType === 'digital' ? '数字证书' : '文字'}}
+      </text>
+      <view class="muted">签署人：{{contract.signerName || '未填写'}}</view>
+      <image wx:if="{{contract.signaturePath}}" class="signature-preview" mode="aspectFit" src="{{contract.signaturePath}}" />
+    </view>
+    <view style="margin-top: 16rpx;">
+      <van-button wx:if="{{contract.status === 'unsigned'}}" type="primary" size="small" bind:click="startSign" disabled="{{!templateFile}}">
+        签署合同
+      </van-button>
+      <van-button wx:else plain type="default" size="small" bind:click="startSign" disabled="{{!templateFile}}">
+        重新签署
+      </van-button>
+      <text wx:if="{{!templateFile}}" class="muted" style="margin-top: 8rpx; display: block;">
+        上传合同后才能签署。
+      </text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{isStaff}}">
+    <view class="section-header">
+      <text class="section-title">合同管理</text>
+      <text class="muted">顾问/管理员</text>
+    </view>
+    <text class="muted">上传合同文件后，父母角色可查看并签署。</text>
+    <view style="margin-top: 12rpx;">
+      <van-field label="合同名称" placeholder="合同显示名称" value="{{displayNameInput}}" bind:input="onDisplayNameInput" />
+      <van-button plain type="default" size="small" bind:click="saveDisplayName" style="margin-top: 8rpx;">保存名称</van-button>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="uploadTemplateFile">上传合同文件</van-button>
+      <van-button plain type="default" size="small" bind:click="openTemplateFile">预览合同</van-button>
+      <van-button plain type="default" size="small" bind:click="removeTemplateFile">移除合同</van-button>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <van-button plain type="default" size="small" bind:click="pushEntranceAssessment">
+        推送入学测评
+      </van-button>
+    </view>
+    <view wx:if="{{templateFile}}" class="muted" style="margin-top: 8rpx;">
+      已上传：{{templateFile.name}}
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">我的合同</text>
+    </view>
+    <view wx:if="{{contractRecords.length === 0}}" class="muted">暂无历史合同</view>
+    <view wx:for="{{contractRecords}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.templateName}}</text>
+        <text class="muted">{{item.statusLabel}}</text>
+      </view>
+      <text class="muted">签署时间：{{item.signedAtLabel || '未签署'}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{contract.status !== 'unsigned'}}">
+    <view class="section-header">
+      <text class="section-title">必做测评</text>
+      <text class="muted">{{requiredCompleted ? '已完成' : '未完成'}}</text>
+    </view>
+    <view wx:for="{{requiredItems}}" wx:key="id" class="log-item">
+      <text class="log-title">{{item.title}}</text>
+      <text class="muted">{{item.status}}</text>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-primary" bindtap="openAssessments">进入必做测评</button>
+    </view>
+  </view>
+</view>

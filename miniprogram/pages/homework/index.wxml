@@ -1,0 +1,102 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">作业打卡统计</text>
+    </view>
+    <view class="row stats-row">
+      <view>
+        <text class="muted">连续打卡</text>
+        <view class="card-title">{{stats.streak}} 天</view>
+      </view>
+      <view>
+        <text class="muted">完成率</text>
+        <view class="card-title">{{stats.completionRate}}%</view>
+      </view>
+      <view>
+        <text class="muted">累计记录</text>
+        <view class="card-title">{{stats.total}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">作业任务</text>
+      <text class="muted">请选择任务</text>
+    </view>
+    <view wx:if="{{tasks.length === 0}}" class="muted">暂无任务</view>
+    <view wx:for="{{tasks}}" wx:key="id" class="task-item {{selectedTaskId === item.id ? 'active' : ''}}" bindtap="selectTask" data-id="{{item.id}}">
+      <view>
+        <text class="task-title">{{item.title}}</text>
+        <text class="muted">{{item.description}}</text>
+        <text class="muted">截止：{{item.deadline}}</text>
+      </view>
+      <text class="muted">{{selectedTaskId === item.id ? '已选择' : ''}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">提交作业</text>
+    </view>
+    <input class="input" placeholder="作业说明（简述完成情况）" value="{{title}}" bindinput="onTitleInput" />
+    <textarea class="input" placeholder="补充说明（可选）" value="{{note}}" bindinput="onNoteInput" auto-height style="margin-top: 12rpx;" />
+    <view class="row" style="margin-top: 12rpx;">
+      <button class="button-ghost" size="mini" bindtap="chooseImage">上传图片</button>
+      <button class="button-ghost" size="mini" bindtap="chooseFile">上传文件</button>
+      <button class="button-ghost" size="mini" bindtap="chooseVideo">上传视频</button>
+    </view>
+    <view wx:if="{{attachments.length}}" class="attachment-list">
+      <view wx:for="{{attachments}}" wx:key="index" class="attachment-item">
+        <text class="muted">{{item.name}}</text>
+        <text class="remove" data-index="{{index}}" bindtap="removeAttachment">删除</text>
+      </view>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-primary" bindtap="submitHomework">提交打卡</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">打卡记录</text>
+    </view>
+    <view wx:if="{{logs.length === 0}}" class="muted">暂时没有记录</view>
+    <view wx:for="{{logs}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.title}}</text>
+        <text class="muted">{{item.timeLabel}}</text>
+      </view>
+      <text class="muted">{{item.note}}</text>
+      <view class="muted" wx:if="{{item.attachments.length}}">
+        附件数量：{{item.attachments.length}}
+      </view>
+      <view class="status-row">
+        <text class="muted">状态：</text>
+        <text class="status {{item.status}}">{{item.status === 'submitted' ? '待点评' : '已点评'}}</text>
+      </view>
+      <view wx:if="{{role !== '父母'}}" class="comment-box">
+        <input class="input" placeholder="老师点评" value="{{commentDrafts[item.id]}}" data-id="{{item.id}}" bindinput="onCommentInput" />
+        <input class="input" placeholder="评分（1-5）" value="{{ratingDrafts[item.id]}}" data-id="{{item.id}}" bindinput="onRatingInput" style="margin-top: 8rpx;" />
+        <view class="checkbox-row">
+          <checkbox-group bindchange="onExcellentToggle" data-id="{{item.id}}">
+            <label class="checkbox-label">
+              <checkbox value="excellent" checked="{{excellentDrafts[item.id]}}" />
+              标记优秀作业
+            </label>
+          </checkbox-group>
+        </view>
+        <button class="button-primary" size="mini" data-id="{{item.id}}" bindtap="submitComment">提交点评</button>
+      </view>
+      <view wx:elif="{{item.review && item.review.content}}" class="muted">
+        老师点评：{{item.review.content}}
+      </view>
+      <view wx:if="{{item.review && item.review.rating}}" class="muted">
+        评分：{{item.review.rating}} 星
+      </view>
+      <view wx:if="{{item.review && item.review.isExcellent}}" class="muted gold-text">
+        优秀作业
+      </view>
+    </view>
+  </view>
+</view>

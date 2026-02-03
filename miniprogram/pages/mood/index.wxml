@@ -1,0 +1,63 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">今日心情</text>
+      <text class="muted">{{todayKey}}</text>
+    </view>
+    <view class="mood-score">
+      <text class="score">{{score}}</text>
+      <text class="muted">1 = 很差，5 = 很好</text>
+    </view>
+    <slider min="1" max="5" step="1" value="{{score}}" bindchange="onScoreChange" activeColor="#2f6bff" />
+    <view wx:if="{{score <= 2}}" class="alert">
+      <text>今日心情较低，可在求助信号页查看提示。</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">情绪标签</text>
+    </view>
+    <view class="tag-list">
+      <view
+        wx:for="{{tags}}"
+        wx:key="tag"
+        class="tag-item {{selectedTags.includes(item) ? 'tag-active' : ''}}"
+        bindtap="toggleTag"
+        data-tag="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">简短记录</text>
+    </view>
+    <textarea
+      class="input"
+      placeholder="记录让你有触动的瞬间或观察"
+      value="{{note}}"
+      bindinput="onNoteInput"
+      auto-height
+    />
+    <view style="margin-top: 16rpx;">
+      <button class="button-primary" bindtap="saveMood">保存今日记录</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">最近记录</text>
+    </view>
+    <view wx:if="{{recentLogs.length === 0}}" class="muted">暂时没有记录</view>
+    <view wx:for="{{recentLogs}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">评分 {{item.score}}</text>
+        <text class="muted">{{item.timeLabel}}</text>
+      </view>
+      <text class="muted">{{item.note}}</text>
+    </view>
+  </view>
+</view>

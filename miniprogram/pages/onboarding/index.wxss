@@ -1,0 +1,203 @@
+.onboarding {
+  min-height: 100vh;
+  padding: 40rpx 28rpx;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.9), rgba(246, 242, 233, 0.9) 55%, rgba(240, 232, 216, 1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-indicator {
+  text-align: right;
+  margin-bottom: 20rpx;
+}
+
+.step-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 32rpx 26rpx;
+  border: 2rpx solid #eadfc8;
+  box-shadow: 0 16rpx 30rpx rgba(45, 36, 20, 0.08);
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-step {
+  background: linear-gradient(180deg, #ffffff 0%, #fbf7ef 100%);
+}
+
+.welcome {
+  padding: 36rpx 20rpx;
+  text-align: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.logo-ring {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 2rpx solid #e6d3a3;
+  background: radial-gradient(circle, #ffffff 25%, #f6edda 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16rpx 30rpx rgba(160, 122, 26, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-text {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: #1f7a4d;
+}
+
+.brand-name {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  color: #1f5a3a;
+  letter-spacing: 4rpx;
+}
+
+.brand-sub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #a07a1a;
+}
+
+.welcome-title {
+  font-size: 42rpx;
+  font-weight: 600;
+  color: #1f5a3a;
+  letter-spacing: 2rpx;
+  animation: fadeUp 1s ease;
+}
+
+.welcome-sub {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  color: #8a7b5c;
+  line-height: 1.7;
+  animation: fadeUp 1.4s ease;
+}
+
+.logo-ring::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 200%;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: sweep 5s linear infinite;
+}
+
+.welcome-cta {
+  margin-top: 24rpx;
+  text-align: center;
+}
+
+.step-actions {
+  margin-top: 24rpx;
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wechat-card {
+  margin: 16rpx 0;
+  padding: 16rpx;
+  background: #f7f2e7;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+}
+
+.light-sweep {
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 200%;
+  height: 60%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(10deg);
+  animation: sweep 6s linear infinite;
+  pointer-events: none;
+}
+
+.particle-field {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: rgba(160, 122, 26, 0.35);
+  animation: float 8s ease-in-out infinite;
+}
+
+.particle.p1 { top: 10%; left: 12%; animation-delay: 0s; }
+.particle.p2 { top: 20%; left: 70%; width: 10rpx; height: 10rpx; animation-delay: 1s; }
+.particle.p3 { top: 40%; left: 20%; animation-delay: 2s; }
+.particle.p4 { top: 55%; left: 80%; width: 12rpx; height: 12rpx; animation-delay: 1.6s; }
+.particle.p5 { top: 70%; left: 15%; animation-delay: 2.2s; }
+.particle.p6 { top: 78%; left: 60%; width: 10rpx; height: 10rpx; animation-delay: 0.8s; }
+.particle.p7 { top: 30%; left: 45%; animation-delay: 1.2s; }
+.particle.p8 { top: 62%; left: 35%; animation-delay: 2.8s; }
+
+@keyframes sweep {
+  0% { transform: translateX(-20%) rotate(10deg); opacity: 0; }
+  20% { opacity: 0.4; }
+  40% { opacity: 0.2; }
+  100% { transform: translateX(60%) rotate(10deg); opacity: 0; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-18rpx); opacity: 0.9; }
+  100% { transform: translateY(0); opacity: 0.4; }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16rpx);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

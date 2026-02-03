@@ -1,0 +1,115 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">新建/编辑测评模板</text>
+    </view>
+    <van-field label="测评名称" placeholder="如：入学基础测评-心理篇" value="{{templateName}}" bind:input="onTemplateNameInput" />
+    <van-field label="说明" placeholder="简短描述" value="{{description}}" bind:input="onDescriptionInput" />
+    <van-field label="维度" placeholder="情绪管理,学习动力,家庭支持" value="{{dimensionsInput}}" bind:input="onDimensionsInput" />
+    <view class="checkbox-row">
+      <checkbox-group bindchange="toggleEntrance">
+        <label class="checkbox-label">
+          <checkbox value="entrance" checked="{{isEntrance}}" />
+          设为入学测评
+        </label>
+      </checkbox-group>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">添加题目</text>
+    </view>
+    <van-field label="题目" placeholder="请输入题目" value="{{questionTitle}}" bind:input="onQuestionTitleInput" />
+    <van-field label="维度" placeholder="对应维度" value="{{questionDimension}}" bind:input="onQuestionDimensionInput" />
+    <view class="type-row">
+      <text class="muted">题型：</text>
+      <view class="pill" data-type="choice" bindtap="onQuestionTypeChange">单选</view>
+      <view class="pill" data-type="multiple" bindtap="onQuestionTypeChange">多选</view>
+      <view class="pill" data-type="scale" bindtap="onQuestionTypeChange">量表</view>
+      <view class="pill" data-type="text" bindtap="onQuestionTypeChange">填空</view>
+    </view>
+    <view class="checkbox-row">
+      <checkbox-group bindchange="onQuestionRequiredToggle">
+        <label class="checkbox-label">
+          <checkbox value="required" checked="{{questionRequired}}" />
+          必答
+        </label>
+      </checkbox-group>
+    </view>
+    <view wx:if="{{questionType === 'choice' || questionType === 'multiple'}}">
+      <van-field
+        label="选项"
+        type="textarea"
+        placeholder="每行一个选项，可写：选项|分数"
+        value="{{optionsInput}}"
+        bind:input="onOptionsInput"
+      />
+    </view>
+    <view wx:if="{{questionType === 'scale'}}" class="scale-config">
+      <van-field label="最小值" placeholder="1" value="{{scaleMin}}" bind:input="onScaleMinInput" />
+      <van-field label="最大值" placeholder="5" value="{{scaleMax}}" bind:input="onScaleMaxInput" />
+      <van-field label="左标签" placeholder="低" value="{{scaleLeft}}" bind:input="onScaleLeftInput" />
+      <van-field label="右标签" placeholder="高" value="{{scaleRight}}" bind:input="onScaleRightInput" />
+    </view>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="addQuestion">添加题目</van-button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">题目列表</text>
+    </view>
+    <view wx:if="{{questions.length === 0}}" class="muted">暂无题目</view>
+    <view wx:for="{{questions}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.title}}</text>
+        <text class="muted">{{item.type}}</text>
+      </view>
+      <text class="muted">维度：{{item.dimension || '未设置'}}</text>
+      <view style="margin-top: 8rpx;">
+        <van-button plain type="default" size="mini" data-id="{{item.id}}" bind:click="removeQuestion">删除</van-button>
+      </view>
+    </view>
+    <view style="margin-top: 16rpx;">
+      <van-button type="primary" size="small" bind:click="saveTemplate">保存测评模板</van-button>
+      <van-button plain type="default" size="small" bind:click="resetForm">清空</van-button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">测评模板列表</text>
+    </view>
+    <view wx:if="{{templates.length === 0}}" class="muted">暂无模板</view>
+    <view wx:for="{{templates}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.title}}</text>
+        <van-tag type="primary" plain wx:if="{{item.isEntrance}}">入学测评</van-tag>
+      </view>
+      <text class="muted">题目数：{{item.questions.length}}</text>
+      <view style="margin-top: 8rpx;">
+        <van-button plain type="default" size="mini" data-template="{{item}}" bind:click="editTemplate">编辑</van-button>
+        <van-button plain type="default" size="mini" data-template="{{item}}" bind:click="setEntrance">设为入学测评</van-button>
+        <van-button plain type="default" size="mini" data-template="{{item}}" bind:click="pushAssessment">推送测评</van-button>
+        <van-button plain type="default" size="mini" data-template="{{item}}" bind:click="deleteTemplate">删除</van-button>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">测评强制状态</text>
+      <text class="muted">{{forceRequired ? '已开启' : '未开启'}}</text>
+    </view>
+    <text class="muted" wx:if="{{forceRequired}}">
+      当前强制测评ID：{{activeAssessmentId || '未指定'}}
+    </text>
+    <view style="margin-top: 12rpx;">
+      <van-button plain type="default" size="small" bind:click="clearAssessmentGate">
+        解除强制
+      </van-button>
+    </view>
+  </view>
+</view>

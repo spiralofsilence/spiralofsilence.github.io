@@ -1,0 +1,60 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">快速提问</text>
+      <text class="muted">{{mockEnabled ? "模拟模式" : "在线模式"}}</text>
+    </view>
+    <view class="row" style="flex-wrap: wrap;">
+      <view
+        wx:for="{{quickPrompts}}"
+        wx:key="prompt"
+        class="pill"
+        bindtap="usePrompt"
+        data-prompt="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card chat-card">
+    <view wx:if="{{messages.length === 0}}" class="muted">提出问题后，AI会给出建议</view>
+    <view wx:for="{{messages}}" wx:key="id" class="chat-item {{item.role}}">
+      <view class="bubble">
+        <text>{{item.content}}</text>
+        <view wx:if="{{item.tags && item.tags.length}}" class="tag-row">
+          <text wx:for="{{item.tags}}" wx:key="tag" class="tag">{{item}}</text>
+        </view>
+        <view class="meta">
+          <text class="muted">{{item.timeLabel}}</text>
+          <text
+            wx:if="{{item.role === 'assistant'}}"
+            class="feedback"
+            bindtap="showFeedback"
+            data-id="{{item.id}}"
+          >
+            反馈
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">输入问题</text>
+    </view>
+    <textarea
+      class="input"
+      placeholder="请输入育儿问题"
+      value="{{inputText}}"
+      bindinput="onInput"
+      auto-height
+    />
+    <view style="margin-top: 12rpx;">
+      <button class="button-primary" bindtap="sendMessage" loading="{{loading}}">
+        发送
+      </button>
+    </view>
+  </view>
+</view>

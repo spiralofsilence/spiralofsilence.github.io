@@ -1,0 +1,41 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">{{requiredOnly ? '必做测评' : '推荐测评'}}</text>
+      <text class="muted">免费 + 付费</text>
+    </view>
+    <view wx:if="{{forceMode}}" class="muted" style="margin-bottom: 12rpx;">
+      入学测评完成前，仅开放测评与个人中心。
+    </view>
+    <view wx:for="{{assessments}}" wx:key="id" class="assessment-item">
+      <view class="assessment-main">
+        <text class="assessment-title">{{item.title}}</text>
+        <text class="muted">{{item.description}}</text>
+        <view style="margin-top: 6rpx;">
+          <text class="tag" wx:if="{{item.isPaid}}">¥{{item.price}}</text>
+          <text class="tag" wx:else>免费</text>
+          <text class="tag" wx:if="{{requiredIds.includes(item.id)}}">必做</text>
+          <text class="tag" wx:if="{{item.category}}">{{item.category}}</text>
+        </view>
+        <text class="muted">状态：{{item.progressStatus}}</text>
+      </view>
+      <button class="button-primary" size="mini" bindtap="startAssessment" data-item="{{item}}">
+        {{item.isPaid ? "付费测评" : "开始测评"}}
+      </button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">我的测评报告</text>
+    </view>
+    <view wx:if="{{reports.length === 0}}" class="muted">暂时没有报告</view>
+    <view wx:for="{{reports}}" wx:key="id" class="report-item" bindtap="openReport" data-id="{{item.id}}">
+      <view class="row">
+        <text class="report-title">{{item.title}}</text>
+        <text class="muted">{{item.timeLabel}}</text>
+      </view>
+      <text class="muted">{{item.summary}}</text>
+    </view>
+  </view>
+</view>

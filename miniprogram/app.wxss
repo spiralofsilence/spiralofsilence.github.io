@@ -1,0 +1,203 @@
+page {
+  background: #f6f2e9;
+  color: #1f2d22;
+  font-size: 26rpx;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
+    Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+.page {
+  padding: 20rpx;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid #eadfc8;
+  box-shadow: 0 10rpx 24rpx rgba(45, 36, 20, 0.06);
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  margin-bottom: 10rpx;
+}
+
+.muted {
+  color: #8f7f62;
+  font-size: 22rpx;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  background: #f6edda;
+  color: #a07a1a;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  margin-right: 12rpx;
+  border: 2rpx solid #e6d3a3;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #1f7a4d, #2ea86a);
+  color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  box-shadow: 0 10rpx 20rpx rgba(31, 122, 77, 0.2);
+}
+
+.button-ghost {
+  background: #f3efe6;
+  color: #1f4c37;
+  border: 2rpx solid #e2d3b0;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input {
+  border: 2rpx solid #e2d3b0;
+  border-radius: 12rpx;
+  padding: 12rpx;
+  font-size: 26rpx;
+  background: #ffffff;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: #f7f2e7;
+  color: #1f7a4d;
+  font-size: 22rpx;
+  margin-right: 6rpx;
+  margin-bottom: 6rpx;
+  border: 2rpx solid #e7d8b8;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1f5a3a;
+}
+
+.link {
+  color: #1f7a4d;
+  font-size: 22rpx;
+}
+
+.lux-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f5a3a;
+}
+
+.lux-subtitle {
+  font-size: 22rpx;
+  color: #9a8c6d;
+}
+
+.gold-text {
+  color: #a07a1a;
+}
+
+.divider {
+  height: 2rpx;
+  background: #eadfc8;
+  margin: 12rpx 0;
+}
+
+.shadow-soft {
+  box-shadow: 0 12rpx 26rpx rgba(45, 36, 20, 0.08);
+}
+
+/* Vant theme overrides */
+.van-button--primary {
+  background: linear-gradient(135deg, #1f7a4d, #2ea86a) !important;
+  border: none !important;
+  box-shadow: 0 10rpx 20rpx rgba(31, 122, 77, 0.2);
+}
+
+.van-button--default {
+  color: #1f5a3a !important;
+  border-color: #e2d3b0 !important;
+  background: #f7f2e7 !important;
+}
+
+.van-cell {
+  background: #ffffff !important;
+}
+
+.van-cell__title {
+  color: #1f2d22 !important;
+}
+
+.van-cell__label {
+  color: #7c6b4c !important;
+}
+
+.van-tag--primary {
+  color: #a07a1a !important;
+  background: #f6edda !important;
+  border-color: #e6d3a3 !important;
+}
+
+.van-grid-item__content {
+  background: #ffffff !important;
+  border: 2rpx solid #eadfc8;
+  border-radius: 12rpx;
+  padding: 16rpx 0 !important;
+}
+
+.van-grid-item__text {
+  color: #1f5a3a !important;
+  font-weight: 500;
+}
+
+.van-icon {
+  color: #1f7a4d;
+}
+
+.van-radio__icon {
+  color: transparent !important;
+  border-color: #d8c7a0 !important;
+  background: transparent !important;
+}
+
+.van-radio__icon--checked {
+  color: #ffffff !important;
+  background-color: #1f7a4d !important;
+  border-color: #1f7a4d !important;
+}
+
+.page-enter {
+  animation: pageEnter 0.35s ease;
+}
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8rpx);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,40 @@
+.chat-card {
+  min-height: 200rpx;
+}
+
+.chat-item {
+  margin-bottom: 16rpx;
+}
+
+.chat-item.user .bubble {
+  background: #2f6bff;
+  color: #ffffff;
+  margin-left: 80rpx;
+}
+
+.chat-item.assistant .bubble {
+  background: #f0f2f6;
+  color: #1f2d3d;
+  margin-right: 80rpx;
+}
+
+.bubble {
+  padding: 16rpx;
+  border-radius: 16rpx;
+  line-height: 1.6;
+}
+
+.tag-row {
+  margin-top: 8rpx;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12rpx;
+}
+
+.feedback {
+  color: #2f6bff;
+  font-size: 24rpx;
+}

@@ -1,0 +1,42 @@
+<view class="page page-enter" wx:if="{{report}}">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">{{report.title}}</text>
+      <text class="muted">{{report.timeLabel}}</text>
+    </view>
+    <view class="report-score">
+      <text class="score">{{report.avgScore}}</text>
+      <text class="muted">平均得分</text>
+    </view>
+    <view class="tag">{{report.scene}}</view>
+    <view class="status">{{report.summary}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">行动建议</text>
+    </view>
+    <text class="muted">{{report.actionText}}</text>
+    <view style="margin-top: 16rpx;">
+      <button class="button-primary" bindtap="goToTasks">返回首页查看任务</button>
+    </view>
+    <view style="margin-top: 12rpx;" wx:if="{{report.riskFlag}}">
+      <button class="button-ghost" bindtap="requestConsultation">预约免费解读</button>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-ghost" bindtap="openService">查看服务进度</button>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{dimensionList.length}}">
+    <view class="section-header">
+      <text class="section-title">维度得分</text>
+    </view>
+    <view wx:for="{{dimensionList}}" wx:key="name" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.name}}</text>
+        <text class="muted">{{item.score}}</text>
+      </view>
+    </view>
+  </view>
+</view>

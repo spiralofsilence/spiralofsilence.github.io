@@ -1,0 +1,84 @@
+<view class="page page-enter" wx:if="{{assessment}}">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">{{assessment.title}}</text>
+      <text class="tag" wx:if="{{assessment.isPaid}}">¥{{assessment.price}}</text>
+      <text class="tag" wx:else>免费</text>
+    </view>
+    <text class="muted">{{assessment.description}}</text>
+    <view class="scene-picker">
+      <text class="muted">测评用途</text>
+      <picker mode="selector" range="{{sceneOptions}}" value="{{sceneIndex}}" bindchange="onSceneChange">
+        <view class="picker">{{sceneOptions[sceneIndex]}}</view>
+      </picker>
+    </view>
+    <view style="margin-top: 16rpx;">
+      <van-progress percentage="{{progressPercent}}" stroke-width="6" />
+      <text class="muted">进度 {{answeredCount}} / {{totalQuestions}}</text>
+    </view>
+  </view>
+
+  <view wx:for="{{assessment.questions}}" wx:key="id" wx:for-item="question" class="card question-card">
+    <text class="question-title">{{index + 1}}. {{question.title}}</text>
+    <view wx:if="{{question.type === 'scale'}}" class="scale-box">
+      <view class="row">
+        <text class="muted">{{question.scale.leftLabel}}</text>
+        <text class="muted">{{question.scale.rightLabel}}</text>
+      </view>
+      <view class="scale-value">当前分值：{{scaleValues[question.id]}}</view>
+      <slider
+        min="{{question.scale.min}}"
+        max="{{question.scale.max}}"
+        step="1"
+        value="{{scaleValues[question.id]}}"
+        data-qid="{{question.id}}"
+        bindchange="onScaleChange"
+        activeColor="#1f7a4d"
+      />
+    </view>
+    <view wx:elif="{{question.type === 'multiple'}}" class="option-list">
+      <view
+        wx:for="{{question.options}}"
+        wx:key="label"
+        wx:for-item="option"
+        wx:for-index="optIndex"
+        class="option-item {{multiSelectedMap[question.id][optIndex] ? 'active' : ''}}"
+        bindtap="toggleMultiple"
+        data-qid="{{question.id}}"
+        data-index="{{optIndex}}"
+      >
+        {{option.label}}
+      </view>
+    </view>
+    <view wx:elif="{{question.type === 'text'}}" class="option-list">
+      <van-field
+        type="textarea"
+        placeholder="请输入"
+        value="{{answers[question.id]}}"
+        autosize
+        data-qid="{{question.id}}"
+        bind:input="onTextInput"
+      />
+    </view>
+    <view wx:else class="option-list">
+      <view
+        wx:for="{{question.options}}"
+        wx:key="label"
+        wx:for-item="option"
+        wx:for-index="optIndex"
+        class="option-item {{answers[question.id] === optIndex ? 'active' : ''}}"
+        bindtap="selectOption"
+        data-qid="{{question.id}}"
+        data-index="{{optIndex}}"
+      >
+        {{option.label}}
+      </view>
+    </view>
+  </view>
+
+  <view style="margin-top: 12rpx;">
+    <button class="button-primary" bindtap="submitAssessment">
+      提交测评
+    </button>
+  </view>
+</view>

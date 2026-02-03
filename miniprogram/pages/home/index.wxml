@@ -1,0 +1,135 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">快捷入口</text>
+    </view>
+    <van-grid column-num="3" border="{{false}}">
+      <van-grid-item icon="notes-o" text="记录心情" data-page="mood" bind:click="goTo" />
+      <van-grid-item icon="records-o" text="深度记录" data-page="record" bind:click="goTo" />
+      <van-grid-item icon="todo-list-o" text="轻测评" data-page="assessments" bind:click="goTo" />
+      <van-grid-item icon="comment-o" text="AI问答" data-page="ai" bind:click="goTo" />
+      <van-grid-item icon="description-o" text="签署合同" data-page="contract" bind:click="goTo" />
+      <van-grid-item icon="chart-trending-o" text="服务进度" data-page="service" bind:click="goTo" />
+      <van-grid-item icon="edit" text="作业打卡" data-page="homework" bind:click="goTo" />
+    </van-grid>
+  </view>
+
+  <view class="card shadow-soft hero-card">
+    <view class="row">
+      <view>
+        <text class="lux-title">今日陪伴</text>
+        <text class="lux-subtitle">温柔记录每一步成长</text>
+      </view>
+      <van-tag type="primary" plain>{{todayKey}}</van-tag>
+    </view>
+    <view class="divider"></view>
+    <view class="summary-grid">
+      <view class="summary-item">
+        <text class="muted">完成任务</text>
+        <view class="summary-value">{{summary.completedTasks}} / {{summary.taskCount}}</view>
+      </view>
+      <view class="summary-item">
+        <text class="muted">心情评分</text>
+        <view class="summary-value">
+          {{summary.moodScore !== null ? summary.moodScore : "未记录"}}
+        </view>
+      </view>
+      <view class="summary-item">
+        <text class="muted">今日打卡</text>
+        <view class="summary-value">{{summary.checkins}}</view>
+      </view>
+    </view>
+    <view class="row" style="margin-top: 12rpx;">
+      <text class="muted">连续打卡 {{summary.streak}} 天</text>
+      <text class="link" bindtap="openTriggers">求助信号</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">今日任务</text>
+      <text class="link" bindtap="toggleTaskList">
+        {{showAllTasks ? '收起' : '展开'}}
+      </text>
+    </view>
+    <view wx:if="{{visibleTasks.length === 0}}" class="muted">暂无任务</view>
+    <view wx:for="{{visibleTasks}}" wx:key="id" class="task-item">
+      <view class="task-main">
+        <text class="task-title">{{item.title}}</text>
+        <text class="muted">{{item.description}}</text>
+      </view>
+      <view class="task-actions">
+        <van-button type="primary" size="mini" bind:click="markComplete" data-task="{{item}}">
+          完成
+        </van-button>
+        <van-button plain type="default" size="mini" bind:click="openRecord" data-task="{{item}}">
+          反馈
+        </van-button>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{highlightTask}}">
+    <view class="section-header">
+      <text class="section-title">今日推荐</text>
+      <van-tag type="primary" plain>基础库</van-tag>
+    </view>
+    <view class="card-title">{{highlightTask.title}}</view>
+    <text class="muted">{{highlightTask.description}}</text>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="markComplete" data-task="{{highlightTask}}">
+        完成任务
+      </van-button>
+      <van-button plain type="default" size="small" bind:click="openRecord" data-task="{{highlightTask}}" style="margin-left: 12rpx;">
+        记录反馈
+      </van-button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">微行动打卡</text>
+      <text class="muted">{{todayKey}}</text>
+    </view>
+    <view class="row" style="margin-bottom: 12rpx;">
+      <text class="muted">推荐：{{microAction}}</text>
+      <van-button plain type="default" size="mini" bind:click="quickCheckin">快速打卡</van-button>
+    </view>
+    <view class="actions">
+      <view
+        wx:for="{{actions}}"
+        wx:key="action"
+        class="action-item {{selectedAction === item ? 'active' : ''}}"
+        data-action="{{item}}"
+        bindtap="selectAction"
+      >
+        {{item}}
+      </view>
+    </view>
+    <textarea
+      class="input"
+      placeholder="补充说明（可选）"
+      value="{{checkinNote}}"
+      bindinput="onCheckinNoteInput"
+      auto-height
+    />
+    <view style="margin-top: 16rpx;">
+      <van-button type="primary" size="small" bind:click="submitCheckin">提交打卡</van-button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">今日打卡记录</text>
+    </view>
+    <view wx:if="{{todayCheckins.length === 0}}" class="muted">今天还没有记录</view>
+    <view wx:for="{{todayCheckins}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.action}}</text>
+        <text class="muted">{{item.timeLabel}}</text>
+      </view>
+      <text class="muted">{{item.note}}</text>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,47 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">用户筛选</text>
+      <text class="muted">仅管理员可见</text>
+    </view>
+    <van-field
+      placeholder="搜索姓名/手机号/城市"
+      value="{{searchText}}"
+      bind:input="onSearchInput"
+    />
+    <view class="row" style="margin-top: 10rpx;">
+      <text class="muted">仅看已付费</text>
+      <switch checked="{{filterPaid}}" bindchange="togglePaidFilter" />
+    </view>
+    <view class="muted" style="margin-top: 8rpx;">
+      当前生效模板：{{activeTemplate ? activeTemplate.templateName : '未设置'}}
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">用户列表</text>
+      <text class="muted">{{users.length}}人</text>
+    </view>
+    <view wx:if="{{users.length === 0}}" class="muted">暂无用户</view>
+    <view wx:for="{{users}}" wx:key="userId" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.fullName || '未命名用户'}}</text>
+        <van-tag type="primary" plain wx:if="{{item.paid}}">已付费</van-tag>
+      </view>
+      <text class="muted">手机号：{{item.contact || '未填写'}} · 城市：{{item.city || '未填写'}}</text>
+      <view class="row" style="margin-top: 6rpx;">
+        <text class="muted">合同：{{item.contractStatus}}</text>
+        <text class="muted">测评：{{item.assessmentStatus}}</text>
+      </view>
+      <view style="margin-top: 8rpx;">
+        <van-button type="primary" size="mini" bind:click="pushContract" data-user="{{item}}">
+          推送合同
+        </van-button>
+        <van-button plain type="default" size="mini" bind:click="setActiveUser" data-user="{{item}}">
+          切换查看
+        </van-button>
+      </view>
+    </view>
+  </view>
+</view>

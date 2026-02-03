@@ -1,0 +1,60 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">任务关联</text>
+    </view>
+    <text class="muted">
+      {{taskTitle ? taskTitle : "无关联任务，可直接记录"}}
+    </text>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">亲子互动评分</text>
+      <text class="muted">{{interactionScore}} / 5</text>
+    </view>
+    <slider min="1" max="5" step="1" value="{{interactionScore}}" bindchange="onInteractionChange" activeColor="#2f6bff" />
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">孩子情绪变化</text>
+    </view>
+    <textarea
+      class="input"
+      placeholder="例如：情绪更稳定/仍有抵触"
+      value="{{moodChange}}"
+      bindinput="onMoodChangeInput"
+      auto-height
+    />
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">执行后感受</text>
+    </view>
+    <textarea
+      class="input"
+      placeholder="记录执行任务后的感受与观察"
+      value="{{reflection}}"
+      bindinput="onReflectionInput"
+      auto-height
+    />
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">关键词</text>
+    </view>
+    <input
+      class="input"
+      placeholder="用空格或逗号分隔，如：厌学 焦虑"
+      value="{{keywords}}"
+      bindinput="onKeywordsInput"
+    />
+  </view>
+
+  <view style="margin-top: 12rpx;">
+    <button class="button-primary" bindtap="saveRecord">保存记录</button>
+  </view>
+</view>

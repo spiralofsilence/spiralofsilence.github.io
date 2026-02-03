@@ -1,0 +1,94 @@
+<view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">当前信号可视化</text>
+    </view>
+    <view class="row summary-row">
+      <view>
+        <text class="muted">距离上次打卡</text>
+        <view class="card-title">{{summary.missedDays}} 天</view>
+      </view>
+      <view>
+        <text class="muted">低心情记录</text>
+        <view class="card-title">{{summary.lowMoodHits}} 条</view>
+      </view>
+      <view>
+        <text class="muted">关键词命中</text>
+        <view class="card-title">{{summary.keywordHits.length}} 个</view>
+      </view>
+    </view>
+    <view class="muted" wx:if="{{summary.lastCheckin}}">
+      上次打卡：{{summary.lastCheckin}}
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">规则展示（可调整）</text>
+      <text class="muted">目前仅可视化</text>
+    </view>
+    <view class="setting-item">
+      <text class="label">连续未打卡阈值</text>
+      <input class="input small" type="number" value="{{settings.consecutiveMissedDays}}" bindinput="onMissedDaysInput" />
+      <text class="muted">天</text>
+    </view>
+    <view class="setting-item">
+      <text class="label">低心情阈值</text>
+      <text class="muted">{{settings.lowMoodScore}} 分及以下</text>
+    </view>
+    <slider min="1" max="5" step="1" value="{{settings.lowMoodScore}}" bindchange="onLowMoodChange" activeColor="#2f6bff" />
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">关键词监测</text>
+    </view>
+    <view class="keyword-list">
+      <view wx:for="{{settings.keywordList}}" wx:key="keyword" class="keyword-item">
+        <text>{{item}}</text>
+        <text class="remove" bindtap="removeKeyword" data-keyword="{{item}}">删除</text>
+      </view>
+    </view>
+    <view class="row" style="margin-top: 12rpx;">
+      <input class="input" placeholder="新增关键词" value="{{newKeyword}}" bindinput="onKeywordInput" />
+      <button class="button-primary small" bindtap="addKeyword">添加</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">求助信号按钮</text>
+    </view>
+    <text class="muted">当你需要支持时，直接发出信号。</text>
+    <view style="margin-top: 16rpx;">
+      <button class="button-primary" bindtap="submitHelpSignal">我需要支持</button>
+    </view>
+    <view style="margin-top: 12rpx;">
+      <button class="button-ghost" size="mini" bindtap="runAutoTrigger">运行自动触发</button>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{summary.keywordHits.length}}">
+    <view class="section-header">
+      <text class="section-title">关键词命中明细</text>
+    </view>
+    <view wx:for="{{summary.keywordHits}}" wx:key="keyword" class="log-item">
+      <text class="log-title">{{item.keyword}}</text>
+      <text class="muted">命中 {{item.count}} 次</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{triggerEvents.length}}">
+    <view class="section-header">
+      <text class="section-title">触发记录</text>
+    </view>
+    <view wx:for="{{triggerEvents}}" wx:key="id" class="log-item">
+      <view class="row">
+        <text class="log-title">{{item.type}}</text>
+        <text class="muted">{{item.dateKey}}</text>
+      </view>
+      <text class="muted">{{item.message}}</text>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "填写测评",
+  "usingComponents": {
+    "van-progress": "@vant/weapp/progress/index",
+    "van-checkbox": "@vant/weapp/checkbox/index",
+    "van-checkbox-group": "@vant/weapp/checkbox-group/index",
+    "van-field": "@vant/weapp/field/index"
+  }
+}

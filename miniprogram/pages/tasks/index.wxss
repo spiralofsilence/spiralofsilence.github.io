@@ -1,0 +1,39 @@
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-main {
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+.task-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.task-actions button {
+  margin-bottom: 8rpx;
+}
+
+.log-item {
+  padding: 12rpx 0;
+  border-bottom: 2rpx solid #f0f2f6;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-title {
+  font-size: 28rpx;
+  font-weight: 500;
+}

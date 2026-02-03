@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/onboarding/index",
+    "pages/home/index",
+    "pages/mood/index",
+    "pages/record/index",
+    "pages/triggers/index",
+    "pages/ai/index",
+    "pages/assessments/index",
+    "pages/assessment-detail/index",
+    "pages/assessment-report/index",
+    "pages/contract/index",
+    "pages/contract/signature",
+    "pages/admin/contract-template/index",
+    "pages/admin/assessment-template/index",
+    "pages/admin/user-management/index",
+    "pages/service/index",
+    "pages/homework/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "育儿陪伴",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8fa",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#8a7b5c",
+    "selectedColor": "#1f7a4d",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/ai/index",
+        "text": "问答"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userInfo": {
+      "desc": "用于展示您的头像和昵称"
+    }
+  }
+}
