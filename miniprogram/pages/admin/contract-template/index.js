@@ -21,6 +21,13 @@ Page({
     selectedUserPaid: false
   },
   onShow() {
+    const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    if (profile.role === "父母" || settings.adminLoggedIn !== true) {
+      wx.showToast({ title: "请先登录管理员", icon: "none" });
+      wx.redirectTo({ url: "/pages/profile/index" });
+      return;
+    }
     const templates = loadOrInit(STORAGE_KEYS.CONTRACT_TEMPLATES, []);
     const assessments = loadOrInit(STORAGE_KEYS.ASSESSMENTS, []);
     const entrance =

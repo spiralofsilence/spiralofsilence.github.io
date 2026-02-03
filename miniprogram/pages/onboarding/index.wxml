@@ -73,8 +73,6 @@
     <view class="step-actions">
       <van-button plain type="default" size="small" bind:click="prevStep">上一步</van-button>
       <van-button type="primary" size="small" bind:click="bindWeChat">绑定微信</van-button>
-      <van-button plain type="default" size="small" bind:click="nextStep">下一步</van-button>
-      <van-button plain type="default" size="small" bind:click="skipBind">跳过</van-button>
     </view>
   </view>
 

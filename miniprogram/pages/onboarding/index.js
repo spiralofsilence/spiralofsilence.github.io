@@ -111,6 +111,7 @@ Page({
           wechatNick: nickName || "",
           avatarUrl: avatarUrl || ""
         });
+        this.nextStep();
       },
       fail: () => {
         wx.showToast({ title: "未完成授权", icon: "none" });

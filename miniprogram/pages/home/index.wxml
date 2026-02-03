@@ -1,4 +1,19 @@
 <view class="page page-enter">
+  <view class="card">
+    <view class="section-header">
+      <text class="section-title">快捷入口</text>
+    </view>
+    <van-grid column-num="3" border="{{false}}">
+      <van-grid-item icon="notes-o" text="记录心情" data-page="mood" bind:click="goTo" />
+      <van-grid-item icon="records-o" text="深度记录" data-page="record" bind:click="goTo" />
+      <van-grid-item icon="todo-list-o" text="轻测评" data-page="assessments" bind:click="goTo" />
+      <van-grid-item icon="comment-o" text="AI问答" data-page="ai" bind:click="goTo" />
+      <van-grid-item icon="description-o" text="签署合同" data-page="contract" bind:click="goTo" />
+      <van-grid-item icon="chart-trending-o" text="服务进度" data-page="service" bind:click="goTo" />
+      <van-grid-item icon="edit" text="作业打卡" data-page="homework" bind:click="goTo" />
+    </van-grid>
+  </view>
+
   <view class="card shadow-soft hero-card">
     <view class="row">
       <view>
@@ -30,23 +45,6 @@
     </view>
   </view>
 
-  <view class="card" wx:if="{{highlightTask}}">
-    <view class="section-header">
-      <text class="section-title">今日推荐</text>
-      <van-tag type="primary" plain>基础库</van-tag>
-    </view>
-    <view class="card-title">{{highlightTask.title}}</view>
-    <text class="muted">{{highlightTask.description}}</text>
-    <view style="margin-top: 16rpx;">
-      <van-button type="primary" size="small" bind:click="markComplete" data-task="{{highlightTask}}">
-        完成任务
-      </van-button>
-      <van-button plain type="default" size="small" bind:click="openRecord" data-task="{{highlightTask}}" style="margin-left: 12rpx;">
-        记录反馈
-      </van-button>
-    </view>
-  </view>
-
   <view class="card">
     <view class="section-header">
       <text class="section-title">今日任务</text>
@@ -68,6 +66,23 @@
           反馈
         </van-button>
       </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{highlightTask}}">
+    <view class="section-header">
+      <text class="section-title">今日推荐</text>
+      <van-tag type="primary" plain>基础库</van-tag>
+    </view>
+    <view class="card-title">{{highlightTask.title}}</view>
+    <text class="muted">{{highlightTask.description}}</text>
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="markComplete" data-task="{{highlightTask}}">
+        完成任务
+      </van-button>
+      <van-button plain type="default" size="small" bind:click="openRecord" data-task="{{highlightTask}}" style="margin-left: 12rpx;">
+        记录反馈
+      </van-button>
     </view>
   </view>
 
@@ -117,18 +132,4 @@
     </view>
   </view>
 
-  <view class="card">
-    <view class="section-header">
-      <text class="section-title">快捷入口</text>
-    </view>
-    <van-grid column-num="3" border="{{false}}">
-      <van-grid-item icon="notes-o" text="记录心情" data-page="mood" bind:click="goTo" />
-      <van-grid-item icon="records-o" text="深度记录" data-page="record" bind:click="goTo" />
-      <van-grid-item icon="todo-list-o" text="轻测评" data-page="assessments" bind:click="goTo" />
-      <van-grid-item icon="comment-o" text="AI问答" data-page="ai" bind:click="goTo" />
-      <van-grid-item icon="description-o" text="签署合同" data-page="contract" bind:click="goTo" />
-      <van-grid-item icon="chart-trending-o" text="服务进度" data-page="service" bind:click="goTo" />
-      <van-grid-item icon="edit" text="作业打卡" data-page="homework" bind:click="goTo" />
-    </van-grid>
-  </view>
 </view>

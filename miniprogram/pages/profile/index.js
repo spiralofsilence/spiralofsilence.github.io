@@ -11,7 +11,11 @@ Page({
     role: "父母",
     roleSaved: false,
     isStaff: false,
-    pendingContract: null
+    pendingContract: null,
+    adminPasswordInput: "",
+    adminPasswordConfirm: "",
+    adminHasPassword: false,
+    adminLoggedIn: false
   },
   onShow() {
     if (!ensureOnboarding()) return;
@@ -32,7 +36,11 @@ Page({
       role,
       roleSaved: Boolean(profile.role),
       isStaff: role !== "父母",
-      pendingContract: pendingContract || null
+      pendingContract: pendingContract || null,
+      adminHasPassword: Boolean(settings.adminPassword),
+      adminLoggedIn: settings.adminLoggedIn === true,
+      adminPasswordInput: "",
+      adminPasswordConfirm: ""
     });
     if (role === "父母" && pendingContract) {
       const promptedMap = settings.contractPromptedMap || {};
@@ -95,6 +103,57 @@ Page({
       isStaff: role !== "父母"
     });
     wx.showToast({ title: "已保存", icon: "success" });
+  },
+  onAdminPasswordInput(e) {
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ adminPasswordInput: value });
+  },
+  onAdminPasswordConfirmInput(e) {
+    const value = typeof e.detail === "string" ? e.detail : e.detail.value;
+    this.setData({ adminPasswordConfirm: value });
+  },
+  setAdminPassword() {
+    const password = (this.data.adminPasswordInput || "").trim();
+    const confirm = (this.data.adminPasswordConfirm || "").trim();
+    if (password.length < 6) {
+      wx.showToast({ title: "密码至少6位", icon: "none" });
+      return;
+    }
+    if (password !== confirm) {
+      wx.showToast({ title: "两次密码不一致", icon: "none" });
+      return;
+    }
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    setStorage(STORAGE_KEYS.SETTINGS, {
+      ...settings,
+      adminPassword: password,
+      adminLoggedIn: true
+    });
+    this.setData({
+      adminHasPassword: true,
+      adminLoggedIn: true,
+      adminPasswordInput: "",
+      adminPasswordConfirm: ""
+    });
+    wx.showToast({ title: "密码已设置", icon: "success" });
+  },
+  adminLogin() {
+    const password = (this.data.adminPasswordInput || "").trim();
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    if (!settings.adminPassword) {
+      wx.showToast({ title: "请先设置密码", icon: "none" });
+      return;
+    }
+    if (password !== settings.adminPassword) {
+      wx.showToast({ title: "密码错误", icon: "none" });
+      return;
+    }
+    setStorage(STORAGE_KEYS.SETTINGS, {
+      ...settings,
+      adminLoggedIn: true
+    });
+    this.setData({ adminLoggedIn: true, adminPasswordInput: "" });
+    wx.showToast({ title: "登录成功", icon: "success" });
   },
   openContract() {
     wx.navigateTo({ url: "/pages/contract/index" });

@@ -1,5 +1,5 @@
 <view class="page page-enter">
-  <view class="card shadow-soft">
+  <view class="card shadow-soft" wx:if="{{!roleSaved || role === '父母'}}">
     <view class="section-header">
       <text class="section-title">角色设置</text>
     </view>
@@ -47,18 +47,37 @@
     <van-cell title="作业打卡" is-link bind:click="openHomework" />
   </view>
 
-  <view class="card" wx:if="{{roleSaved && isStaff}}">
+  <view class="card" wx:if="{{roleSaved && isStaff && !adminHasPassword}}">
     <view class="section-header">
-      <text class="section-title">管理员工具</text>
-      <text class="muted">顾问/管理员</text>
+      <text class="section-title">管理员设置密码</text>
+    </view>
+    <van-field label="设置密码" type="password" placeholder="至少6位" value="{{adminPasswordInput}}" bind:input="onAdminPasswordInput" />
+    <van-field label="确认密码" type="password" placeholder="再次输入" value="{{adminPasswordConfirm}}" bind:input="onAdminPasswordConfirmInput" />
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="setAdminPassword">完成设置</van-button>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{roleSaved && isStaff && adminHasPassword && !adminLoggedIn}}">
+    <view class="section-header">
+      <text class="section-title">管理员登录</text>
+    </view>
+    <van-field label="密码" type="password" placeholder="请输入密码" value="{{adminPasswordInput}}" bind:input="onAdminPasswordInput" />
+    <view style="margin-top: 12rpx;">
+      <van-button type="primary" size="small" bind:click="adminLogin">登录</van-button>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{roleSaved && isStaff && adminLoggedIn}}">
+    <view class="section-header">
+      <text class="section-title">管理入口</text>
     </view>
     <van-cell title="用户管理" is-link bind:click="openUserAdmin" />
     <van-cell title="合同模板管理" is-link bind:click="openContractAdmin" />
     <van-cell title="测评模板管理" is-link bind:click="openAssessmentAdmin" />
-    <van-cell title="进入合同签署" is-link bind:click="openContract" />
   </view>
 
-  <view class="card" wx:if="{{roleSaved}}">
+  <view class="card" wx:if="{{roleSaved && role === '父母'}}">
     <view class="section-header">
       <text class="section-title">其他</text>
     </view>
