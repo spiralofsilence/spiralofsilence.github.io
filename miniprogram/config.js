@@ -20,6 +20,11 @@ const config = {
     title: "家庭教育服务协议",
     templateVersion: "v1.0"
   },
+  adminWhitelist: {
+    userIds: [],
+    phones: [],
+    wechatNames: []
+  },
   triggerDefaults: {
     consecutiveMissedDays: 3,
     lowMoodScore: 2,

@@ -1,10 +1,16 @@
-const { STORAGE_KEYS, getStorage, setStorage, appendToList } = require("../../utils/storage");
+const {
+  STORAGE_KEYS,
+  getStorage,
+  setStorage,
+  appendToList
+} = require("../../utils/storage");
 const { createId } = require("../../utils/id");
+const { isAdminAllowed } = require("../../utils/whitelist");
 
 Page({
   data: {
     step: 0,
-    roles: ["父母", "顾问", "管理员"],
+    roles: ["父母"],
     selectedRole: "",
     cityOptions: [
       "北京",
@@ -54,6 +60,13 @@ Page({
   },
   onLoad() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    if (!settings.pendingUserId) {
+      setStorage(STORAGE_KEYS.SETTINGS, {
+        ...settings,
+        pendingUserId: createId("user")
+      });
+    }
     const cityOptions = this.data.cityOptions;
     const cityIndex = profile.city
       ? Math.max(cityOptions.indexOf(profile.city), 0)
@@ -68,6 +81,7 @@ Page({
       contact: profile.contact || "",
       cityIndex
     });
+    this.refreshRoleOptions();
   },
   nextStep() {
     const { step } = this.data;
@@ -93,11 +107,20 @@ Page({
     }
   },
   selectRole(e) {
-    this.setData({ selectedRole: e.detail });
+    const role = e.detail;
+    if (role !== "父母" && !this.canChooseAdmin()) {
+      wx.showToast({ title: "仅白名单可选管理员", icon: "none" });
+      return;
+    }
+    this.setData({ selectedRole: role });
   },
   onRoleCellTap(e) {
     const role = e.currentTarget.dataset.role;
     if (role) {
+      if (role !== "父母" && !this.canChooseAdmin()) {
+        wx.showToast({ title: "仅白名单可选管理员", icon: "none" });
+        return;
+      }
       this.setData({ selectedRole: role });
     }
   },
@@ -111,6 +134,7 @@ Page({
           wechatNick: nickName || "",
           avatarUrl: avatarUrl || ""
         });
+        this.refreshRoleOptions();
         this.nextStep();
       },
       fail: () => {
@@ -133,14 +157,36 @@ Page({
   onContactInput(e) {
     const value = typeof e.detail === "string" ? e.detail : e.detail.value;
     this.setData({ contact: value });
+    this.refreshRoleOptions();
+  },
+  buildProfileForCheck() {
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const pendingUserId = settings.pendingUserId || "";
+    return {
+      userId: pendingUserId,
+      contact: this.data.contact,
+      wechatNick: this.data.wechatNick
+    };
+  },
+  canChooseAdmin() {
+    return isAdminAllowed(this.buildProfileForCheck());
+  },
+  refreshRoleOptions() {
+    const roles = this.canChooseAdmin() ? ["父母", "顾问", "管理员"] : ["父母"];
+    const selectedRole = roles.includes(this.data.selectedRole)
+      ? this.data.selectedRole
+      : "父母";
+    this.setData({ roles, selectedRole });
   },
   completeOnboarding() {
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
-    const userId = profile.userId || createId("user");
+    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
+    const userId = profile.userId || settings.pendingUserId || createId("user");
+    const allowedRole = this.canChooseAdmin() ? this.data.selectedRole : "父母";
     setStorage(STORAGE_KEYS.PROFILE, {
       ...profile,
       userId,
-      role: this.data.selectedRole,
+      role: allowedRole,
       fullName: this.data.fullName,
       city: this.data.city,
       contact: this.data.contact,
@@ -154,14 +200,13 @@ Page({
     if (!existing) {
       appendToList(STORAGE_KEYS.USERS, {
         userId,
-        role: this.data.selectedRole,
+        role: allowedRole,
         fullName: this.data.fullName,
         city: this.data.city,
         contact: this.data.contact,
         createdAt: Date.now()
       });
     }
-    const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
     setStorage(STORAGE_KEYS.SETTINGS, {
       ...settings,
       onboardingComplete: true,

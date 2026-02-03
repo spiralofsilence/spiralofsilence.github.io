@@ -1,5 +1,6 @@
 const { STORAGE_KEYS, getStorage, setStorage } = require("../../utils/storage");
 const { ensureOnboarding } = require("../../utils/onboarding");
+const { isAdminAllowed } = require("../../utils/whitelist");
 
 Page({
   data: {
@@ -22,20 +23,28 @@ Page({
     const profile = getStorage(STORAGE_KEYS.PROFILE, {});
     const settings = getStorage(STORAGE_KEYS.SETTINGS, {});
     const assignments = getStorage(STORAGE_KEYS.CONTRACT_ASSIGNMENTS, []);
+    const allowAdmin = isAdminAllowed(profile);
     const activeUserId = settings.activeUserId || profile.userId;
     const pendingContract = assignments.find(
       (item) => item.userId === activeUserId && item.status === "pending"
     );
     const roleIndex = this.data.roles.indexOf(profile.role || "父母");
-    const role = roleIndex === -1 ? "父母" : this.data.roles[roleIndex];
+    const role = allowAdmin
+      ? roleIndex === -1
+        ? "父母"
+        : this.data.roles[roleIndex]
+      : "父母";
+    if (!allowAdmin && profile.role !== "父母") {
+      setStorage(STORAGE_KEYS.PROFILE, { ...profile, role: "父母" });
+    }
     this.setData({
-      roleIndex: roleIndex === -1 ? 0 : roleIndex,
+      roleIndex: role === "父母" ? 0 : roleIndex,
       fullName: profile.fullName || "",
       city: profile.city || "",
       contact: profile.contact || "",
       role,
       roleSaved: Boolean(profile.role),
-      isStaff: role !== "父母",
+      isStaff: role !== "父母" && allowAdmin,
       pendingContract: pendingContract || null,
       adminHasPassword: Boolean(settings.adminPassword),
       adminLoggedIn: settings.adminLoggedIn === true,
@@ -89,6 +98,10 @@ Page({
   },
   saveProfile() {
     const role = this.data.roles[this.data.roleIndex];
+    if (role !== "父母" && !isAdminAllowed(getStorage(STORAGE_KEYS.PROFILE, {}))) {
+      wx.showToast({ title: "仅白名单可选管理员", icon: "none" });
+      return;
+    }
     const existing = getStorage(STORAGE_KEYS.PROFILE, {});
     setStorage(STORAGE_KEYS.PROFILE, {
       ...existing,
